@@ -1,0 +1,106 @@
+﻿/* menu superieur */
+
+#menuSuperieur
+{
+   height: 100px;
+   
+   margin-left: 5%;
+   margin-right: 5%;
+   
+   padding-top: 0px;
+   padding-bottom: 10px;
+   padding-left: 0%;
+   padding-right: 0%;
+   
+   border-style: none;
+   border-width: 2px;
+   border-color: black;
+   
+   font-family : "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
+}
+
+#surMenu
+{
+	width:100%;
+}
+
+#surMenu table
+{
+	width:100%;
+	margin-bottom: 0px;
+	/*border-collapse:collapse;*/
+}
+
+#surMenu th
+{
+   height: 10px;
+   width: 33%;
+   font-size: 85%;
+   
+   padding-top:5px;
+   padding-left:1%;
+   
+   vertical-align: top;
+   cursor: pointer
+}
+
+#surMenu th.deselected
+{
+	border-top: 1px solid #202B4F;
+	border-right: 1px solid #202B4F;
+	border-left: 1px solid #202B4F;
+	border-bottom: 1px solid #596176;
+	
+	background-color: #1A2441;
+}
+
+#surMenu th.deselected:hover
+{
+	background-color: #31437a;
+}
+
+#surMenu th.selected
+{
+	border-top: 1px solid #596176;
+	border-right: 1px solid #596176;
+	border-left: 1px solid #596176;
+	border-bottom: 1px solid #596176;
+	
+	color: #000000;
+	background-color: #ffd400;
+}
+
+#sousMenu
+{
+	height: 65px;
+   
+  	padding-top: 5px;
+   	padding-bottom: 10px;
+   	padding-left: 2%;
+   	padding-right: 2%;
+   	
+   	#color: #000000;
+   
+   	font-family : "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
+   
+   	border-left: 1px solid #596176;
+	border-right: 1px solid #596176;
+	border-bottom: 1px solid #596176;
+	
+	background-color: #232D4A;
+}
+
+#sousMenu table
+{
+	padding-left: 1%;
+	padding-right: 1%;
+}
+
+#sousMenu th
+{
+   font-size: 85%;
+   font-weight: bold;
+   
+   margin-left:1%;
+   margin-right:1%;
+}
