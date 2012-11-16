@@ -132,23 +132,23 @@ else
      		<?php if ($semestre ==1) { ?>
      		
      		<tr>
-     			<th><a href="./Pages/Calendrier/mois.php?annee=<?php echo($annee);?>&mois=1" style="cursor: pointer;"> Janvier </a></th>
-				<th><a href="./Pages/Calendrier/mois.php?annee=<?php echo($annee);?>&mois=2" style="cursor: pointer;"> F&eacute;vrier </a></th>
-				<th><a href="./Pages/Calendrier/mois.php?annee=<?php echo($annee);?>&mois=3" style="cursor: pointer;"> Mars </a></th>
-				<th><a href="./Pages/Calendrier/mois.php?annee=<?php echo($annee);?>&mois=4" style="cursor: pointer;"> Avril </a></th>
-				<th><a href="./Pages/Calendrier/mois.php?annee=<?php echo($annee);?>&mois=5" style="cursor: pointer;"> Mai </a></th>
-				<th><a href="./Pages/Calendrier/mois.php?annee=<?php echo($annee);?>&mois=6" style="cursor: pointer;"> Juin </a></th>
+     			<th><a href="mois.php?annee=<?php echo($annee);?>&mois=1" style="cursor: pointer;"> Janvier </a></th>
+				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=2" style="cursor: pointer;"> F&eacute;vrier </a></th>
+				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=3" style="cursor: pointer;"> Mars </a></th>
+				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=4" style="cursor: pointer;"> Avril </a></th>
+				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=5" style="cursor: pointer;"> Mai </a></th>
+				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=6" style="cursor: pointer;"> Juin </a></th>
 			</tr>
      		
      		<?php } else { ?>
 
     		<tr>
-      			<th><a href="./Pages/Calendrier/mois.php?annee=<?php echo($annee);?>&mois=7" style="cursor: pointer;"> Juillet </a></th>
-				<th><a href="./Pages/Calendrier/mois.php?annee=<?php echo($annee);?>&mois=8" style="cursor: pointer;"> Ao&ucirc;t </a></th>
-				<th><a href="./Pages/Calendrier/mois.php?annee=<?php echo($annee);?>&mois=9" style="cursor: pointer;"> Septembre </a></th>
-				<th><a href="./Pages/Calendrier/mois.php?annee=<?php echo($annee);?>&mois=10" style="cursor: pointer;"> Octobre </a></th>
-				<th><a href="./Pages/Calendrier/mois.php?annee=<?php echo($annee);?>&mois=11" style="cursor: pointer;"> Novembre </a></th>
-				<th><a href="./Pages/Calendrier/mois.php?annee=<?php echo($annee);?>&mois=12" style="cursor: pointer;"> D&eacute;cembre </a></th>
+      			<th><a href="mois.php?annee=<?php echo($annee);?>&mois=7" style="cursor: pointer;"> Juillet </a></th>
+				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=8" style="cursor: pointer;"> Ao&ucirc;t </a></th>
+				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=9" style="cursor: pointer;"> Septembre </a></th>
+				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=10" style="cursor: pointer;"> Octobre </a></th>
+				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=11" style="cursor: pointer;"> Novembre </a></th>
+				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=12" style="cursor: pointer;"> D&eacute;cembre </a></th>
     		</tr>
     		
     		<?php } ?>
@@ -215,14 +215,14 @@ else
 			
 			else if ($boucle == 0)
 			{
-				echo'<td onClick="getJour(' . $annee . ', ' . $mois .', ' . $jour . ', 1);">' . $jour . '</td>';
+				echo '<td onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'">'.$jour.'</a></td>';
 			}
 			
 			// Cas 2 : plusieurs evenements
 			
 			else if ($boucle > 1)
 			{
-				echo '<td class="info" onClick="getJour(' . $annee . ', ' . $mois .', ' . $jour . ', 1);">';
+				echo '<td class="info" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'">';
 				echo $jour . '<img STYLE="vertical-align: -3px; margin-left: 5px; margin-right: 2px;" src="./Images/warning_exclamation.png" height="15" width="15">' . ' Evenements : ' . $boucle;
 				
 				echo '<span>';
@@ -241,7 +241,7 @@ else
 			
 			else
 			{
-				echo'<td class="info" onClick="getJour(' . $annee . ', ' . $mois .', ' . $jour . ', 1);">';
+				echo '<td class="info" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'">';
 				echo $jour . ' ' . $titreCourt[0] . '<span>' . $titreLong[0] . '</span>';
 				echo'</td>';
 			}

@@ -212,7 +212,7 @@
                         }
                     }
                     
-                    echo '<td class="numSemaine"><a href="semaine.php?annee1='.$annee1.'&annee2='.$annee2.'&mois1='.$mois1.'&mois2='.$mois2.'&jourDebut='.$jourDebut.'&jourFin='.$jourFin.'">'. $numSemaine . '</a></td>';
+                    echo '<td class="numSemaine" onclick="document.location.href = \'semaine.php?annee1='.$annee1.'&annee2='.$annee2.'&mois1='.$mois1.'&mois2='.$mois2.'&jourDebut='.$jourDebut.'&jourFin='.$jourFin.'\';"><a href="semaine.php?annee1='.$annee1.'&annee2='.$annee2.'&mois1='.$mois1.'&mois2='.$mois2.'&jourDebut='.$jourDebut.'&jourFin='.$jourFin.'">'. $numSemaine . '</a></td>';
                     
                     // 1er jour de la prochaine semaine
                     $jour = jourProchain($mois, $jour, $annee);
@@ -241,7 +241,7 @@
                             echo '<td class="caseAutreMois"></td>';
                         }
                         else {
-                            echo '<td class="caseDuMois" onClick="getJour(' . $annee . ', '. $mois .', ' . $num . ', 2);">';
+                            echo '<td class="caseDuMois" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$num.'\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$num.'">';
                             echo $num;
 
                             if ($boucle >= 1) {
