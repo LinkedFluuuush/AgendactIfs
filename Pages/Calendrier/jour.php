@@ -111,11 +111,11 @@ $date = miseEnPageJour($dateTimestampDebutMEPJ);
 	
 	if ($_GET['u'] == 1)
 	{
-		echo '<a href="semestre.php?a=' . $annee . '&m=' . $mois . ');">Retour</a>';
+		echo '<a href="semestre.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
 	}
 	if ($_GET['u'] == 2)
 	{
-		echo '<a href="mois.php?a=' . $annee . '&m=' . $mois . ');">Retour</a>';
+		echo '<a href="mois.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
 	}
 	?>
 </div>
