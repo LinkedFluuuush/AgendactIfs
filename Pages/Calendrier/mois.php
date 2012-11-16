@@ -241,7 +241,7 @@
                             echo '<td class="caseAutreMois"></td>';
                         }
                         else {
-                            echo '<td class="caseDuMois" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$num.'\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$num.'">';
+                            echo '<td class="caseDuMois" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$num.'&u=2\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$num.'&u=2">';
                             echo $num;
 
                             if ($boucle >= 1) {

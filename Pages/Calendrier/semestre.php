@@ -215,14 +215,14 @@ else
 			
 			else if ($boucle == 0)
 			{
-				echo '<td onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'">'.$jour.'</a></td>';
+				echo '<td onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.$jour.'</a></td>';
 			}
 			
 			// Cas 2 : plusieurs evenements
 			
 			else if ($boucle > 1)
 			{
-				echo '<td class="info" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'">';
+				echo '<td class="info" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
 				echo $jour . '<img STYLE="vertical-align: -3px; margin-left: 5px; margin-right: 2px;" src="./Images/warning_exclamation.png" height="15" width="15">' . ' Evenements : ' . $boucle;
 				
 				echo '<span>';
@@ -241,7 +241,7 @@ else
 			
 			else
 			{
-				echo '<td class="info" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'">';
+				echo '<td class="info" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
 				echo $jour . ' ' . $titreCourt[0] . '<span>' . $titreLong[0] . '</span>';
 				echo'</td>';
 			}

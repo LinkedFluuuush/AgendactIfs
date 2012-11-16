@@ -13,16 +13,16 @@ $annee = date('Y');
 $mois = date('m');
 $jour = date('d');
 
-//si les variables $_POST existent, on les utilises et au passage, on les stockent dans les variable de session
-if((!empty($_POST['annee'])) && (!empty($_POST['mois'])) && (!empty($_POST['jour'])))
+//si les variables $_GET existent, on les utilises et au passage, on les stockent dans les variable de session
+if((!empty($_GET['a'])) && (!empty($_GET['m'])) && (!empty($_GET['j'])))
 {
-	$annee = $_POST['annee'];
-	$mois = $_POST['mois'];
-	$jour = $_POST['jour'];
+	$annee = $_GET['a'];
+	$mois = $_GET['m'];
+	$jour = $_GET['j'];
 	    
-	$_SESSION['annee'] = $_POST['annee'];
-	$_SESSION['mois'] = $_POST['mois'];
-	$_SESSION['jour'] = $_POST['jour'];
+	$_SESSION['annee'] = $_GET['a'];
+	$_SESSION['mois'] = $_GET['m'];
+	$_SESSION['jour'] = $_GET['j'];
 	
 	if($mois == 13)
 		$mois = 0;
@@ -86,7 +86,7 @@ $date = miseEnPageJour($dateTimestampDebutMEPJ);
 				if($nomSession == $auteur)
 				{
 			?>
-				<a href="javascript:getEveModif(<?php echo $numeroEve; ?>);">Modifier</a><a href="javascript:cal_supprimerEve(<?php echo $numeroEve; ?>, <?php echo $annee; ?>, <?php echo $mois; ?>, <?php echo $jour; ?>, <?php echo $_POST['urlRetour']; ?>);">Supprimer</a>
+				<a href="javascript:getEveModif(<?php echo $numeroEve; ?>);">Modifier</a><a href="javascript:cal_supprimerEve(<?php echo $numeroEve; ?>, <?php echo $annee; ?>, <?php echo $mois; ?>, <?php echo $jour; ?>, <?php echo $_GET['u']; ?>);">Supprimer</a>
 			<?php 
 				}
 			?>
@@ -109,13 +109,13 @@ $date = miseEnPageJour($dateTimestampDebutMEPJ);
 	if(!empty($nomSession))
 		echo '<a href="javascript:getEveCrea(' . $annee . ', ' . $mois . ', ' . $jour .');">Ajouter</a>';
 	
-	if ($_POST['urlRetour'] == 1)
+	if ($_GET['u'] == 1)
 	{
-		echo '<a href="javascript:getSemestre(' . $annee . ', ' . $mois . ');">Retour</a>';
+		echo '<a href="semestre.php?a=' . $annee . '&m=' . $mois . ');">Retour</a>';
 	}
-	if ($_POST['urlRetour'] == 2)
+	if ($_GET['u'] == 2)
 	{
-		echo '<a href="javascript:getMois(' . $annee . ', ' . $mois . ');">Retour</a>';
+		echo '<a href="mois.php?a=' . $annee . '&m=' . $mois . ');">Retour</a>';
 	}
 	?>
 </div>
