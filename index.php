@@ -16,7 +16,7 @@ else
 }
 ?>
 
-<!-- Projet événementiel informatisé - Réalisation :  Guillaume ANNE et Julien DIESNIS (2008-2009) --> 
+<!-- Projet événementiel informatisé - Réalisation :  Guillaume ANNE et Julien DIESNIS (2008-2009)AAA --> 
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
