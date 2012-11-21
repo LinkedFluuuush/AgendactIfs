@@ -111,8 +111,6 @@ else
 	</div>
 	
 	<img src="./Images/phoenix.png" style="position: relative; bottom: 140px; float:right;"/>
-
-<!-- Hoy ! -->
 </body>
 </html>
 
