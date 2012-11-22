@@ -28,7 +28,7 @@
 	$mois = date('m');
 	$jour = date('d');
 
-	//si les variables $_POST existent, on les utilises et au passage, on les stockent dans les variable de session
+	//si les variables $_GET existent, on les utilises et au passage, on les stockent dans les variable de session
 	if((!empty($_GET['annee'])) && (!empty($_GET['mois'])))
 	{
 		$annee = $_GET['annee'];
