@@ -6,7 +6,7 @@
         <link href="../../styles.css" rel="stylesheet" type="text/css">        
     </head>
     <body>
-        <div class="nav">
+        <div id="nav">
             <!-- à faire -->
         </div>
 
