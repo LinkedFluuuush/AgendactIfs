@@ -8,7 +8,7 @@ html, body {
 
 body
 {
-   background-color: #ffffff;
+   background-color: #edeeef;
    color: #000000;
 }
 
@@ -37,7 +37,6 @@ body
    font-family : "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
    font-size: 100%;
    text-align: center;
-   font-weight: bold;
    vertical-align: middle;
    
    border-style: solid;
@@ -62,7 +61,7 @@ body
    padding-right: 3%;
    padding-left: 2%;
    
-   font-family : "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
+   font-family : Helvetica, "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
    font-size: 100%;
    text-align: justify;
    
@@ -76,12 +75,13 @@ body
 
 #corpsCal a
 {
-   color: #838FAE;
+   color: #000000;
+   text-decoration: underline;
 }
 
 #corpsCal a:hover
 {
-   color: #FFFFFF;
+   color: #000000;
 }
 
 /* PARTIE JOUR : */
@@ -171,6 +171,7 @@ body
     width:100%;
     border-collapse: collapse;
 }
+
 #corpsCal.mois th
 {
     padding-left:0%;
@@ -220,6 +221,11 @@ body
    border-style: solid;
 }
 
+#corpsCal.mois td.caseDuMois a
+{
+   text-decoration: none;
+}
+
 #corpsCal.mois td.caseDuMois:hover
 {
     background-color: #f1f2f3;
@@ -231,6 +237,7 @@ body
    position: relative;
 
    text-decoration: none;
+   /*text-decoration: gray dotted;*/
    /*border-bottom: 1px gray dotted;*/ /* on souligne le texte */
 }
 #corpsCal.mois li.info span 
@@ -362,88 +369,64 @@ body
 
 /* DEBUT DE LA PARTIE SEMESTRE */
 
-#corpsCal.semestre h1
-{
-	font-size: 25px;
-	font-weight: bold;
-	text-decoration: underline;
-	text-align: center;
+#corpsCal.semestre table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
 }
 
-#corpsCal.semestre h2
-{
-	font-size: 16px;
-	text-decoration: underline;
-	text-align: left;
+#corpsCal.semestre th {
+    text-decoration: none;
+    font-family : "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
+    font-size: 85%;
+    text-align: center;
+    width:9%;    
 }
 
-#corpsCal.semestre p
-{
-	font-size: 14px;
-	text-align: justify ;
+#corpsCal.semestre th a {
+    text-decoration: none;
+    color:#0ab0da;
 }
 
-/* le calendrier mois */
-
-/* la definition du tableau qui contiendra les événements */
-
-#corpsCal.semestre table
-{
-	width:100%;
-	border-collapse:collapse;
-	margin-bottom: 20px;
-}
-#corpsCal.semestre th
-{
-	padding-left:0%;
-	padding-right:0%;
-	font-family : "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
-	font-size: 85%;
-	text-align: center;
-	width:9%;
-}
-
-#corpsCal.semestre td
-{
-   height: 20px;
+#corpsCal.semestre td {
+   height: 22px;
    font-size: 85%;
-   
-   padding-left:3px;
    
    vertical-align: middle;
    
    border-width: 1px;
-   border-color:  #596176;
+   border-color: #d9d9d9;
    border-style: solid;
+   
+   background-color: #f1f2f3;
 }
 
-#corpsCal.semestre td:hover
-{
-	/*background-color: #FEFDF0;*/
-	background-color: #31437a;
-	cursor: pointer;
+#corpsCal.semestre td a {
+    text-decoration: none;
+    color: #72777b;
+    font-size: 12px;
+}
+
+#corpsCal.semestre td:hover {
+    background-color: #edeeef;
 }
 
 /*infobulle*/
 
-#corpsCal.semestre td.info
-{
+#corpsCal.semestre td.info a {
    text-decoration: none;
 }
 
-#corpsCal.semestre td.info span
-{
+#corpsCal.semestre td.info span {
    display: none; /* on masque l'infobulle */
 }
 
-#corpsCal.semestre td.info:hover
-{
+#corpsCal.semestre td.info:hover {
    background: none; /* correction d'un bug IE */
    z-index: 500; /* on définit une valeur pour l'ordre d'affichage */
-
 }
-#corpsCal.semestre td.info:hover span
-{
+
+#corpsCal.semestre td.info:hover span {
    display: inline; /* on affiche l'infobulle */
    position: absolute;
 
