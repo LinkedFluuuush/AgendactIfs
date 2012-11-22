@@ -14,7 +14,7 @@ $mois = date('m');
 $jour = date('d');
 
 //si les variables $_POST existent, on les utilises et au passage, on les stockent dans les variable de session
-if((!empty($_POST['annee'])) && (!empty($_POST['mois'])) && (!empty($_POST['jour'])))
+if((!empty($_GET['annee'])) && (!empty($_GET['mois'])) && (!empty($_GET['jour'])))
 {
 	$annee = $_POST['annee'];
 	$mois = $_POST['mois'];
@@ -27,7 +27,6 @@ if((!empty($_POST['annee'])) && (!empty($_POST['mois'])) && (!empty($_POST['jour
 	if($mois == 13)
 		$mois = 0;
 }
-
 //sinon, on utilise les session
 else if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty($_SESSION['jour'])))
 {
@@ -91,7 +90,7 @@ $date = miseEnPageJour($dateTimestampDebutMEPJ);
 				}
 			?>
 				<p><?php echo $desc; ?></p>
-				<?php if(!empty($lieu)) echo '<p>Lieu : ' . $lieu . '.</p>'; ?>
+				<?php if(!empty($lieu)) echo '<p>Lieu : ' . $lieu . '</p>'; ?>
 				<p><?php echo 'Post&eacute; par ' . $auteur . ' le ' . $dateInsert . '.'; ?></p>
 		
 			<?php
@@ -109,13 +108,13 @@ $date = miseEnPageJour($dateTimestampDebutMEPJ);
 	if(!empty($nomSession))
 		echo '<a href="javascript:getEveCrea(' . $annee . ', ' . $mois . ', ' . $jour .');">Ajouter</a>';
 	
-	if ($_POST['urlRetour'] == 1)
+	/* if ($_POST['urlRetour'] == 1)
 	{
 		echo '<a href="javascript:getSemestre(' . $annee . ', ' . $mois . ');">Retour</a>';
 	}
 	if ($_POST['urlRetour'] == 2)
 	{
 		echo '<a href="javascript:getMois(' . $annee . ', ' . $mois . ');">Retour</a>';
-	}
+	} */
 	?>
 </div>
