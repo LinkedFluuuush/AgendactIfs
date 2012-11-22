@@ -40,7 +40,7 @@ function retourneJour($annee, $mois)
     else if ($mois == 4 || $mois == 6 || $mois == 9 || $mois == 11) 
     {
         $days = 30;
-    }
+    } 
     else 
     {
         $days = ($annee % 4 == 0) ? 29 : 28;

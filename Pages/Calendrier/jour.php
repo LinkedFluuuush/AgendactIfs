@@ -13,16 +13,16 @@ $annee = date('Y');
 $mois = date('m');
 $jour = date('d');
 
-//si les variables $_POST existent, on les utilises et au passage, on les stockent dans les variable de session
-if((!empty($_POST['annee'])) && (!empty($_POST['mois'])) && (!empty($_POST['jour'])))
+//si les variables $_GET existent, on les utilises et au passage, on les stockent dans les variable de session
+if((!empty($_GET['a'])) && (!empty($_GET['m'])) && (!empty($_GET['j'])))
 {
-	$annee = $_POST['annee'];
-	$mois = $_POST['mois'];
-	$jour = $_POST['jour'];
+	$annee = $_GET['a'];
+	$mois = $_GET['m'];
+	$jour = $_GET['j'];
 	    
-	$_SESSION['annee'] = $_POST['annee'];
-	$_SESSION['mois'] = $_POST['mois'];
-	$_SESSION['jour'] = $_POST['jour'];
+	$_SESSION['annee'] = $_GET['a'];
+	$_SESSION['mois'] = $_GET['m'];
+	$_SESSION['jour'] = $_GET['j'];
 	
 	if($mois == 13)
 		$mois = 0;
@@ -38,20 +38,23 @@ else if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty(
 	if($mois == 13)
 		$mois = 0;
 }
-$idUtil = 1;
 
 $nomSession = 'Test'; //$_SESSION['login'];
 
-$sql = "SELECT aci_evenement.*, aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert FROM aci_evenement
-		JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
-		JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
-		where dateFin >= '$annee-$mois-$jour 00:00:00'
-		and dateDebut <= '$annee-$mois-$jour 23:59:59'
-		and ((estPublic = 1)
-			or ($idUtil = aci_evenement.idUtilisateur))";
+$dateTimestampDebut = mktime(00, 00, 00, $mois, $jour, $annee);
+$dateTimestampFin = mktime(23, 59, 59, $mois, $jour, $annee);
 
-$resultats = $conn->query($sql);
-//$resultats->setFetchMode(PDO::FETCH_OBJ);
+//$dateTimestampDebut = "$annee-$mois-$jour 00:00:00";
+//$dateTimestampFin = "$annee-$mois-$jour 23:59:59";
+
+$sql = "SELECT eve_evenement.*, eve_utilisateur.nomCompletUtilisateur FROM eve_evenement
+		INNER JOIN eve_utilisateur ON eve_evenement.idUtilisateur = eve_utilisateur.idUtilisateur
+		where dateEvenement >= $dateTimestampDebut
+		and dateEvenement <= $dateTimestampFin
+		and (estObligatoire = 1 OR (estObligatoire = 0 and eve_utilisateur.nomCompletUtilisateur = '$nomSession'))";
+			
+$query = mysql_query($sql) or die ('Erreur :'.mysql_error());
+$result = mysql_numrows($query);
 
 $dateTimestampDebutMEPJ = mktime(00, 00, 00, $mois, $jour, $annee);
 $date = miseEnPageJour($dateTimestampDebutMEPJ);
@@ -60,39 +63,36 @@ $date = miseEnPageJour($dateTimestampDebutMEPJ);
 <div id="titreCal"> <?php 	echo $date; ?> </div>
 <div id="corpsCal">
 <?php		
-	if ($resultats != null)
+	if ($result>0)
 	{
 		$i=1;
 		
-		while ($row = $resultats->fetch() and $i!=0) 
+		while ($row = mysql_fetch_array($query) and $i!=0) 
 		{
-			$numeroEve = htmlentities($row['IDEVENEMENT'], ENT_QUOTES);	
-			$timestamp = htmlentities($row["DATEDEBUT"], ENT_QUOTES);
-			$titre = stripcslashes(htmlentities($row["LIBELLELONG"], ENT_QUOTES));
-			$desc = stripcslashes(htmlentities($row["DESCRIPTION"], ENT_QUOTES));
-			$auteur = stripcslashes(htmlentities($row["prenom"], ENT_QUOTES)).' '.stripcslashes(htmlentities($row["nom"], ENT_QUOTES));
-			$idAuteur = stripcslashes(htmlentities($row["idUtilisateur"], ENT_QUOTES));
+			$numeroEve = htmlentities($row["numeroevenement"], ENT_QUOTES);	
+			$timestamp = htmlentities($row["dateevenement"], ENT_QUOTES);
+			$titre = stripcslashes(htmlentities($row["titrelong"], ENT_QUOTES));
+			$desc = stripcslashes(htmlentities($row["description"], ENT_QUOTES));
+			$auteur = stripcslashes(htmlentities($row["nomCompletUtilisateur"], ENT_QUOTES));
 			
 			$lieu = stripcslashes(htmlentities($row["lieu"], ENT_QUOTES));
-			
-			$dateInsert = substr($row["DATEINSERT"],0,10);
-			$tabDateInsert = explode('-', $dateInsert);
-			$dateInsert = $tabDateInsert[2].'/'.$tabDateInsert[1].'/'.$tabDateInsert[0];
+						
+			$dateSaisie = date('d/m/Y',$row["datesaisie"]);
 
 			?>
 			
 				<br><span class="titre"><?php echo trim($titre); ?></span>
 			<?php 
-				if($idUtil == $idAuteur)
+				if($nomSession == $auteur)
 				{
 			?>
-				<a href="javascript:getEveModif(<?php echo $numeroEve; ?>);">Modifier</a><a href="javascript:cal_supprimerEve(<?php echo $numeroEve; ?>, <?php echo $annee; ?>, <?php echo $mois; ?>, <?php echo $jour; ?>, <?php echo $_POST['urlRetour']; ?>);">Supprimer</a>
+				<a href="javascript:getEveModif(<?php echo $numeroEve; ?>);">Modifier</a><a href="javascript:cal_supprimerEve(<?php echo $numeroEve; ?>, <?php echo $annee; ?>, <?php echo $mois; ?>, <?php echo $jour; ?>, <?php echo $_GET['u']; ?>);">Supprimer</a>
 			<?php 
 				}
 			?>
 				<p><?php echo $desc; ?></p>
 				<?php if(!empty($lieu)) echo '<p>Lieu : ' . $lieu . '.</p>'; ?>
-				<p><?php echo 'Post&eacute; par ' . $auteur . ' le ' . $dateInsert . '.'; ?></p>
+				<p><?php echo 'Post&eacute; par ' . $auteur . ' le ' . $dateSaisie . '.'; ?></p>
 		
 			<?php
 			$i++;
@@ -109,13 +109,16 @@ $date = miseEnPageJour($dateTimestampDebutMEPJ);
 	if(!empty($nomSession))
 		echo '<a href="javascript:getEveCrea(' . $annee . ', ' . $mois . ', ' . $jour .');">Ajouter</a>';
 	
-	if ($_POST['urlRetour'] == 1)
+	if ($_GET['u'] == 1)
 	{
-		echo '<a href="javascript:getSemestre(' . $annee . ', ' . $mois . ');">Retour</a>';
+		echo '<a href="semestre.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
 	}
-	if ($_POST['urlRetour'] == 2)
+	if ($_GET['u'] == 2)
 	{
-		echo '<a href="javascript:getMois(' . $annee . ', ' . $mois . ');">Retour</a>';
+		echo '<a href="mois.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
 	}
 	?>
 </div>
+<?php
+	mysql_close();
+?>
