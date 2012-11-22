@@ -56,7 +56,7 @@
                 <th></th>
                 <th><a href="#"> |< </a></th>
                 <th><a href="#"> < </a></th>
-                <th></th>
+                <th></th>   
                 <th><?php echo "$jourDebut $nomMois1 $annee1 au $jourFin $nomMois2 $annee2"; ?></th>
                 <th></th>
                 <th><a href="#"> > </a></th>
@@ -92,13 +92,13 @@
                                 and (estObligatoire = 1 OR (estObligatoire = 0 and idUtilisateur = '1'))
                                 order by titreCourt";
 
-                $query = mysql_query($sql) or die ("Requête incorrecte");
+                $query = mysql_query($sql) or die ("Requï¿½te incorrecte");
                 $result = mysql_numrows($query);
                 
                 if ($result > 0) {
                     $cons = 0;
                     while ($row = mysql_fetch_array($query)) {
-                        //on recupère un tableau contenant les date et les titre long)
+                        //on recupï¿½re un tableau contenant les date et les titre long)
                         $donnees[$cons]["dateEvenement"] = htmlentities($row["dateEvenement"], ENT_QUOTES);
                         $donnees[$cons]["titreCourt"] = stripslashes(htmlentities($row["titreCourt"], ENT_QUOTES));
                         $donnees[$cons]["titreLong"] = stripslashes(htmlentities($row["titreLong"], ENT_QUOTES));
