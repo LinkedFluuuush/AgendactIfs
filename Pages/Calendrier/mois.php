@@ -7,14 +7,6 @@
         <link href="../../styles.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <!--<img src="../../Images/logoiutpetit.png" style="margin-left: 5px; margin-top: 5px; float: left;"/>-->
-	
-        <?php
-            /*include("../miniCalendrier.php");
-            include("../menus.php");*/
-        ?>
-        
-        <!--<img src="../../Images/phoenix.png" style="position: relative; bottom: 140px; float:right;"/>-->
         
         <?php
 
@@ -179,40 +171,9 @@
                     //-------------------------------------------------------------------------------------------------------------------
                     
                     $timestamp = mktime(23, 59, 59, $mois, $jour, $annee);
-                    $jourSemaine = date('N', $timestamp); // indique quel jour se trouve le timestamp (ex : 1 = lundi)
                     $numSemaine = date('W', $timestamp); // indique le numéro de semaine
-
-                    // Affichage du numéro de la semaine
-                    $jourDebut = $jour; // correspond au lundi de chaque semaine
-                    $mois1 = $mois;
-                    $mois2 = $mois;
-                    $annee1 = $annee;
-                    $annee2 = $annee;
                     
-                    // pour une semaine en début de mois
-                    // Permet d'ajouter à la semaine les jours du mois précédent
-                    if ($jourDebut == 1 && $jourSemaine != 1) { // si le premier jour du mois n'est pas un lundi
-                        $jourDebut = (retourneJour($annee, $moisPrec)+1)-($jourSemaine-1);
-                        $mois1 = $moisPrec;
-                        
-                        if ($mois == 1) {
-                            $annee1 = $anneePrec;
-                        }
-                    }         
-                    
-                    // Pour une semaine en fin de mois
-                    $jourFin = jourProchain($mois, $jour, $annee)-1; // correspond au dimanche de chaque semaine
-                    // fonction permettant de passer du "29 octobre au 35 octobre" à "29 octobre au 4 novembre"
-                    if ($jourFin > retourneJour($annee, $mois)) {
-                        $jourEnTrop = $jourFin - retourneJour($annee, $mois);
-                        $mois2 = $moisSuiv;
-                        $jourFin = $jourEnTrop;
-                        if ($mois == 12) {
-                            $annee2 = $anneeSuiv;
-                        }
-                    }
-                    
-                    echo '<td class="numSemaine" onclick="document.location.href = \'semaine.php?annee1='.$annee1.'&annee2='.$annee2.'&mois1='.$mois1.'&mois2='.$mois2.'&jourDebut='.$jourDebut.'&jourFin='.$jourFin.'\';"><a href="semaine.php?annee1='.$annee1.'&annee2='.$annee2.'&mois1='.$mois1.'&mois2='.$mois2.'&jourDebut='.$jourDebut.'&jourFin='.$jourFin.'">'. $numSemaine . '</a></td>';
+                    echo '<td class="numSemaine" onclick="document.location.href = \'semaine.php?annee='.$annee.'&mois='.$mois.'&jour='.$jour.'\';"><a href="semaine.php?annee='.$annee.'&mois='.$mois.'&jour='.$jour.'">'. $numSemaine . '</a></td>';
                     
                     // 1er jour de la prochaine semaine
                     $jour = jourProchain($mois, $jour, $annee);

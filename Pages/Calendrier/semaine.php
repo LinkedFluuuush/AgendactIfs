@@ -8,25 +8,75 @@
     </head>
     <body>
         <?php
-        //Connexion a la bdd
         include("../../Fonctions_Php/connexion.php");
+        include("../../Fonctions_Php/diverses_fonctions.php");
         
-        $annee = date('Y');
-        $mois = date('m');
+        //$annee = date('Y');
+        //$mois = date('m');
+        //$jour = date('d');
         
         if ((!empty($_GET['jourDebutPrec'])) && (!empty($_GET['jourFinPrec']))) {
             $jourDebut = $_GET['jourDebutPrec'];
             $jourFin = $_GET['jourFinPrec'];
         }
         
-        if ((!empty($_GET['jourDebut'])) && (!empty($_GET['jourFin'])) && (!empty($_GET['annee1'])) && (!empty($_GET['annee2'])) && (!empty($_GET['mois1'])) && (!empty($_GET['mois2']))) {
-            $jourDebut = $_GET['jourDebut'];
-            $jourFin = $_GET['jourFin'];
-            $mois1 = $_GET['mois1'];
-            $mois2 = $_GET['mois2'];
-            $annee1 = $_GET['annee1'];
-            $annee2 = $_GET['annee2']; 
+        if ((!empty($_GET['jour'])) && (!empty($_GET['annee'])) && (!empty($_GET['mois']))) {
+            $jour = $_GET['jour'];
+            $mois = $_GET['mois'];
+            $annee = $_GET['annee'];
         }
+        
+        $timestamp = mktime(23, 59, 59, $mois, $jour, $annee);
+        $jourSemaine = date('N', $timestamp); // indique quel jour se trouve le timestamp (ex : 1 = lundi)
+        
+        if($mois == 1) {
+            $moisPrec = 12;
+            $anneePrec = $annee - 1;
+        }
+        else {
+            $moisPrec = $mois - 1;
+            $anneePrec = $annee;
+        }
+
+        if($mois == 12) {
+            $moisSuiv = 1;
+            $anneeSuiv = $annee + 1;
+        }
+        else {
+            $moisSuiv = $mois + 1;
+            $anneeSuiv = $annee;
+        }
+        
+        
+        $jourDebut = $jour; // correspond au lundi de chaque semaine
+        $mois1 = $mois;
+        $mois2 = $mois;
+        $annee1 = $annee;
+        $annee2 = $annee;
+        
+        // pour une semaine en début de mois
+        // Permet d'ajouter à la semaine les jours du mois précédent
+        if ($jourDebut == 1 && $jourSemaine != 1) { // si le premier jour du mois n'est pas un lundi
+            $jourDebut = (retourneJour($annee, $moisPrec)+1)-($jourSemaine-1);
+            $mois1 = $moisPrec;
+
+            if ($mois == 1) {
+                $annee1 = $anneePrec;
+            }
+        }         
+
+        // Pour une semaine en fin de mois
+        $jourFin = jourProchain($mois, $jour, $annee)-1; // correspond au dimanche de chaque semaine
+        // fonction permettant de passer du "29 octobre au 35 octobre" à "29 octobre au 4 novembre"
+        if ($jourFin > retourneJour($annee, $mois)) {
+            $jourEnTrop = $jourFin - retourneJour($annee, $mois);
+            $mois2 = $moisSuiv;
+            $jourFin = $jourEnTrop;
+            if ($mois == 12) {
+                $annee2 = $anneeSuiv;
+            }
+        }     
+        
         
         $dateTimestampDebut = mktime(00,00,00, $mois1, $jourDebut, $annee1);
         $dateTimestampFin = mktime(23,59,59, $mois2, $jourFin, $annee2);

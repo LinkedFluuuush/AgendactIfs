@@ -22,12 +22,8 @@ session_start();
     <body>
         <div class="nav">
             <?php include("../miniCalendrier.php");?>
-            <?php include("../../minical.php"); ?>
 
         </div>
-        
-        <form><input type="button" value="Mini-Calendrier" onclick="ds_sh(this, \'Menu\');" style="width:120px;" />
-</form>
 
 <?php
 //connexion a la bdd
