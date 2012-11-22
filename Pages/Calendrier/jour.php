@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 //on utilisera les variable de session
 session_start();
 
