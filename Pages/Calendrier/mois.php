@@ -6,9 +6,12 @@
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../styles.css" rel="stylesheet" type="text/css">
     </head>
-    <body>
+    <body><!--
+        --><div id="nav">
+           Navigation
+        </div><!--
         
-        <?php
+        --><?php
 
         //connexion a la bdd
         include("../../Fonctions_Php/connexion.php");
@@ -93,9 +96,9 @@
             $moisSuiv = $mois + 1;
             $anneeSuiv = $annee;
         }
-        ?>
+        ?><!--
         
-        <div id="corpsCal" class="mois">
+        --><div id="corpsCal" class="mois">
             <!-- Affichage du nom du mois + année et des liens du mois précédent/suivant -->
             <table>
                 <colgroup>
@@ -224,6 +227,6 @@
                 ?>         
                 <?php mysql_close(); ?>      
             </table>
-        </div>
-    </body>
+        </div><!--
+    --></body>
 </html>
