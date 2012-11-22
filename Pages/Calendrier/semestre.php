@@ -1,7 +1,7 @@
 ﻿<?php session_start(); ?>
 <html>
     <head>
-        <title>Page mois</title>
+        <title>Page semestre</title>
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../styles.css" rel="stylesheet" type="text/css">        
     </head>
