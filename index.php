@@ -18,8 +18,7 @@ else
 
 <!-- Projet événementiel informatisé - Réalisation :  Guillaume ANNE et Julien DIESNIS (2008-2009) --> 
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html>
 <head>
 	<title>Calendrier Evénementiel : Ifs Campus III</title>
@@ -95,7 +94,6 @@ else
 </head>
 
 <body onload="chargement();">
-	<img src="./Images/logoiutpetit.png" style="margin-left: 5px; margin-top: 5px; float: left;"/>
 
 	<div id="page">
 		<?php
@@ -110,7 +108,6 @@ else
 		</div>
 	</div>
 	
-	<img src="./Images/phoenix.png" style="position: relative; bottom: 140px; float:right;"/>
 </body>
 </html>
 

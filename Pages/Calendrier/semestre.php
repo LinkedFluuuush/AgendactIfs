@@ -8,16 +8,26 @@ session_start();
         <title>Page mois</title>
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../styles.css" rel="stylesheet" type="text/css">
+        <link href="../../miniCalendrier.css" rel="stylesheet" type="text/css">
+        
+        <script type="text/javascript" charset="iso-8859-1">
+                <?php include("./Fonctions_Javascript/autre.js"); ?>
+		<?php include("../../Fonctions_Javascript/eve_recherche.js"); ?>
+		<?php include("../../Fonctions_Javascript/gestion_clics.js"); ?>
+		<?php include("../../Fonctions_Javascript/getters.js"); ?>
+		<?php include("../../Fonctions_Javascript/setters.js"); ?>
+		<?php include("../../Fonctions_Javascript/variables.js"); ?>
+        </script>
     </head>
     <body>
-        <!--<img src="../../Images/logoiutpetit.png" style="margin-left: 5px; margin-top: 5px; float: left;"/>-->
-	
-        <?php
-            /*include("../miniCalendrier.php");
-            include("../menus.php");*/
-        ?>
+        <div class="nav">
+            <?php include("../miniCalendrier.php");?>
+            <?php include("../../minical.php"); ?>
+
+        </div>
         
-        <!--<img src="../../Images/phoenix.png" style="position: relative; bottom: 140px; float:right;"/>-->
+        <form><input type="button" value="Mini-Calendrier" onclick="ds_sh(this, \'Menu\');" style="width:120px;" />
+</form>
 
 <?php
 //connexion a la bdd
