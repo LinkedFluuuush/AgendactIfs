@@ -10,10 +10,15 @@
         <?php
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
-        
-        //$annee = date('Y');
-        //$mois = date('m');
-        //$jour = date('d');
+	
+	$annee = date('Y');
+        $mois = date('m');
+	$jourDebut = date('d');
+	$jourFin = date('d')+7;
+	$mois1 = $mois;
+        $mois2 = $mois;
+	$annee1 = $annee;
+	$annee2 = $annee;
         
         if ((!empty($_GET['jourDebutPrec'])) && (!empty($_GET['jourFinPrec']))) {
             $jourDebut = $_GET['jourDebutPrec'];
