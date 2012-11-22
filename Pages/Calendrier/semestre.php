@@ -5,12 +5,12 @@
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../styles.css" rel="stylesheet" type="text/css">        
     </head>
-    <body>
-        <div id="nav">
-            <!-- à faire -->
-        </div>
+    <body><!--
+        --><div id="nav">
+           Navigation
+        </div><!--
 
-        <?php
+        --><?php
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
 
@@ -72,9 +72,9 @@
             $anneeSuiv = $annee + 1;
             $semestreSuiv = 1;
         }
-        ?>
+        ?><!--
         
-        <div id="corpsCal" class="semestre">
+        --><div id="corpsCal" class="semestre">
             <table>
                 <colgroup>
                     <col width="1*">
@@ -85,7 +85,6 @@
                     <col width="1*">
                     <col width="1*">
                 </colgroup>
-                <th></th>
                 <th><a href="semestre.php?a=<?php echo $anneePrec; ?>&s=<?php echo $semestrePrec; ?>">< </a></th>
                 <th></th>
                 <th></th>
@@ -196,6 +195,6 @@
 
                 <?php mysql_close(); ?>	
             </table>
-        </div>
-    </body>
+        </div><!--
+    --></body>
 </html>

@@ -5,32 +5,37 @@ html, body {
     height: 100%;
 }
 
-
-body
-{
-   background-color: #edeeef;
+body {
+   
+   background-color: red;
    color: #000000;
 }
 
-#page
-{
-    min-height: 100%;
-    /*padding: 1px 0;*/ /*pour que FF englobe la marge du contenu*/
-    #overflow:hidden;
-
-    padding-top: 20px;
-    padding-bottom: 20px;
+#nav {
+    display: inline-block;
+    width: 14%;
+    vertical-align: top;
+    background-color: white;
+    height: 100%;
 }
 
-#titreCal /* correspond à l'entête d'un calendrier (ex : pour un mois = cadre contenant Janvier 2012) */
-{
-   height: 20px; /*pour IE6*/
-   margin-top:10px;
-   margin-left: 5%;
-   margin-right: 5%;
+/*#page {
+    min-height: 100%;*/
+    /*padding: 1px 0;*/ /*pour que FF englobe la marge du contenu*/
+    /*#overflow:hidden;*/
+
+   /* padding-top: 20px;
+    padding-bottom: 20px;
+}*/
+
+/*#titreCal {*/ /* correspond à l'entête d'un calendrier (ex : pour un mois = cadre contenant Janvier 2012) */
+   /*height: 20px;*/ /*pour IE6*/
+   /*margin-top:10px;*/
+   /*margin-left: 5%;
+   margin-right: 5%;*/
    
-   padding-top: 2px;
-   padding-bottom: 2px;
+   /*padding-top: 2px;*/
+/*   padding-bottom: 2px;
    padding-right: 0%;
    padding-left: 0%;
    
@@ -45,32 +50,28 @@ body
    
    background-color: #c0c0c0;
    
-   color: #000000; /* couleur du texte */
-}
+   color: #000000;  couleur du texte 
+}*/
 
 #corpsCal
 {
-   min-height: 550px;
-   _height: 550px; /*pour IE6*/
-   margin-left: 5%;
-   margin-right: 5%;
-   margin-bottom: 0px;
+    display: inline-block;
+    vertical-align: top;
+    width: 86%;
+    height: 100%;    
+   /*min-height: 550px;*/
+/*   _height: 550px; pour IE6*/
+   /*margin-left: 5%;
+   margin-right: 5%;*/
    
-   padding-top: 0px;
-   padding-bottom: 10px;
-   padding-right: 3%;
-   padding-left: 2%;
+   /*padding-right: 3%;
+   padding-left: 2%;*/
    
    font-family : Helvetica, "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
-   font-size: 100%;
+/*   font-size: 100%;*/
    text-align: justify;
-   
-    /*border-top: 1px none #202B4F;
-    border-right: 1px solid #596176;
-    border-left: 1px solid #596176;
-    border-bottom: 1px solid #596176;*/
 
-    /*background-color: #e6e6e6;*/
+   background-color: #e6e6e6;
 }
 
 #corpsCal a
@@ -168,7 +169,7 @@ body
 
 #corpsCal.mois table
 {
-    width:100%;
+    width:80%;
     border-collapse: collapse;
 }
 
@@ -273,20 +274,20 @@ body
 
 #corpsCal.semaine p
 {
-	font-size: 14px;
-	text-align: left;
+    font-size: 14px;
+    text-align: left;
 }
 
 #corpsCal.semaine ul
 {
-	text-align: left;
-	
-	padding: 0;
-	
-	margin-top: 5px;
-	margin-left: 0px;
-	
-	list-style-type: none;
+    text-align: left;
+
+    padding: 0;
+
+    margin-top: 5px;
+    margin-left: 0px;
+
+    list-style-type: none;
 }
 
 #corpsCal.semaine table {
@@ -362,17 +363,19 @@ body
 
    border: 1px solid black;
 }
-
-
-
 /* FIN DE LA PARTIE SEMAINE */
+
+
+
+
 
 /* DEBUT DE LA PARTIE SEMESTRE */
 
 #corpsCal.semestre table {
-    width: 100%;
+    margin: 10px 10% 0 10%;
+    width: 80%;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    margin-bottom: 10px; /* espace entre le nom du calendrier et le calendrier */
 }
 
 #corpsCal.semestre th {
@@ -380,7 +383,7 @@ body
     font-family : "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
     font-size: 85%;
     text-align: center;
-    width:9%;    
+    width:9%; /* permet d'avoir la même largeur de colonne */
 }
 
 #corpsCal.semestre th a {
@@ -404,7 +407,7 @@ body
 #corpsCal.semestre td a {
     text-decoration: none;
     color: #72777b;
-    font-size: 12px;
+    font-size: 85%;
 }
 
 #corpsCal.semestre td:hover {
@@ -442,6 +445,9 @@ body
 }
 
 /* FIN DE LA PARTIE SEMESTRE */
+
+
+
 
 /* DEBUT DE LA PARTIE EVENEMENT */
 
