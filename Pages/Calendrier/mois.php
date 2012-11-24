@@ -77,7 +77,7 @@
 	$nomMois = $tabMois[$mois - 1];
 
 	//----------
-
+	$idUtil = 1;
 	$idSession = 1; //$_SESSION['login'];
 	?>
 	
@@ -152,14 +152,14 @@
 			$sql = "SELECT aci_evenement.*, aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert FROM aci_evenement
 					JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
 					JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
-					where dateFin >= '$annee-$mois-$jour 00:00:00'
-					and dateDebut <= '$annee-$mois-$jour 23:59:59'
+					where dateFin >= '$annee-$mois-01 00:00:00'
+					and dateDebut <= '$annee-$mois-$days 23:59:59'
 					and ((estPublic = 1)
 						or ($idUtil = aci_evenement.idUtilisateur))";
 
 			$resultats = $conn->query($sql);
 
-			if ($result > 0) {
+			if ($resultats != null) {
 				$cons = 0;
 				while ($row = $resultats->fetch()) {
 					//on recupère un tableau contenant les date et les titre long)
@@ -228,9 +228,18 @@
 					//on recupere les données du jour
 					if(!empty($donnees)){
 						for($k = 0; $k < count($donnees); $k++) {
-							$vieux_timestamp = mktime(00, 00, 00, $mois, $num, $annee);
+							$dateCourante = mktime(00,00,00, $mois, $num, $annee);
+							
+							$dateDebut = explode(' ',$donnees[$k]["dateDebut"]);
+							$temp = explode('-',$dateDebut[0]);
+							$dateDebut = mktime(00,00,00, $temp[1],$temp[2],$temp[0]);
+							
+							$dateFin = explode(' ',$donnees[$k]["dateFin"]);
+							$temp = explode('-',$dateFin[0]);
+							$dateFin = mktime(00,00,00, $temp[1],$temp[2],$temp[0]);
 
-							if($vieux_timestamp == $donnees[$k]["dateEvenement"]) {
+							//On affiche les évènements qui se déroulent dans la journée
+							if($dateCourante >= $dateDebut && $dateCourante <= $dateFin) {
 								$titreCourt[$boucle] = $donnees[$k]["titreCourt"];
 								$titreLong[$boucle] = $donnees[$k]["titreLong"];
 								$boucle++;
@@ -262,8 +271,7 @@
 				}	
 				echo'</tr>';
 			}
-			?>         
-			<?php mysql_close(); ?>      
+			?>           
 		</table>
 	</div>
 </body>

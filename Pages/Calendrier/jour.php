@@ -114,13 +114,13 @@ $date = miseEnPageJour($dateTimestampDebutMEPJ);
 	if(!empty($nomSession))
 		echo '<a href="javascript:getEveCrea(' . $annee . ', ' . $mois . ', ' . $jour .');">Ajouter</a>';
 	
-	if ($_POST['urlRetour'] == 1)
+	if ($_GET['u'] == 1)
 	{
-		echo '<a href="javascript:getSemestre(' . $annee . ', ' . $mois . ');">Retour</a>';
+		echo '<a href="semestre.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
 	}
-	if ($_POST['urlRetour'] == 2)
+	if ($_GET['u'] == 2)
 	{
-		echo '<a href="javascript:getMois(' . $annee . ', ' . $mois . ');">Retour</a>';
+		echo '<a href="mois.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
 	}
 	?>
 </div>
