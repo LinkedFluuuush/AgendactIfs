@@ -91,12 +91,12 @@ $date = miseEnPageJour($dateTimestampDebutMEPJ);
 				if($idUtil == $idAuteur)
 				{
 			?>
-				<a href="javascript:getEveModif(<?php echo $numeroEve; ?>);">Modifier</a><a href="javascript:cal_supprimerEve(<?php echo $numeroEve; ?>, <?php echo $annee; ?>, <?php echo $mois; ?>, <?php echo $jour; ?>, <?php echo $_POST['urlRetour']; ?>);">Supprimer</a>
+				<a href="javascript:getEveModif(<?php echo $numeroEve; ?>);">Modifier</a><a href="javascript:cal_supprimerEve(<?php echo $numeroEve; ?>, <?php echo $annee; ?>, <?php echo $mois; ?>, <?php echo $jour; ?>, <?php echo $_GET['u']; ?>);">Supprimer</a>
 			<?php 
 				}
 			?>
 				<p><?php echo $desc; ?></p>
-				<?php if(!empty($lieu)) echo '<p>Lieu : ' . $lieu . '.</p>'; ?>
+				<?php if(!empty($lieu)) echo '<p>Lieu : ' . $lieu . '</p>'; ?>
 				<p><?php echo 'Post&eacute; par ' . $auteur . ' le ' . $dateInsert . '.'; ?></p>
 		
 			<?php
