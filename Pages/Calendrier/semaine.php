@@ -132,7 +132,7 @@
 						if (!empty($donnees)) {
 							for ($k = 0 ; $k < count($donnees) ; $k++) {
 								$heureTestee = date("Y-m-d H:i:s", mktime($time[0], 00, 00, $mois1, $jourDebut, $annee1));
-								echo $heureTestee."<br>";
+								//echo $heureTestee."<br>";
 								if($heureTestee == $donnees[$k]["dateDebut"]) {
 									$libelleCourt[$boucle] = $donnees[$k]["libelleCourt"];
 									$libelleLong[$boucle] = $donnees[$k]["libelleLong"];
@@ -145,8 +145,8 @@
 							echo '<ul>';
 							for ($l = 0 ; $l < $boucle ; $l++) {
 								echo '<li class="info">';
-								echo $titreCourt[$l];
-								echo '<span>' . $titreLong[$l] . '</span>';
+								echo $libelleCourt[$l];
+								echo '<span>' . $libelleLong[$l] . '</span>';
 								echo '</li>';
 							}
 							echo '</ul>';
@@ -154,6 +154,7 @@
 						echo'</td>';                            
 						$jourDebut++;
                     }
+					$jourDebut = $jourDebut-7;
                     echo '</tr>';
                 }
                 ?>
