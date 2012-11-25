@@ -11,6 +11,7 @@ html, body {
     display: inline-block;
     width: 14%;
     vertical-align: top;
+    min-height: 768px;
     height: 100%;
     background-color: #bbdcef;
     text-align: center;
@@ -21,6 +22,7 @@ html, body {
     white-space: normal;
     vertical-align: top;
     width: 86%;
+    min-height: 768px;
     
     height: 100%;
     box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.72);
