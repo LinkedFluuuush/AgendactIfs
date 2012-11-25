@@ -32,18 +32,6 @@
    color: #000000;  couleur du texte 
 }*/
 
-#corpsCal.semestre {
-    width: 86%;
-}
-
-#corpsCal.mois {
-    width: 85%;
-}
-
-#corpsCal.semaine {
-    width: 85%;
-}
-
 #corpsCal table {
     margin: 10px 10% 0 10%;
     width:80%; /* taille des tableaux */
