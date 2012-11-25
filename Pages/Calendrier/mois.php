@@ -226,8 +226,10 @@
 					$boucle = 0;
 
 					//on recupere les données du jour
-					if(!empty($donnees)){
-						for($k = 0; $k < count($donnees); $k++) {
+					if(!empty($donnees))
+					{
+						for($k = 0; $k < count($donnees); $k++)
+						{
 							$dateCourante = mktime(00,00,00, $mois, $num, $annee);
 							
 							$dateDebut = explode(' ',$donnees[$k]["dateDebut"]);
