@@ -12,13 +12,10 @@
         </div><!--
         
         --><?php
-
-        //connexion a la bdd
         include("../../Fonctions_Php/connexion.php");
-        
         include("../../Fonctions_Php/diverses_fonctions.php");
 
-        //on défini des valeurs par defaut aux variable année, mois et jour (par défaut : aujourd'hui)
+        //on définit des valeurs par defaut aux variable année, mois et jour (par défaut : aujourd'hui)
         $annee = date('Y');
         $mois = date('m');
         $jour = date('d');
@@ -132,7 +129,7 @@
                     <col width="1*">
                 </colgroup>
                 <tr>
-                    <th>n° sem.</th>
+                    <th class="numSemaine"></th>
                     <th>Lundi</th>
                     <th>Mardi</th>
                     <th>Mercredi</th>

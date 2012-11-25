@@ -1,4 +1,4 @@
-﻿/* on retire toutes les marges de la page */
+/* on retire toutes les marges de la page */
 html, body {
     margin: 0;
     padding: 0;
@@ -18,7 +18,8 @@ body {
     background-color: white;
     height: 100%;
     background-color: #bbdcef;
-    
+    padding-top: 10px;
+    text-align: center;
 }
 
 /*#page {
@@ -62,41 +63,35 @@ body {
     width: 86%;
     height: 100%;
     box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.72);
-   /*min-height: 550px;*/
-/*   _height: 550px; pour IE6*/
-   /*margin-left: 5%;
-   margin-right: 5%;*/
    
-   /*padding-right: 3%;
-   padding-left: 2%;*/
-   
-   font-family : Helvetica, "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
-/*   font-size: 100%;*/
-   text-align: justify;
+    font-family : Helvetica, "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
+    text-align: justify;
 
-   background-color: #e6e6e6;
+    background-color: #e6e6e6;
 }
 
 #corpsCal table {
     margin: 10px 10% 0 10%;
-    width:80%;
+    width:80%; /* taille des tableaux */
     border-collapse: collapse;
 }
 
-#corpsCal a
-{
-   color: #000000;
-   text-decoration: underline;
+#corpsCal th {
+    font-family : "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
+    font-size: 85%;
+    text-align: center;
+    width:9%; /* permet d'avoir la même largeur de colonne */
+    color:#0ab0da;
 }
 
-#corpsCal a:hover
-{
-   color: #000000;
+#corpsCal th a {
+    color:#0ab0da;
+    text-decoration: none;
 }
 
 
 
-/* PARTIE JOUR : */
+/* PARTIE JOUR */
 
 #corpsCal.jour h1
 {
@@ -140,127 +135,89 @@ body {
 
 
 
+
+
 /* PARTIE MOIS */
 
-#corpsCal.mois h1
-{
-	font-size: 25px;
-	font-weight: bold;
-	text-decoration: underline;
-	text-align: center;
-}
-
-#corpsCal.mois h2
-{
-	font-size: 16px;
-	text-decoration: underline;
-	text-align: left;
-}
-
-/* alignement des n° de jour dans une case et taille */
-#corpsCal.mois p
-{
-	font-size: 14px;
-	text-align: left;
-}
-
 /* ul = liste des rdv */
-#corpsCal.mois ul
-{
-	text-align: left;
-	
-	padding: 0;
-	
-	margin-top: 5px;
-	margin-left: 0px;
-	
-	list-style-type: none;
+#corpsCal.mois ul {
+    text-align: left;
+    padding: 0;
+    margin-top: 5px;
+    margin-left: 0px;
+    list-style-type: none;
 }
 
-/* le calendrier mois */
-
-/* la definition du tableau qui contiendra les événements */
-
-#corpsCal.mois th
-{
-    padding-left:0%;
-    padding-right:0%;
-    font-family : "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
+#corpsCal.mois td {
+    height: 113px; /* hauteur de la case */
     font-size: 85%;
-    text-align: center;
-    width:9%;
-}
 
-#corpsCal.mois td
-{
-   height: 113px; /* hauteur de la case */
-   font-size: 85%;
-   
-   padding-top:5px;
-   padding-left:1%;
-   
-   vertical-align: top;
-   
-   border-width: 1px;
-   border-color: #d9d9d9;
-}
+    vertical-align: top;
+    
+    padding-top:5px;
+    padding-left:1%;
 
-/* changement de couleur quand on passe sur les cases contenues dans le mois */
-#corpsCal.mois td.titreCase
-{
-    margin-bottom:5px;
+    border-width: 1px;
+    border-color: #d9d9d9;
+    border-style: solid;
+    
+    background-color: #f1f2f3;
 }
 
 /* cases contenant le numéro de semaine */
 #corpsCal.mois td.numSemaine {
-   vertical-align: middle;
+    vertical-align: middle;
+    border-style: none;
+    text-align: right;
+    padding-right: 30px; /* pour que les num de semaines ne soient pas collés au tableau du mois */
+    background-color: #e6e6e6;
 }
 
-/* cases d'un autre mois mises en pointillés */
-#corpsCal.mois td.caseAutreMois
-{
-   border-style: solid;
-   background-color: #f1f2f3;
+#corpsCal.mois td.numSemaine a {
+   text-decoration: none;
+   font-family: Impact;
+   font-size: 100%;
+   color: #72777b;
 }
 
-/* style des cases du mois */
-#corpsCal.mois td.caseDuMois
-{
+#corpsCal.mois td.caseDuMois {
    cursor: pointer;
    border-style: solid;
 }
 
-#corpsCal.mois td.caseDuMois a
-{
+#corpsCal.mois td.caseDuMois a {
    text-decoration: none;
+   color: #72777b;
 }
 
-#corpsCal.mois td.caseDuMois:hover
-{
-    background-color: #f1f2f3;
+#corpsCal.mois td.caseDuMois:hover {
+    background-color: #edeeef;
 }
 
-/* infobulle quand on passe la souris sur un évènement */
-#corpsCal.mois li.info
-{
+#corpsCal.mois td.caseAutreMois {
+   border-style: none;
+   background-color: #e6e6e6;
+}
+
+/* Infobulle */
+#corpsCal.mois li.info {
    position: relative;
 
    text-decoration: none;
    /*text-decoration: gray dotted;*/
-   /*border-bottom: 1px gray dotted;*/ /* on souligne le texte */
+   /*border-bottom: 1px gray dotted; /* on souligne le texte */
 }
-#corpsCal.mois li.info span 
-{
+
+#corpsCal.mois li.info span {
    display: none; /* on masque l'infobulle */
 }
-#corpsCal.mois li.info:hover 
-{
+
+#corpsCal.mois li.info:hover {
    background: none; /* correction d'un bug IE */
    z-index: 500; /* on définit une valeur pour l'ordre d'affichage */
-
 }
-#corpsCal.mois li.info:hover span
-{
+
+#corpsCal.mois li.info:hover span {
    display: inline; /* on affiche l'infobulle */
    position: absolute;
 
@@ -278,13 +235,11 @@ body {
 
 /* FIN DE LA PARTIE MOIS */
 
-/* DEBUT DE LA PARTIE SEMAINE */
 
-#corpsCal.semaine p
-{
-    font-size: 14px;
-    text-align: left;
-}
+
+
+
+/* DEBUT DE LA PARTIE SEMAINE */
 
 #corpsCal.semaine ul
 {
@@ -378,19 +333,6 @@ body {
     margin-bottom: 10px; /* espace entre le nom du calendrier et le calendrier */
 }
 
-#corpsCal.semestre th {
-    text-decoration: none;
-    font-family : "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
-    font-size: 85%;
-    text-align: center;
-    width:9%; /* permet d'avoir la même largeur de colonne */
-}
-
-#corpsCal.semestre th a {
-    text-decoration: none;
-    color:#0ab0da;
-}
-
 #corpsCal.semestre td {
    height: 22px;
    font-size: 85%;
@@ -414,7 +356,7 @@ body {
     background-color: #edeeef;
 }
 
-/*infobulle*/
+/* Infobulle */
 
 #corpsCal.semestre td.info a {
    text-decoration: none;

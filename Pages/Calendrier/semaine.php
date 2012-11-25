@@ -6,8 +6,12 @@
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../styles.css" rel="stylesheet" type="text/css">
     </head>
-    <body>
-        <?php
+    <body><!--
+        --><div id="nav">
+           Navigation
+        </div><!--
+        
+        --><?php
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
 	
@@ -201,6 +205,6 @@
                 }
                 mysql_close();
                 ?>
-        </div>
-    </body>
+        </div><!--
+    --></body>
 </html>
