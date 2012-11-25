@@ -1,5 +1,6 @@
 <?php session_start(); ?>
 
+<!DOCTYPE html>
 <html>
     <head>
         <title>Page mois</title>
@@ -67,9 +68,7 @@
         //----------
 
         $idSession = 1; //$_SESSION['login'];
-        ?>
         
-        <?php 
         //Le lien : précédent
         if($mois == 1) {
             $moisPrec = 12;
@@ -90,7 +89,6 @@
             $anneeSuiv = $annee;
         }
         ?><!--
-        
         --><div id="corpsCal" class="mois">
             <!-- Affichage du nom du mois + année et des liens du mois précédent/suivant -->
             <table>

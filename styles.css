@@ -1,6 +1,6 @@
 /* on retire toutes les marges de la page */
 html, body {
-    margin: 0 auto;
+    margin: 0;
     padding: 0;
     height: 100%;
     background-color: black;
