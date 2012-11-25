@@ -63,8 +63,8 @@
         $dateTimestampDebutMEPJ = mktime(00, 00, 00, $mois, $jour, $annee);
         $date = miseEnPageJour($dateTimestampDebutMEPJ);
 
-        ?>
-        <!--<div id="titreCal"> <?php echo $date; ?> </div>--><!--
+        ?><!--
+        <div id="titreCal"><?php echo $date; ?></div>--><!--
         --><div id="corpsCal">
         <?php		
                 if ($result>0)

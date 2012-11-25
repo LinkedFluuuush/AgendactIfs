@@ -18,8 +18,7 @@
         $jour = date('d');
 
         //si les variables $_POST existent, on les utilises et au passage, on les stockent dans les variable de session
-        if((!empty($_GET['annee'])) && (!empty($_GET['mois'])))
-        {
+        if((!empty($_GET['annee'])) && (!empty($_GET['mois']))) {
             $annee = $_GET['annee'];
             $mois = $_GET['mois'];
             $jour = 1;
