@@ -56,11 +56,22 @@ body {
    color: #000000;  couleur du texte 
 }*/
 
-#corpsCal
-{
+#corpsCal.semestre {
+    width: 86%;
+}
+
+#corpsCal.mois {
+    width: 85%;
+}
+
+#corpsCal.semaine {
+    width: 85%;
+}
+
+#corpsCal {
     display: inline-block;
     vertical-align: top;
-    width: 86%;
+    
     height: 100%;
     box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.72);
    
