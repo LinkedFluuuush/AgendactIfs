@@ -5,12 +5,9 @@
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../styles.css" rel="stylesheet" type="text/css">        
     </head>
-    <body><!--
-        --><div id="nav">
-           Navigation
-        </div><!--
-
-        --><?php
+    <body>
+        <?php
+        include("../menu.php");
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
 

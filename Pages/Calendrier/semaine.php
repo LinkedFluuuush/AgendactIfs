@@ -6,12 +6,9 @@
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../styles.css" rel="stylesheet" type="text/css">
     </head>
-    <body><!--
-        --><div id="nav">
-           Navigation
-        </div><!--
-        
-        --><?php
+    <body>
+        <?php
+        include("../menu.php");
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
 	
@@ -99,9 +96,9 @@
         
         $idSession = 1; //$_SESSION['login'];
         
-        ?>       
+        ?><!-- 
         
-        <div id="corpsCal" class="semaine">
+        --><div id="corpsCal" class="semaine">
             <table>
                 <colgroup>
                     <col width="1*">
@@ -205,6 +202,7 @@
                 }
                 mysql_close();
                 ?>
+            </table>
         </div><!--
     --></body>
 </html>

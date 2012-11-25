@@ -6,12 +6,9 @@
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../styles.css" rel="stylesheet" type="text/css">
     </head>
-    <body><!--
-        --><div id="nav">
-           Navigation
-        </div><!--
-
-        --><?php
+    <body>
+        <?php
+        include("../menu.php");
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
 
@@ -67,8 +64,8 @@
         $date = miseEnPageJour($dateTimestampDebutMEPJ);
 
         ?>
-        <div id="titreCal"> <?php 	echo $date; ?> </div>
-        <div id="corpsCal">
+        <!--<div id="titreCal"> <?php echo $date; ?> </div>--><!--
+        --><div id="corpsCal">
         <?php		
                 if ($result>0)
                 {
@@ -124,8 +121,9 @@
                 {
                         echo '<a href="mois.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
                 }
+                
+                mysql_close();
                 ?>
-        </div>
-        <?php mysql_close(); ?>
-    </body>
+        </div><!--
+    --></body>
 </html>
