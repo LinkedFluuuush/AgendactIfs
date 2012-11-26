@@ -99,8 +99,8 @@
         ?><!-- 
         
         --><div id="corpsCal" class="semaine">
-            <table>
-                <colgroup>
+            <table id="titreCal">
+                <!--<colgroup>
                     <col width="1*">
                     <col width="1*">
                     <col width="1*">
@@ -108,15 +108,20 @@
                     <col width="1*">
                     <col width="1*">
                     <col width="1*">
-                </colgroup>
-                <th></th>
-                <th><a href="#"> |< </a></th>
-                <th><a href="#"> < </a></th>
-                <th></th>   
-                <th><?php echo "$jourDebut $nomMois1 $annee1 au $jourFin $nomMois2 $annee2"; ?></th>
-                <th></th>
-                <th><a href="#"> > </a></th>
-                <th><a href="#"> >| </a></th>
+                </colgroup>-->
+                
+                <tr id="titreCal">
+                    <th></th>
+                    <th></th>
+                    <th><a href="#"> |< </a></th>
+                    <th><a href="#"> < </a></th>
+                    <th></th>   
+                    <th><?php echo "$jourDebut $nomMois1 $annee1 au $jourFin $nomMois2 $annee2"; ?></th>
+                    <th></th>
+                    <th><a href="#"> > </a></th>
+                    <th><a href="#"> >| </a></th>
+                    <th></th>
+                </tr>
             </table>
             
             <table>

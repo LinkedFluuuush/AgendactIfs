@@ -28,6 +28,23 @@ html, body {
     text-align: center;
 }
 
+.titreCal { 
+   padding-top: 4px;
+   padding-bottom: 2px;
+   
+   font-family : "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
+   font-size: 100%;
+   font-weight: bold;
+   text-align: center;
+   vertical-align: middle;
+   
+   border-bottom: dashed #c3c3c3 1px;
+   
+   background-color: #d9d9d9;
+   
+   color: #72777b;
+}
+
 #corpsCal {
     /* position du bloc */
     display: inline-block;
@@ -90,7 +107,14 @@ html, body {
 }
 
 
+
+
 /* PARTIE MOIS */
+
+#corpsCal.mois table.titreCal {
+    margin: 0;
+    width: 100%;
+}
 
 #corpsCal.mois td {
     /* hauteur des cases */
@@ -135,6 +159,7 @@ html, body {
 #corpsCal.mois td.caseAutreMois {
    border-style: none;
    background-color: #e6e6e6;
+   cursor: default;
 }
 
 /* ul = liste des rdv */
@@ -180,6 +205,7 @@ html, body {
 }
 
 /* FIN DE LA PARTIE MOIS */
+
 
 
 
@@ -303,38 +329,39 @@ html, body {
 
 /* PARTIE JOUR */
 
-#corpsCal.jour span.titre
-{
-	margin-right: 2%;
-	
-	font-size: 140%;
-	font-weight: bold;
-	text-decoration: underline;
-	text-align: left;
+#corpsCal.jour span.titre{
+    margin-left: 30px;
+    margin-right: 2%;
+
+    font-size: 140%;
+    font-weight: bold;
+    text-align: left;
 }
 
-#corpsCal.jour p
-{
+#corpsCal.jour p {
+        margin-left: 30px;
+
 	font-size: 100%;
 	text-align: justify ;
 }
 
-#corpsCal.jour a
-{
-	margin-right: 20px;
-	color: #838FAE;
+#corpsCal.jour a {
+	margin-right: 30px;
 	text-decoration: none;
+        color: #72777b;
 }
-#corpsCal.jour a:hover
-{
-	margin-right: 20px;
-	color: #FFFFFF;
+#corpsCal.jour a:hover {
 	text-decoration: none;
 }
 
 /* FIN DE LA PARTIE JOUR */
 
 
+
+
+
+
+/***************************************************************************/
 
 /* DEBUT DE LA PARTIE EVENEMENT */
 
@@ -501,29 +528,4 @@ html, body {
 
    /* padding-top: 20px;
     padding-bottom: 20px;
-}*/
-
-/*#titreCal {*/ /* correspond à l'entête d'un calendrier (ex : pour un mois = cadre contenant Janvier 2012) */
-   /*height: 20px;*/ /*pour IE6*/
-   /*margin-top:10px;*/
-   /*margin-left: 5%;
-   margin-right: 5%;*/
-   
-   /*padding-top: 2px;*/
-/*   padding-bottom: 2px;
-   padding-right: 0%;
-   padding-left: 0%;
-   
-   font-family : "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
-   font-size: 100%;
-   text-align: center;
-   vertical-align: middle;
-   
-   border-style: solid;
-   border-width: 1px;
-   border-color: #596176;
-   
-   background-color: #c0c0c0;
-   
-   color: #000000;  couleur du texte 
 }*/

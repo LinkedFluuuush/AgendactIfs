@@ -64,8 +64,8 @@
         $date = miseEnPageJour($dateTimestampDebutMEPJ);
 
         ?><!--
-        <div id="titreCal"><?php echo $date; ?></div>--><!--
-        --><div id="corpsCal">
+        --><div id="corpsCal" class="jour">
+            <div class="titreCal"><?php echo $date; ?></div>
         <?php		
                 if ($result>0)
                 {
@@ -113,12 +113,11 @@
                 if(!empty($nomSession))
                         echo '<a href="javascript:getEveCrea(' . $annee . ', ' . $mois . ', ' . $jour .');">Ajouter</a>';
 
-                if ($_GET['u'] == 1)
-                {
+                if ($_GET['u'] == 1) {
                         echo '<a href="semestre.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
                 }
-                if ($_GET['u'] == 2)
-                {
+                
+                if ($_GET['u'] == 2) {
                         echo '<a href="mois.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
                 }
                 

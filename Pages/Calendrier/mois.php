@@ -91,7 +91,7 @@
         ?><!--
         --><div id="corpsCal" class="mois">
             <!-- Affichage du nom du mois + année et des liens du mois précédent/suivant -->
-            <table>
+            <table class="titreCal">
                 <colgroup>
                     <col width="1*">
                     <col width="1*">
@@ -101,14 +101,13 @@
                     <col width="1*">
                     <col width="1*">
                 </colgroup>
-                <th></th>
-                <th><a href="mois.php?annee=<?php echo $annee; ?>&mois=1"> |< </a></th>
-                <th><a href="mois.php?annee=<?php echo $anneePrec; ?>&mois=<?php echo $moisPrec; ?>"> < </a></th>
-                <th></th>
-                <th><?php echo $nomMois . ' ' . $annee; ?></th>
-                <th></th>
-                <th><a href="mois.php?annee=<?php echo $anneeSuiv; ?>&mois=<?php echo $moisSuiv; ?>"> > </a></th>
-                <th><a href="mois.php?annee=<?php echo $annee; ?>&mois=12"> >| </a></th>
+                <tr class="titreCal">
+                    <th><a href="mois.php?annee=<?php echo $annee; ?>&mois=1"> |< </a></th>
+                    <th><a href="mois.php?annee=<?php echo $anneePrec; ?>&mois=<?php echo $moisPrec; ?>"> < </a></th>
+                    <th colspan="3"><?php echo $nomMois . ' ' . $annee; ?></th>
+                    <th><a href="mois.php?annee=<?php echo $anneeSuiv; ?>&mois=<?php echo $moisSuiv; ?>"> > </a></th>
+                    <th><a href="mois.php?annee=<?php echo $annee; ?>&mois=12"> >| </a></th>
+                </tr>
             </table>
             
             <table>
