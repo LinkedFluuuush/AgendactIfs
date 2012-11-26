@@ -80,6 +80,9 @@ html, body {
 
     /* couleur de fond du tableau */
     background-color: #f1f2f3;
+    
+    /* affiche le curseur "main" */
+    cursor: pointer;
 }
 
 #corpsCal td:hover {
@@ -167,19 +170,16 @@ html, body {
 
    white-space: nowrap; /* on change la valeur de la propriété white-space pour qu'il n'y ait pas de retour à la ligne non-désiré */
 
-   top: 30px; /* on positionne notre infobulle */
-   left: 20px;
-
    background: white;
+   
    color: black;
+   margin-top:18px;
    padding: 3px;
 
    border: 1px solid black;
 }
 
 /* FIN DE LA PARTIE MOIS */
-
-
 
 
 
@@ -196,10 +196,6 @@ html, body {
    vertical-align: middle;
 }
 
-#corpsCal.semaine ul {
-    list-style-type: none;
-}
-
 #corpsCal.semaine td.nomHeure {
     vertical-align: middle;
     border-style: none;
@@ -208,38 +204,40 @@ html, body {
     background-color: #e6e6e6;
 }
 
-
+#corpsCal.semaine ul {
+    text-align: left;
+    list-style-type: none;
+    padding: 0;
+    padding-top: 3px;
+    padding-left: 3px;
+}
 
 /* Infobulle */
-#corpsCal.semaine li.info
-{
-   position: relative;
 
+#corpsCal.semaine li.info {
+    margin:0;
+   position: relative;
    text-decoration: none;
    /*border-bottom: 1px gray dotted;*/ /* on souligne le texte */
 }
-#corpsCal.semaine li.info span 
-{
+#corpsCal.semaine li.info span {
    display: none; /* on masque l'infobulle */
 }
-#corpsCal.semaine li.info:hover 
-{
+#corpsCal.semaine li.info:hover {
    background: none; /* correction d'un bug IE */
    z-index: 500; /* on définit une valeur pour l'ordre d'affichage */
 
 }
-#corpsCal.semaine li.info:hover span
-{
+#corpsCal.semaine li.info:hover span {
    display: inline; /* on affiche l'infobulle */
    position: absolute;
 
    white-space: nowrap; /* on change la valeur de la propriété white-space pour qu'il n'y ait pas de retour à la ligne non-désiré */
 
-   top: 30px; /* on positionne notre infobulle */
-   left: 20px;
-
    background: white;
+   
    color: black;
+   margin-top:18px;
    padding: 3px;
 
    border: 1px solid black;
@@ -253,26 +251,17 @@ html, body {
 /* DEBUT DE LA PARTIE SEMESTRE */
 
 #corpsCal.semestre td {
+    /* hauteur des cases */
    height: 22px;
+   
+   /* alignement du texte à l'intérieur des cases */
    vertical-align: middle;
-   
-   font-size: 85%;
-   
-   border-width: 1px;
-   border-color: #d9d9d9;
-   border-style: solid;
-   
-   background-color: #f1f2f3;
 }
 
 #corpsCal.semestre td a {
     text-decoration: none;
     color: #72777b;
     font-size: 85%;
-}
-
-#corpsCal.semestre td:hover {
-    background-color: #edeeef;
 }
 
 /* Infobulle */
@@ -313,8 +302,6 @@ html, body {
 
 
 /* PARTIE JOUR */
-
-
 
 #corpsCal.jour span.titre
 {
