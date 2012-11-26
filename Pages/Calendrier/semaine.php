@@ -131,7 +131,7 @@
                     <col width="1*">
                 </colgroup>
                 <tr>
-                    <th>Heure</th>
+                    <th></th>
                     <th>Lundi</th>
                     <th>Mardi</th>
                     <th>Mercredi</th>

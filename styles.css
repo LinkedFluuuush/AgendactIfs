@@ -54,15 +54,13 @@ html, body {
     border-collapse: collapse;
 }
 
-#corpsCal td {
-    
-}
-
 #corpsCal th {
     font-family : "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
     font-size: 85%;
     text-align: center;
-    width:9%; /* permet d'avoir la même largeur de colonne */
+    
+    /* largeur de colonne */
+    width:9%;
     color:#0ab0da;
 }
 
@@ -71,33 +69,34 @@ html, body {
     text-decoration: none;
 }
 
+#corpsCal td {
+    /* taille de police */
+    font-size: 85%;
+
+    /* propriétés des bordures */
+    border-width: 1px;
+    border-color: #d9d9d9;
+    border-style: solid;
+
+    /* couleur de fond du tableau */
+    background-color: #f1f2f3;
+}
+
+#corpsCal td:hover {
+    background-color: #edeeef;
+}
 
 
 /* PARTIE MOIS */
 
-/* ul = liste des rdv */
-#corpsCal.mois ul {
-    text-align: left;
-    padding: 0;
-    margin-top: 5px;
-    margin-left: 0px;
-    list-style-type: none;
-}
-
 #corpsCal.mois td {
-    height: 113px; /* hauteur de la case */
+    /* hauteur des cases */
+    height: 113px; 
     vertical-align: top;
     
+    /* marges */
     padding-top:5px;
     padding-left:1%;
-
-    font-size: 85%;
-    
-    border-width: 1px;
-    border-color: #d9d9d9;
-    border-style: solid;
-    
-    background-color: #f1f2f3;
 }
 
 /* cases contenant le numéro de semaine */
@@ -133,6 +132,15 @@ html, body {
 #corpsCal.mois td.caseAutreMois {
    border-style: none;
    background-color: #e6e6e6;
+}
+
+/* ul = liste des rdv */
+#corpsCal.mois ul {
+    text-align: left;
+    padding: 0;
+    margin-top: 5px;
+    margin-left: 0px;
+    list-style-type: none;
 }
 
 /* Infobulle */
@@ -176,40 +184,20 @@ html, body {
 
 
 /* DEBUT DE LA PARTIE SEMAINE */
-
-#corpsCal.semaine ul
-{
-    text-align: left;
-
-    margin-top: 5px;
-    margin-left: 0px;
-
-    list-style-type: none;
-}
-
 #corpsCal.semaine th {
-    font-family : "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
-    font-size: 85%;
-    text-align: center;
     width:9%;
 }
 
 #corpsCal.semaine td {
-   height: 30px; /* hauteur de la case */
-   
-   padding-top:5px;
-   padding-left:1%;
-   
+   /* hauteur des cases */
+   height: 27px;
+      
+   /* alignement du texte à l'intérieur des cases */
    vertical-align: middle;
-   
-   font-size: 85%;
-   border-width: 1px;
-   border-color: #d9d9d9;
-   border-style: solid;
+}
 
-   background-color: #f1f2f3;
- 
-   cursor: pointer;
+#corpsCal.semaine ul {
+    list-style-type: none;
 }
 
 #corpsCal.semaine td.nomHeure {
@@ -220,9 +208,7 @@ html, body {
     background-color: #e6e6e6;
 }
 
-#corpsCal.semaine td:hover {
-    background-color: #edeeef;
-}
+
 
 /* Infobulle */
 #corpsCal.semaine li.info
