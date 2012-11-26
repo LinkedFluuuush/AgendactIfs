@@ -1,76 +1,61 @@
-/* on retire toutes les marges de la page */
 html, body {
+    /* on retire les marges */
     margin: 0;
     padding: 0;
     height: 100%;
-    background-color: black;
-    color: #000000;
+    
+    /* couleur de fond par défaut */
+    background-color: #e6e6e6;
+    
+    /* couleur de police par défaut */
+    color: #72777b;
 }
 
 #nav {
+    /* position du bloc */
     display: inline-block;
-    width: 14%;
     vertical-align: top;
+    
+    /* hauteur et largeur */
+    width: 14%;
     min-height: 768px;
     height: 100%;
+    
+    /* couleur de fond */
     background-color: #bbdcef;
+    
+    /* placement du texte */
     text-align: center;
 }
 
 #corpsCal {
+    /* position du bloc */
     display: inline-block;
-    white-space: normal;
     vertical-align: top;
+    
+    /* hauteur et largeur */
     width: 86%;
     min-height: 768px;
-    
     height: 100%;
+    
+    /* ombre */
     box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.72);
    
+    /* police */
     font-family : Helvetica, "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
-    text-align: justify;
 
+    /* couleur de fond */
     background-color: #e6e6e6;
 }
-
-/*#page {
-    min-height: 100%;*/
-    /*padding: 1px 0;*/ /*pour que FF englobe la marge du contenu*/
-    /*#overflow:hidden;*/
-
-   /* padding-top: 20px;
-    padding-bottom: 20px;
-}*/
-
-/*#titreCal {*/ /* correspond à l'entête d'un calendrier (ex : pour un mois = cadre contenant Janvier 2012) */
-   /*height: 20px;*/ /*pour IE6*/
-   /*margin-top:10px;*/
-   /*margin-left: 5%;
-   margin-right: 5%;*/
-   
-   /*padding-top: 2px;*/
-/*   padding-bottom: 2px;
-   padding-right: 0%;
-   padding-left: 0%;
-   
-   font-family : "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
-   font-size: 100%;
-   text-align: center;
-   vertical-align: middle;
-   
-   border-style: solid;
-   border-width: 1px;
-   border-color: #596176;
-   
-   background-color: #c0c0c0;
-   
-   color: #000000;  couleur du texte 
-}*/
 
 #corpsCal table {
     margin: 10px 10% 0 10%;
     width:80%; /* taille des tableaux */
     border-collapse: collapse;
+}
+
+#corpsCal td {
+    
 }
 
 #corpsCal th {
@@ -88,52 +73,6 @@ html, body {
 
 
 
-/* PARTIE JOUR */
-
-#corpsCal.jour h1
-{
-	font-size: 180%;
-	font-weight: bold;
-	text-decoration: underline;
-	text-align: center;
-}
-
-#corpsCal.jour span.titre
-{
-	margin-right: 2%;
-	
-	font-size: 140%;
-	font-weight: bold;
-	text-decoration: underline;
-	text-align: left;
-}
-
-#corpsCal.jour p
-{
-	font-size: 100%;
-	text-align: justify ;
-}
-
-#corpsCal.jour a
-{
-	margin-right: 20px;
-	color: #838FAE;
-	text-decoration: none;
-}
-#corpsCal.jour a:hover
-{
-	margin-right: 20px;
-	color: #FFFFFF;
-	text-decoration: none;
-}
-
-/* FIN DE LA PARTIE JOUR */
-
-
-
-
-
-
 /* PARTIE MOIS */
 
 /* ul = liste des rdv */
@@ -147,13 +86,13 @@ html, body {
 
 #corpsCal.mois td {
     height: 113px; /* hauteur de la case */
-    font-size: 85%;
-
     vertical-align: top;
     
     padding-top:5px;
     padding-left:1%;
 
+    font-size: 85%;
+    
     border-width: 1px;
     border-color: #d9d9d9;
     border-style: solid;
@@ -242,8 +181,6 @@ html, body {
 {
     text-align: left;
 
-    padding: 0;
-
     margin-top: 5px;
     margin-left: 0px;
 
@@ -251,8 +188,6 @@ html, body {
 }
 
 #corpsCal.semaine th {
-    padding-left:0%;
-    padding-right:0%;
     font-family : "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
     font-size: 85%;
     text-align: center;
@@ -261,30 +196,35 @@ html, body {
 
 #corpsCal.semaine td {
    height: 30px; /* hauteur de la case */
-   font-size: 85%;
    
    padding-top:5px;
    padding-left:1%;
    
    vertical-align: middle;
    
+   font-size: 85%;
    border-width: 1px;
-   border-color: #596176;
-}
-
-/* style des cases du mois */
-#corpsCal.semaine td.caseDuMois
-{
-   cursor: pointer;
+   border-color: #d9d9d9;
    border-style: solid;
+
+   background-color: #f1f2f3;
+ 
+   cursor: pointer;
 }
 
-#corpsCal.semaine td.caseDuMois:hover
-{
-    background-color: #e3e3e3;
+#corpsCal.semaine td.nomHeure {
+    vertical-align: middle;
+    border-style: none;
+    text-align: right;
+    padding-right: 30px; /* pour que les num de semaines ne soient pas collés au tableau du mois */
+    background-color: #e6e6e6;
 }
 
-/* infobulle quand on passe la souris sur un évènement */
+#corpsCal.semaine td:hover {
+    background-color: #edeeef;
+}
+
+/* Infobulle */
 #corpsCal.semaine li.info
 {
    position: relative;
@@ -326,15 +266,11 @@ html, body {
 
 /* DEBUT DE LA PARTIE SEMESTRE */
 
-#corpsCal.semestre table {
-    margin-bottom: 10px; /* espace entre le nom du calendrier et le calendrier */
-}
-
 #corpsCal.semestre td {
    height: 22px;
-   font-size: 85%;
-   
    vertical-align: middle;
+   
+   font-size: 85%;
    
    border-width: 1px;
    border-color: #d9d9d9;
@@ -385,6 +321,45 @@ html, body {
 
 /* FIN DE LA PARTIE SEMESTRE */
 
+
+
+
+
+
+/* PARTIE JOUR */
+
+
+
+#corpsCal.jour span.titre
+{
+	margin-right: 2%;
+	
+	font-size: 140%;
+	font-weight: bold;
+	text-decoration: underline;
+	text-align: left;
+}
+
+#corpsCal.jour p
+{
+	font-size: 100%;
+	text-align: justify ;
+}
+
+#corpsCal.jour a
+{
+	margin-right: 20px;
+	color: #838FAE;
+	text-decoration: none;
+}
+#corpsCal.jour a:hover
+{
+	margin-right: 20px;
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+/* FIN DE LA PARTIE JOUR */
 
 
 
@@ -544,3 +519,38 @@ html, body {
 }
 
 
+
+
+/*#page {
+    min-height: 100%;*/
+    /*padding: 1px 0;*/ /*pour que FF englobe la marge du contenu*/
+    /*#overflow:hidden;*/
+
+   /* padding-top: 20px;
+    padding-bottom: 20px;
+}*/
+
+/*#titreCal {*/ /* correspond à l'entête d'un calendrier (ex : pour un mois = cadre contenant Janvier 2012) */
+   /*height: 20px;*/ /*pour IE6*/
+   /*margin-top:10px;*/
+   /*margin-left: 5%;
+   margin-right: 5%;*/
+   
+   /*padding-top: 2px;*/
+/*   padding-bottom: 2px;
+   padding-right: 0%;
+   padding-left: 0%;
+   
+   font-family : "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
+   font-size: 100%;
+   text-align: center;
+   vertical-align: middle;
+   
+   border-style: solid;
+   border-width: 1px;
+   border-color: #596176;
+   
+   background-color: #c0c0c0;
+   
+   color: #000000;  couleur du texte 
+}*/

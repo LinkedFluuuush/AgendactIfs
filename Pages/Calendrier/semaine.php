@@ -165,7 +165,7 @@
                 
                 for ($i = 0 ; $i <= 23 ; $i++) {
                     echo '<tr>';
-                    echo '<td>'.$i.':00</td>';
+                    echo '<td class="nomHeure">'.$i.':00</td>';
                     
                     $heure = $i.':00';
                     $time = explode(":", $heure);
@@ -184,7 +184,7 @@
                                     }
                                 }
                             }
-                            echo '<td class="caseDuMois">';
+                            echo '<td>';
                             if ($boucle >= 1) {
                                 echo '<ul>';
                                 for ($l = 0 ; $l < $boucle ; $l++) {
