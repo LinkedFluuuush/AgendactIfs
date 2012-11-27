@@ -43,22 +43,20 @@ if((!empty($_GET['a'])) && (!empty($_GET['m'])) && (!empty($_GET['j'])))
 		$mois = 0;
 }
 
+$idUtil = 1;
+
 $nomSession = 'Test'; //$_SESSION['login'];
 
-$dateTimestampDebut = mktime(00, 00, 00, $mois, $jour, $annee);
-$dateTimestampFin = mktime(23, 59, 59, $mois, $jour, $annee);
+$sql = "SELECT aci_evenement.*, aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert FROM aci_evenement
+		JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
+		JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
+		where dateFin >= '$annee-$mois-$jour 00:00:00'
+		and dateDebut <= '$annee-$mois-$jour 23:59:59'
+		and ((estPublic = 1)
+			or ($idUtil = aci_evenement.idUtilisateur))";
 
-//$dateTimestampDebut = "$annee-$mois-$jour 00:00:00";
-//$dateTimestampFin = "$annee-$mois-$jour 23:59:59";
-
-$sql = "SELECT eve_evenement.*, eve_utilisateur.nomCompletUtilisateur FROM eve_evenement
-		INNER JOIN eve_utilisateur ON eve_evenement.idUtilisateur = eve_utilisateur.idUtilisateur
-		where dateEvenement >= $dateTimestampDebut
-		and dateEvenement <= $dateTimestampFin
-		and (estObligatoire = 1 OR (estObligatoire = 0 and eve_utilisateur.nomCompletUtilisateur = '$nomSession'))";
-			
-$query = mysql_query($sql) or die ('Erreur :'.mysql_error());
-$result = mysql_numrows($query);
+$resultats = $conn->query($sql);
+//$resultats->setFetchMode(PDO::FETCH_OBJ);
 
 $dateTimestampDebutMEPJ = mktime(00, 00, 00, $mois, $jour, $annee);
 $date = miseEnPageJour($dateTimestampDebutMEPJ);
@@ -67,21 +65,24 @@ $date = miseEnPageJour($dateTimestampDebutMEPJ);
 <div id="titreCal"> <?php 	echo $date; ?> </div>
 <div id="corpsCal">
 <?php		
-	if ($result>0)
+	if ($resultats != null)
 	{
 		$i=1;
 		
-		while ($row = mysql_fetch_array($query) and $i!=0) 
+		while ($row = $resultats->fetch() and $i!=0) 
 		{
-			$numeroEve = htmlentities($row["numeroevenement"], ENT_QUOTES);	
-			$timestamp = htmlentities($row["dateevenement"], ENT_QUOTES);
-			$titre = stripcslashes(htmlentities($row["titrelong"], ENT_QUOTES));
-			$desc = stripcslashes(htmlentities($row["description"], ENT_QUOTES));
-			$auteur = stripcslashes(htmlentities($row["nomCompletUtilisateur"], ENT_QUOTES));
+			$numeroEve = htmlentities($row['IDEVENEMENT'], ENT_QUOTES);	
+			$timestamp = htmlentities($row["DATEDEBUT"], ENT_QUOTES);
+			$titre = stripcslashes(htmlentities($row["LIBELLELONG"], ENT_QUOTES));
+			$desc = stripcslashes(htmlentities($row["DESCRIPTION"], ENT_QUOTES));
+			$auteur = stripcslashes(htmlentities($row["prenom"], ENT_QUOTES)).' '.stripcslashes(htmlentities($row["nom"], ENT_QUOTES));
+			$idAuteur = stripcslashes(htmlentities($row["idUtilisateur"], ENT_QUOTES));
 			
 			$lieu = stripcslashes(htmlentities($row["lieu"], ENT_QUOTES));
-						
-			$dateSaisie = date('d/m/Y',$row["datesaisie"]);
+			
+			$dateInsert = substr($row["DATEINSERT"],0,10);
+			$tabDateInsert = explode('-', $dateInsert);
+			$dateInsert = $tabDateInsert[2].'/'.$tabDateInsert[1].'/'.$tabDateInsert[0];
 
 			?>
 			
