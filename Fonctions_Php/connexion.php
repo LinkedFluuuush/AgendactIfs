@@ -2,7 +2,15 @@
 	$host = 'localhost'; //Votre host, souvent localhost
 	$user = 'root'; //votre login
 	$pass = ''; //Votre mot de passe
-	$db = 'mlr2'; // Le nom de la base de donnee	
-	$link = mysql_connect ($host,$user,$pass) or die ('Erreur : '.mysql_error());
-	mysql_select_db($db) or die ('Erreur :'.mysql_error());
+	$db = 'aci_bdd'; // Le nom de la base de donnee
+	
+	try
+	{
+		$conn = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+	}
+	catch(Exception $e)
+	{
+		echo 'Echec de la connexion à la base de donnée';
+		exit();
+	}
 ?>

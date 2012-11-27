@@ -15,6 +15,16 @@
         //$mois = date('m');
         //$jour = date('d');
         
+		// TEST A EFFACER PLUS TARD
+			$idUtil = 1;
+		
+			$jourDebut = 12;
+            $jourFin = 18;
+            $mois1 = 11;
+            $mois2 = 11;
+            $annee1 = 2012;
+            $annee2 = 2012; 
+		
         if ((!empty($_GET['jourDebutPrec'])) && (!empty($_GET['jourFinPrec']))) {
             $jourDebut = $_GET['jourDebutPrec'];
             $jourFin = $_GET['jourFinPrec'];
@@ -78,8 +88,8 @@
         }     
         
         
-        $dateTimestampDebut = mktime(00,00,00, $mois1, $jourDebut, $annee1);
-        $dateTimestampFin = mktime(23,59,59, $mois2, $jourFin, $annee2);
+/*         $dateTimestampDebut = mktime(00,00,00, $mois1, $jourDebut, $annee1);
+        $dateTimestampFin = mktime(23,59,59, $mois2, $jourFin, $annee2); */
         
         // Liste des mois
         $tabMois = array('janv.', 'f&eacute;v.', 'mars', 'avril', 'mai', 'juin',
@@ -136,65 +146,67 @@
                 </tr>
                 
                 <?php
-                $sql = "SELECT dateEvenement, titreCourt, titreLong from eve_evenement 
-                                where dateEvenement >= ($dateTimestampDebut)
-                                and dateEvenement <= ($dateTimestampFin)
-                                and (estObligatoire = 1 OR (estObligatoire = 0 and idUtilisateur = '1'))
-                                order by titreCourt";
 
-                $query = mysql_query($sql) or die ("Requï¿½te incorrecte");
-                $result = mysql_numrows($query);
-                
-                if ($result > 0) {
-                    $cons = 0;
-                    while ($row = mysql_fetch_array($query)) {
-                        //on recupï¿½re un tableau contenant les date et les titre long)
-                        $donnees[$cons]["dateEvenement"] = htmlentities($row["dateEvenement"], ENT_QUOTES);
-                        $donnees[$cons]["titreCourt"] = stripslashes(htmlentities($row["titreCourt"], ENT_QUOTES));
-                        $donnees[$cons]["titreLong"] = stripslashes(htmlentities($row["titreLong"], ENT_QUOTES));
-                        $cons ++;
+                $sql = "SELECT aci_evenement . * , aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert
+						FROM aci_evenement
+						JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
+						JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
+						WHERE dateFin >=  '2012-11-12 00:00:00'
+						AND dateDebut <=  '2012-11-18 23:59:59'
+						AND ((estPublic =1) OR ( 1 = aci_evenement.idUtilisateur ))";
+				
+				
+                $resultats = $conn->query($sql);
+                $resultats->setFetchMode(PDO::FETCH_ASSOC);
+                if ($resultats != null) {
+                    $i=0;
+					
+                    while ($row = $resultats->fetch()) {
+                        //on recupère un tableau contenant les date et les titre long)
+                        $donnees[$i]["dateDebut"] = htmlentities($row["DATEDEBUT"], ENT_QUOTES);
+                        $donnees[$i]["libelleCourt"] = stripslashes(htmlentities($row["LIBELLECOURT"], ENT_QUOTES));
+                        $donnees[$i]["libelleLong"] = stripslashes(htmlentities($row["LIBELLELONG"], ENT_QUOTES));
+                        $i++;
                     }
                 }
                 
                 
-                for ($i = 0 ; $i <= 23 ; $i++) {
+                for ($i = 0 ; $i <= 23 ; $i++) { //heures de 0 à 23
                     echo '<tr>';
                     echo '<td>'.$i.':00</td>';
                     
                     $heure = $i.':00';
                     $time = explode(":", $heure);
-                    
-                    for ($j = 1 ; $j < 8 ; $j++) {
+                    for ($j = 1 ; $j < 8 ; $j++) { //jours de 1 à 7
                         $boucle = 0;
                         
-                            if (!empty($donnees)) {
-                                for ($k = 0 ; $k < count($donnees) ; $k++) {
-                                    $timestampEnCours = mktime($time[1], 00, 00, $mois1, $jourDebut, $annee1);
-                                    
-                                    if($timestampEnCours == $donnees[$k]["dateEvenement"]) {
-                                        $titreCourt[$boucle] = $donnees[$k]["titreCourt"];
-                                        $titreLong[$boucle] = $donnees[$k]["titreLong"];
-                                        $boucle++;
-                                    }
-                                }
-                            }
-                            echo '<td class="caseDuMois">';
-                            if ($boucle >= 1) {
-                                echo '<ul>';
-                                for ($l = 0 ; $l < $boucle ; $l++) {
-                                    echo '<li class="info">';
-                                    echo $titreCourt[$l];
-                                    echo '<span>' . $titreLong[$l] . '</span>';
-                                    echo '</li>';
-                                }
-                                echo '</ul>';
-                            }
-                            echo'</td>';                            
-                            $jourDebut++;
+						if (!empty($donnees)) {
+							for ($k = 0 ; $k < count($donnees) ; $k++) {
+								$heureTestee = date("Y-m-d H:i:s", mktime($time[0], 00, 00, $mois1, $jourDebut, $annee1));
+								echo $heureTestee."<br>";
+								if($heureTestee == $donnees[$k]["dateDebut"]) {
+									$libelleCourt[$boucle] = $donnees[$k]["libelleCourt"];
+									$libelleLong[$boucle] = $donnees[$k]["libelleLong"];
+									$boucle++;
+								}
+							}
+						}
+						echo '<td class="caseDuMois">';
+						if ($boucle >= 1) {
+							echo '<ul>';
+							for ($l = 0 ; $l < $boucle ; $l++) {
+								echo '<li class="info">';
+								echo $titreCourt[$l];
+								echo '<span>' . $titreLong[$l] . '</span>';
+								echo '</li>';
+							}
+							echo '</ul>';
+						}
+						echo'</td>';                            
+						$jourDebut++;
                     }
                     echo '</tr>';
                 }
-                mysql_close();
                 ?>
         </div>
     </body>

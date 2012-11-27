@@ -27,13 +27,17 @@ if((!empty($_GET['a'])) && (!empty($_GET['m'])) && (!empty($_GET['j'])))
 	if($mois == 13)
 		$mois = 0;
 }
-
 //sinon, on utilise les session
-else if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty($_SESSION['jour'])))
+//si les variables $_GET existent, on les utilises et au passage, on les stockent dans les variable de session
+if((!empty($_GET['a'])) && (!empty($_GET['m'])) && (!empty($_GET['j'])))
 {
-	$annee = $_SESSION['annee'];
-	$mois = $_SESSION['mois'];
-	$jour = $_SESSION['jour'];
+	$annee = $_GET['a'];
+	$mois = $_GET['m'];
+	$jour = $_GET['j'];
+	    
+	$_SESSION['annee'] = $_GET['a'];
+	$_SESSION['mois'] = $_GET['m'];
+	$_SESSION['jour'] = $_GET['j'];
 	
 	if($mois == 13)
 		$mois = 0;
@@ -91,8 +95,8 @@ $date = miseEnPageJour($dateTimestampDebutMEPJ);
 				}
 			?>
 				<p><?php echo $desc; ?></p>
-				<?php if(!empty($lieu)) echo '<p>Lieu : ' . $lieu . '.</p>'; ?>
-				<p><?php echo 'Post&eacute; par ' . $auteur . ' le ' . $dateSaisie . '.'; ?></p>
+				<?php if(!empty($lieu)) echo '<p>Lieu : ' . $lieu . '</p>'; ?>
+				<p><?php echo 'Post&eacute; par ' . $auteur . ' le ' . $dateInsert . '.'; ?></p>
 		
 			<?php
 			$i++;

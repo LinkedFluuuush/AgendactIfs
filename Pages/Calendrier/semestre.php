@@ -5,7 +5,7 @@ session_start();
 
 <html>
     <head>
-        <title>Page mois</title>
+        <title>Page semestre</title>
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../styles.css" rel="stylesheet" type="text/css">
         <link href="../../miniCalendrier.css" rel="stylesheet" type="text/css">
@@ -58,30 +58,33 @@ else if (!empty($_SESSION['annee']) && !empty($_SESSION['mois']) && !empty($_SES
 	$jour = $_SESSION['jour'];
 }
 
-//on dfini le semestre :
+//on défini le semestre :
 if(empty($semestre)){
     $semestre = retourneSemestre($mois);
 }
 
-//on genere le timestamp de dbut et de fin de semestre
+//on gère le semestre
 if($semestre == 1)
 {
-	$dateTimestampDebut = mktime(00, 00, 00, 01, 01, $annee);
-	$dateTimestampFin = mktime(23, 59, 59, 06, 31, $annee);
+	$moisDebut = 01;
+	$moisFin = 06;
 	
 	$debutSemestre = 1;
 }
 else
 {
-	$dateTimestampDebut = mktime(00, 00, 00, 07, 01, $annee);
-	$dateTimestampFin = mktime(23, 59, 59, 12, 31, $annee);
+	$moisDebut = 07;
+	$moisFin = 12;
 	
 	$debutSemestre = 7;
 }
 
+$days = retourneJour($annee, $moisFin);
+
+$idUtil = 1;
 $idSession = 1 ;//$_SESSION['login'];
 
-//Le lien : prcdent
+//Le lien : précédent
 if($semestre == 1)
 {
         $anneePrec = $annee - 1;
@@ -161,29 +164,32 @@ else
 			
 <?php
 
-//la requete la plus perfomante (on retire uniquement les vnements utiles)
-	$sql = "SELECT dateEvenement, titreCourt, titreLong FROM eve_evenement
-			WHERE dateEvenement >= ($dateTimestampDebut)
-			AND dateEvenement <= ($dateTimestampFin)
-			AND (estObligatoire =1 OR (estObligatoire =0 AND idUtilisateur = '1')) ORDER BY titreLong";
+	$sql = "SELECT aci_evenement.*, aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert FROM aci_evenement
+			JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
+			JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
+			where dateFin >= '$annee-$moisDebut-01 00:00:00'
+			and dateDebut <= '$annee-$moisFin-$days 23:59:59'
+			and ((estPublic = 1)
+				or ($idUtil = aci_evenement.idUtilisateur))";
+
+	$resultats = $conn->query($sql);
 	
-	$query = mysql_query($sql) or die ("Requête incorrecte");
-	$result = mysql_numrows($query);
-	
-	if ($result>0) 
+	if ($resultats != null) 
 	{
 		$cons = 0;
-		while ($row = mysql_fetch_array($query)) 
+		while ($row = $resultats->fetch()) 
 		{
-			//on recupre un tableau contenant les date et les titre long)
-			
-			$donnees[$cons]["dateEvenement"] = htmlentities($row["dateEvenement"], ENT_QUOTES);
-			$donnees[$cons]["titreCourt"] = stripslashes(htmlentities($row["titreCourt"], ENT_QUOTES));
-			$donnees[$cons]["titreLong"] = stripslashes(htmlentities($row["titreLong"], ENT_QUOTES));
+			//on recupère un tableau contenant les dates et les titres longs
+			$donnees[$cons]["dateDebut"] = htmlentities($row["DATEDEBUT"], ENT_QUOTES);
+			$donnees[$cons]["dateFin"] = htmlentities($row["DATEFIN"], ENT_QUOTES);
+			$donnees[$cons]["titreCourt"] = stripslashes(htmlentities($row["LIBELLECOURT"], ENT_QUOTES));
+			$donnees[$cons]["titreLong"] = stripslashes(htmlentities($row["LIBELLELONG"], ENT_QUOTES));
 
 			$cons ++;
 		}
 	}
+	
+	$num = 1;
 	
 	$evenement ='';
 	
@@ -195,19 +201,28 @@ else
 		{			
 			$boucle = 0;
 			
-			if(!empty($donnees)){
-			    for($k=0; $k<count($donnees); $k++)
-			    {
-				    $vieux_timestamp = mktime(00, 00, 00, $mois, $jour, $annee);
+			//on recupere les données du jour
+			if(!empty($donnees))
+			{
+				for($k = 0; $k < count($donnees); $k++)
+				{
+					$dateCourante = mktime(00,00,00, $mois, $jour, $annee);
+		
+					$dateDebut = explode(' ',$donnees[$k]["dateDebut"]);
+					$temp = explode('-',$dateDebut[0]);
+					$dateDebut = mktime(00,00,00, $temp[1],$temp[2],$temp[0]);
+				
+					$dateFin = explode(' ',$donnees[$k]["dateFin"]);
+					$temp = explode('-',$dateFin[0]);
+					$dateFin = mktime(00,00,00, $temp[1],$temp[2],$temp[0]);
 
-				    if($vieux_timestamp == $donnees[$k]["dateEvenement"])
-				    {
-					    $titreCourt[$boucle] = $donnees[$k]["titreCourt"];
-					    $titreLong[$boucle] = $donnees[$k]["titreLong"];
-
-					    $boucle++;
-				    }
-			    }
+					//On affiche les évènements qui se déroulent dans la journée
+					if($dateCourante >= $dateDebut && $dateCourante <= $dateFin) {
+						$titreCourt[$boucle] = $donnees[$k]["titreCourt"];
+						$titreLong[$boucle] = $donnees[$k]["titreLong"];
+						$boucle++;
+					}
+				}
 			}
 			    
 			// CAS 0 : le jour n'existe pas (31 fevrier)
@@ -217,7 +232,7 @@ else
 				echo '<th></th>'; //un peu sale, a modifier avec des styles
 			}
 			
-			// Cas 1 : aucun vnement
+			// Cas 1 : aucun événement
 			
 			else if ($boucle == 0)
 			{
@@ -229,7 +244,7 @@ else
 			else if ($boucle > 1)
 			{
 				echo '<td class="info" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
-				echo $jour . '<img STYLE="vertical-align: -3px; margin-left: 5px; margin-right: 2px;" src="./Images/warning_exclamation.png" height="15" width="15">' . ' Evenements : ' . $boucle;
+				echo $jour . /*'<img STYLE="vertical-align: -3px; margin-left: 5px; margin-right: 2px;" src="./Images/warning_exclamation.png" height="15" width="15">' . */' Evenements : ' . $boucle;
 				
 				echo '<span>';
 				for ($i=0 ; $i<$boucle ; $i++)
@@ -254,13 +269,7 @@ else
 		}
 		echo'</tr>';
 	}
-?>
-
-<?php
-mysql_close();
-?>
-	
-			
+?>	
 		</table>
         </div>
     </body>
