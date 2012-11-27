@@ -1,23 +1,9 @@
-﻿<?php
-//on utilisera les variable de session
-session_start();
-?>
-
+﻿<?php session_start(); ?>
 <html>
     <head>
         <title>Page semestre</title>
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
-        <link href="../../styles.css" rel="stylesheet" type="text/css">
-        <link href="../../miniCalendrier.css" rel="stylesheet" type="text/css">
-        
-        <script type="text/javascript" charset="iso-8859-1">
-                <?php include("./Fonctions_Javascript/autre.js"); ?>
-		<?php include("../../Fonctions_Javascript/eve_recherche.js"); ?>
-		<?php include("../../Fonctions_Javascript/gestion_clics.js"); ?>
-		<?php include("../../Fonctions_Javascript/getters.js"); ?>
-		<?php include("../../Fonctions_Javascript/setters.js"); ?>
-		<?php include("../../Fonctions_Javascript/variables.js"); ?>
-        </script>
+        <link href="../../styles.css" rel="stylesheet" type="text/css">        
     </head>
     <body>
         <div class="nav">
@@ -131,39 +117,37 @@ else
     </table>
 		<table>
      		<colgroup>
-       			<col width="1*">
-        		<col width="1*">
-        		<col width="1*">
-			<col width="1*">
-        		<col width="1*">
-        		<col width="1*">
+                    <col width="1*">
+                    <col width="1*">
+                    <col width="1*">
+                    <col width="1*">
+                    <col width="1*">
+                    <col width="1*">
      		</colgroup>
+                
      		<?php if ($semestre ==1) { ?>
-     		
      		<tr>
-     			<th><a href="mois.php?annee=<?php echo($annee);?>&mois=1" style="cursor: pointer;"> Janvier </a></th>
-				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=2" style="cursor: pointer;"> F&eacute;vrier </a></th>
-				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=3" style="cursor: pointer;"> Mars </a></th>
-				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=4" style="cursor: pointer;"> Avril </a></th>
-				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=5" style="cursor: pointer;"> Mai </a></th>
-				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=6" style="cursor: pointer;"> Juin </a></th>
-			</tr>
-     		
+                    <th><a href="mois.php?annee=<?php echo($annee);?>&mois=1" style="cursor: pointer;"> Janvier </a></th>
+                    <th><a href="mois.php?annee=<?php echo($annee);?>&mois=2" style="cursor: pointer;"> F&eacute;vrier </a></th>
+                    <th><a href="mois.php?annee=<?php echo($annee);?>&mois=3" style="cursor: pointer;"> Mars </a></th>
+                    <th><a href="mois.php?annee=<?php echo($annee);?>&mois=4" style="cursor: pointer;"> Avril </a></th>
+                    <th><a href="mois.php?annee=<?php echo($annee);?>&mois=5" style="cursor: pointer;"> Mai </a></th>
+                    <th><a href="mois.php?annee=<?php echo($annee);?>&mois=6" style="cursor: pointer;"> Juin </a></th>
+                </tr>
      		<?php } else { ?>
-
     		<tr>
-      			<th><a href="mois.php?annee=<?php echo($annee);?>&mois=7" style="cursor: pointer;"> Juillet </a></th>
-				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=8" style="cursor: pointer;"> Ao&ucirc;t </a></th>
-				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=9" style="cursor: pointer;"> Septembre </a></th>
-				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=10" style="cursor: pointer;"> Octobre </a></th>
-				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=11" style="cursor: pointer;"> Novembre </a></th>
-				<th><a href="mois.php?annee=<?php echo($annee);?>&mois=12" style="cursor: pointer;"> D&eacute;cembre </a></th>
+                    <th><a href="mois.php?annee=<?php echo($annee);?>&mois=7" style="cursor: pointer;"> Juillet </a></th>
+                    <th><a href="mois.php?annee=<?php echo($annee);?>&mois=8" style="cursor: pointer;"> Ao&ucirc;t </a></th>
+                    <th><a href="mois.php?annee=<?php echo($annee);?>&mois=9" style="cursor: pointer;"> Septembre </a></th>
+                    <th><a href="mois.php?annee=<?php echo($annee);?>&mois=10" style="cursor: pointer;"> Octobre </a></th>
+                    <th><a href="mois.php?annee=<?php echo($annee);?>&mois=11" style="cursor: pointer;"> Novembre </a></th>
+                    <th><a href="mois.php?annee=<?php echo($annee);?>&mois=12" style="cursor: pointer;"> D&eacute;cembre </a></th>
     		</tr>
-    		
     		<?php } ?>
 			
-<?php
+                <?php
 
+<<<<<<< HEAD
 	$sql = "SELECT aci_evenement.*, aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert FROM aci_evenement
 			JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
 			JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
@@ -185,18 +169,39 @@ else
 			$donnees[$cons]["titreCourt"] = stripslashes(htmlentities($row["LIBELLECOURT"], ENT_QUOTES));
 			$donnees[$cons]["titreLong"] = stripslashes(htmlentities($row["LIBELLELONG"], ENT_QUOTES));
 
-			$cons ++;
-		}
-	}
+=======
+                $sql = "SELECT dateEvenement, titreCourt, titreLong FROM eve_evenement
+                        WHERE dateEvenement >= ($dateTimestampDebut)
+                        AND dateEvenement <= ($dateTimestampFin)
+                        AND (estObligatoire =1 OR (estObligatoire =0 AND idUtilisateur = '1')) ORDER BY titreLong";
 	
+                $query = mysql_query($sql) or die ("Requête incorrecte");
+                $result = mysql_numrows($query);
+	
+                if ($result>0) {
+                    $cons = 0;
+                    while ($row = mysql_fetch_array($query)){
+			//on recupere un tableau contenant les dates et les titres longs
+			$donnees[$cons]["dateEvenement"] = htmlentities($row["dateEvenement"], ENT_QUOTES);
+			$donnees[$cons]["titreCourt"] = stripslashes(htmlentities($row["titreCourt"], ENT_QUOTES));
+			$donnees[$cons]["titreLong"] = stripslashes(htmlentities($row["titreLong"], ENT_QUOTES));
+>>>>>>> 1e8fac52507c4e9cbe6bd529953280999e5130a7
+			$cons ++;
+                    }
+                }
+	
+<<<<<<< HEAD
 	$num = 1;
 	
 	$evenement ='';
+=======
+                $evenement = '';
+>>>>>>> 1e8fac52507c4e9cbe6bd529953280999e5130a7
 	
-	for($jour=1; $jour<32; $jour++)
-	{
-		echo'<tr>';
+                for($jour=1; $jour<32; $jour++)	{
+                    echo'<tr>';
 		
+<<<<<<< HEAD
 		for($mois = $debutSemestre; $mois < ($debutSemestre + 6) ; $mois++)
 		{			
 			$boucle = 0;
@@ -273,4 +278,53 @@ else
 		</table>
         </div>
     </body>
+=======
+                    for($mois = $debutSemestre; $mois < ($debutSemestre + 6) ; $mois++) {			
+                        $boucle = 0;
+                        if(!empty($donnees)){
+                            for($k=0; $k<count($donnees); $k++){
+                                $vieux_timestamp = mktime(00, 00, 00, $mois, $jour, $annee);
+                                if($vieux_timestamp == $donnees[$k]["dateEvenement"]) {
+                                    $titreCourt[$boucle] = $donnees[$k]["titreCourt"];
+                                    $titreLong[$boucle] = $donnees[$k]["titreLong"];
+                                    $boucle++;
+                                }
+                            }
+                        }
+
+                        // CAS 0 : le jour n'existe pas (31 fevrier)
+                        if($jour > retourneJour($annee, $mois))	{
+                            echo '<th></th>'; //un peu sale, a modifier avec des styles
+                        }
+                        else if ($boucle == 0) { // Cas 1 : aucun vnement
+                            echo '<td onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.$jour.'</a></td>';
+                        }
+                        else if ($boucle > 1) { // Cas 2 : plusieurs evenements
+                            echo '<td class="info" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
+                            echo $jour . '<img STYLE="vertical-align: -3px; margin-left: 5px; margin-right: 2px;" src="./Images/warning_exclamation.png" height="15" width="15">' . ' Evenements : ' . $boucle;
+
+                            echo '<span>';
+                            for ($i=0 ; $i<$boucle ; $i++) {
+                                echo '<div>';
+                                echo ($i + 1) . ': ' .$titreLong[$i]; 
+                                echo '</div>';
+                            }
+                            echo '</span>';
+                            echo '</td>';
+                        }
+                        else { // Cas 3 : 1 seul evenement
+                            echo '<td class="info" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
+                            echo $jour . ' ' . $titreCourt[0] . '<span>' . $titreLong[0] . '</span>';
+                            echo'</td>';
+                        }
+                    }
+                    echo'</tr>';
+                }
+                ?>
+
+                <?php mysql_close(); ?>	
+            </table>
+        </div><!--
+    --></body>
+>>>>>>> 1e8fac52507c4e9cbe6bd529953280999e5130a7
 </html>

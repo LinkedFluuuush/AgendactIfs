@@ -6,14 +6,23 @@
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../styles.css" rel="stylesheet" type="text/css">
     </head>
-    <body>
-        <?php
+    <body><!--
+        --><div id="nav">
+           Navigation
+        </div><!--
+        
+        --><?php
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
-        
-        //$annee = date('Y');
-        //$mois = date('m');
-        //$jour = date('d');
+	
+	$annee = date('Y');
+        $mois = date('m');
+	$jourDebut = date('d');
+	$jourFin = date('d')+7;
+	$mois1 = $mois;
+        $mois2 = $mois;
+	$annee1 = $annee;
+	$annee2 = $annee;
         
 		// TEST A EFFACER PLUS TARD
 			$idUtil = 1;
@@ -208,6 +217,6 @@
                     echo '</tr>';
                 }
                 ?>
-        </div>
-    </body>
+        </div><!--
+    --></body>
 </html>
