@@ -85,25 +85,28 @@
                         <a href="javascript:getEveModif(<?php echo $numeroEve; ?>);">Modifier</a>
                         <a href="javascript:cal_supprimerEve(<?php echo $numeroEve; ?>, <?php echo $annee; ?>, <?php echo $mois; ?>, <?php echo $jour; ?>, <?php echo $_GET['u']; ?>);">Supprimer</a>
                     <?php } ?>
-                    <p><?php echo $desc; ?></p>
-                    <?php if(!empty($lieu)) echo '<p>Lieu : ' . $lieu . '.</p>'; ?>
-                    <p><?php echo 'Post&eacute; par ' . $auteur . ' le ' . $dateInsert . '.'; ?></p>
-
+                    
+                    <p>
+                        <?php echo $desc.'<br>'; ?>
+                        <?php if(!empty($lieu))
+                            echo '<b>Lieu : </b>' . $lieu . '<br>'; 
+                        echo '<b>Post&eacute; par</b> ' . $auteur . ' <b>le</b> ' . $dateInsert . '<br>'; ?>
+                    </p>
                     <?php $i++;
                 }
             }
             else { ?>
-                <p>Il n'y a aucun &eacute;v&eacute;nement pour cette date.</p>
+                <p>Il n'y a aucun &eacute;v&eacute;nement à cette date.</p>
             <?php }
                 if(!empty($nomSession))
                     echo '<a href="javascript:getEveCrea(' . $annee . ', ' . $mois . ', ' . $jour .');">Ajouter</a>';
 
                 if ($_GET['u'] == 1) {
-                        echo '<a href="semestre.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
+                    echo '<a href="semestre.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
                 }
                 
                 if ($_GET['u'] == 2) {
-                        echo '<a href="mois.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
+                    echo '<a href="mois.php?annee=' . $annee . '&mois=' . $mois . '">Retour</a>';
                 } ?>
         </div><!--
     --></body>
