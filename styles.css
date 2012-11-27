@@ -65,6 +65,12 @@ html, body {
     background-color: #e6e6e6;
 }
 
+#corpsCal table {
+    margin: 10px 10% 0 10%;
+    width:80%; /* taille des tableaux */
+    border-collapse: collapse;
+}
+
 #corpsCal table.titreCal {
     margin: 0;
     width: 100%;
@@ -79,13 +85,10 @@ html, body {
     font-weight: bold;
     
     color: #72777b;
-
 }
 
-#corpsCal table {
-    margin: 10px 10% 0 10%;
-    width:80%; /* taille des tableaux */
-    border-collapse: collapse;
+#corpsCal table.titreCal th a {
+    color: #72777b;
 }
 
 #corpsCal th {
