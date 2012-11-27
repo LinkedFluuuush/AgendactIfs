@@ -238,7 +238,7 @@ else
 			else if ($boucle > 1)
 			{
 				echo '<td class="info" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
-				echo $jour . '<img STYLE="vertical-align: -3px; margin-left: 5px; margin-right: 2px;" src="./Images/warning_exclamation.png" height="15" width="15">' . ' Evenements : ' . $boucle;
+				echo $jour . /*'<img STYLE="vertical-align: -3px; margin-left: 5px; margin-right: 2px;" src="./Images/warning_exclamation.png" height="15" width="15">' . */' Evenements : ' . $boucle;
 				
 				echo '<span>';
 				for ($i=0 ; $i<$boucle ; $i++)

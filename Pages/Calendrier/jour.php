@@ -14,7 +14,7 @@ $mois = date('m');
 $jour = date('d');
 
 //si les variables $_POST existent, on les utilises et au passage, on les stockent dans les variable de session
-if((!empty($_POST['annee'])) && (!empty($_POST['mois'])) && (!empty($_POST['jour'])))
+if((!empty($_GET['annee'])) && (!empty($_GET['mois'])) && (!empty($_GET['jour'])))
 {
 	$annee = $_POST['annee'];
 	$mois = $_POST['mois'];
@@ -27,7 +27,6 @@ if((!empty($_POST['annee'])) && (!empty($_POST['mois'])) && (!empty($_POST['jour
 	if($mois == 13)
 		$mois = 0;
 }
-
 //sinon, on utilise les session
 //si les variables $_GET existent, on les utilises et au passage, on les stockent dans les variable de session
 if((!empty($_GET['a'])) && (!empty($_GET['m'])) && (!empty($_GET['j'])))

@@ -79,6 +79,7 @@
 	//----------
 	$idUtil = 1;
 	$idSession = 1; //$_SESSION['login'];
+	$nomSession = 'Test';
 	?>
 	
 	<?php 
@@ -222,7 +223,7 @@
 				//-------------------------------------------------------------------------------------------------------------------
 
 				// pour les 7 jours de la semaine
-				for($j = 1; $j < 8; $j++) {			
+				for($j = 1; $j < 8; $j++) {
 					$boucle = 0;
 
 					//on recupere les données du jour
