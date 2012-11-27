@@ -16,24 +16,24 @@
         include("../../Fonctions_Php/diverses_fonctions.php");
 	
 	$annee = date('Y');
-        $mois = date('m');
+    $mois = date('m');
 	$jourDebut = date('d');
 	$jourFin = date('d')+7;
 	$mois1 = $mois;
-        $mois2 = $mois;
+    $mois2 = $mois;
 	$annee1 = $annee;
 	$annee2 = $annee;
         
 		// TEST A EFFACER PLUS TARD
 			$idUtil = 1;
 		
-			$jourDebut = 12;
+/* 			$jourDebut = 12;
             $jourFin = 18;
             $mois1 = 11;
             $mois2 = 11;
             $annee1 = 2012;
             $annee2 = 2012; 
-		
+		 */
         if ((!empty($_GET['jourDebutPrec'])) && (!empty($_GET['jourFinPrec']))) {
             $jourDebut = $_GET['jourDebutPrec'];
             $jourFin = $_GET['jourFinPrec'];
