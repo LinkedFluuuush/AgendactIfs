@@ -65,6 +65,23 @@ html, body {
     background-color: #e6e6e6;
 }
 
+#corpsCal table.titreCal {
+    margin: 0;
+    width: 100%;
+}
+
+#corpsCal table.titreCal th {
+    padding-top: 4px;
+    padding-bottom: 2px;
+
+    font-family : "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
+    font-size: 100%;
+    font-weight: bold;
+    
+    color: #72777b;
+
+}
+
 #corpsCal table {
     margin: 10px 10% 0 10%;
     width:80%; /* taille des tableaux */
@@ -110,12 +127,6 @@ html, body {
 
 
 /* PARTIE MOIS */
-
-#corpsCal.mois table.titreCal {
-    margin: 0;
-    width: 100%;
-}
-
 #corpsCal.mois td {
     /* hauteur des cases */
     height: 113px; 

@@ -99,42 +99,17 @@
         ?><!-- 
         
         --><div id="corpsCal" class="semaine">
-            <table id="titreCal">
-                <!--<colgroup>
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                </colgroup>-->
-                
-                <tr id="titreCal">
-                    <th></th>
-                    <th></th>
+            <table class="titreCal">                
+                <tr class="titreCal">
                     <th><a href="#"> |< </a></th>
                     <th><a href="#"> < </a></th>
-                    <th></th>   
-                    <th><?php echo "$jourDebut $nomMois1 $annee1 au $jourFin $nomMois2 $annee2"; ?></th>
-                    <th></th>
+                    <th colspan="3"><?php echo "$jourDebut $nomMois1 $annee1 au $jourFin $nomMois2 $annee2"; ?></th>
                     <th><a href="#"> > </a></th>
                     <th><a href="#"> >| </a></th>
-                    <th></th>
                 </tr>
             </table>
             
             <table>
-                <colgroup>
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                </colgroup>
                 <tr>
                     <th></th>
                     <th>Lundi</th>

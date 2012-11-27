@@ -72,35 +72,15 @@
         ?><!--
         
         --><div id="corpsCal" class="semestre">
-            <table>
-                <colgroup>
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                </colgroup>
-                <th><a href="semestre.php?a=<?php echo $anneePrec; ?>&s=<?php echo $semestrePrec; ?>">< </a></th>
-                <th></th>
-                <th></th>
-                <th><?php echo $annee . ' Semestre ' . $semestre; ?></th>
-                <th></th>
-                <th></th>
-                <th><a href="semestre.php?a=<?php echo $anneeSuiv; ?>&s=<?php echo $semestreSuiv; ?>"> > </a></th>
+            <table class="titreCal">
+                <tr class="titreCal">
+                    <th><a href="semestre.php?a=<?php echo $anneePrec; ?>&s=<?php echo $semestrePrec; ?>">< </a></th>
+                    <th colspan="4"><?php echo $annee . ' Semestre ' . $semestre; ?></th>
+                    <th><a href="semestre.php?a=<?php echo $anneeSuiv; ?>&s=<?php echo $semestreSuiv; ?>"> > </a></th>
+                </tr>
             </table>
             
-            <table>
-     		<colgroup>
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-     		</colgroup>
-                
+            <table>                
      		<?php if ($semestre ==1) { ?>
      		<tr>
                     <th><a href="mois.php?annee=<?php echo($annee);?>&mois=1" style="cursor: pointer;"> Janvier </a></th>

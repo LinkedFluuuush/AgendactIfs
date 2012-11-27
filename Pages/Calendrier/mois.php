@@ -92,15 +92,6 @@
         --><div id="corpsCal" class="mois">
             <!-- Affichage du nom du mois + année et des liens du mois précédent/suivant -->
             <table class="titreCal">
-                <colgroup>
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                </colgroup>
                 <tr class="titreCal">
                     <th><a href="mois.php?annee=<?php echo $annee; ?>&mois=1"> |< </a></th>
                     <th><a href="mois.php?annee=<?php echo $anneePrec; ?>&mois=<?php echo $moisPrec; ?>"> < </a></th>
@@ -111,16 +102,6 @@
             </table>
             
             <table>
-                <colgroup>
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                </colgroup>
                 <tr>
                     <th class="numSemaine"></th>
                     <th>Lundi</th>
