@@ -171,7 +171,7 @@
                     $i=0;
 					
                     while ($row = $resultats->fetch()) {
-                        //on recupère un tableau contenant les date et les titre long)
+                        //on recupï¿½re un tableau contenant les date et les titre long)
                         $donnees[$i]["dateDebut"] = htmlentities($row["DATEDEBUT"], ENT_QUOTES);
                         $donnees[$i]["libelleCourt"] = stripslashes(htmlentities($row["LIBELLECOURT"], ENT_QUOTES));
                         $donnees[$i]["libelleLong"] = stripslashes(htmlentities($row["LIBELLELONG"], ENT_QUOTES));
@@ -180,13 +180,13 @@
                 }
                 
                 
-                for ($i = 0 ; $i <= 23 ; $i++) { //heures de 0 à 23
+                for ($i = 0 ; $i <= 23 ; $i++) { //heures de 0 ï¿½ 23
                     echo '<tr>';
                     echo '<td>'.$i.':00</td>';
                     
                     $heure = $i.':00';
                     $time = explode(":", $heure);
-                    for ($j = 1 ; $j < 8 ; $j++) { //jours de 1 à 7
+                    for ($j = 1 ; $j < 8 ; $j++) { //jours de 1 ï¿½ 7
                         $boucle = 0;
                         
 						if (!empty($donnees)) {
