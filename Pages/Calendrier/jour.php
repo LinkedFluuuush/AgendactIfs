@@ -124,6 +124,3 @@ $date = miseEnPageJour($dateTimestampDebutMEPJ);
 	}
 	?>
 </div>
-<?php
-	mysql_close();
-?>
