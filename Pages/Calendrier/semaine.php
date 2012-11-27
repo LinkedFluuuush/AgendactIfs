@@ -6,34 +6,31 @@
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../styles.css" rel="stylesheet" type="text/css">
     </head>
-    <body><!--
-        --><div id="nav">
-           Navigation
-        </div><!--
-        
-        --><?php
+    <body>
+        <?php
+        include("../menu.php");
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
 	
 	$annee = date('Y');
-    $mois = date('m');
+        $mois = date('m');
 	$jourDebut = date('d');
 	$jourFin = date('d')+7;
 	$mois1 = $mois;
-    $mois2 = $mois;
+        $mois2 = $mois;
 	$annee1 = $annee;
 	$annee2 = $annee;
         
-		// TEST A EFFACER PLUS TARD
-			$idUtil = 1;
+        // TEST A EFFACER PLUS TARD
+        $idUtil = 1;
 		
-/* 			$jourDebut = 12;
-            $jourFin = 18;
-            $mois1 = 11;
-            $mois2 = 11;
-            $annee1 = 2012;
-            $annee2 = 2012; 
-		 */
+        /* $jourDebut = 12;
+        $jourFin = 18;
+        $mois1 = 11;
+        $mois2 = 11;
+        $annee1 = 2012;
+        $annee2 = 2012; */
+                        
         if ((!empty($_GET['jourDebutPrec'])) && (!empty($_GET['jourFinPrec']))) {
             $jourDebut = $_GET['jourDebutPrec'];
             $jourFin = $_GET['jourFinPrec'];
@@ -65,7 +62,6 @@
             $moisSuiv = $mois + 1;
             $anneeSuiv = $annee;
         }
-        
         
         $jourDebut = $jour; // correspond au lundi de chaque semaine
         $mois1 = $mois;
@@ -109,42 +105,22 @@
         
         $idSession = 1; //$_SESSION['login'];
         
-        ?>       
+        ?><!-- 
         
-        <div id="corpsCal" class="semaine">
-            <table>
-                <colgroup>
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                </colgroup>
-                <th></th>
-                <th><a href="#"> |< </a></th>
-                <th><a href="#"> < </a></th>
-                <th></th>   
-                <th><?php echo "$jourDebut $nomMois1 $annee1 au $jourFin $nomMois2 $annee2"; ?></th>
-                <th></th>
-                <th><a href="#"> > </a></th>
-                <th><a href="#"> >| </a></th>
+        --><div id="corpsCal" class="semaine">
+            <table class="titreCal">                
+                <tr class="titreCal">
+                    <th><a href="#"> |< </a></th>
+                    <th><a href="#"> < </a></th>
+                    <th colspan="3"><?php echo "$jourDebut $nomMois1 $annee1 au $jourFin $nomMois2 $annee2"; ?></th>
+                    <th><a href="#"> > </a></th>
+                    <th><a href="#"> >| </a></th>
+                </tr>
             </table>
             
             <table>
-                <colgroup>
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                    <col width="1*">
-                </colgroup>
                 <tr>
-                    <th>Heure</th>
+                    <th></th>
                     <th>Lundi</th>
                     <th>Mardi</th>
                     <th>Mercredi</th>
@@ -157,19 +133,19 @@
                 <?php
 
                 $sql = "SELECT aci_evenement . * , aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert
-						FROM aci_evenement
-						JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
-						JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
-						WHERE dateFin >=  '2012-11-12 00:00:00'
-						AND dateDebut <=  '2012-11-18 23:59:59'
-						AND ((estPublic =1) OR ( 1 = aci_evenement.idUtilisateur ))";
+                        FROM aci_evenement
+                        JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
+                        JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
+                        WHERE dateFin >=  '2012-11-12 00:00:00'
+                        AND dateDebut <=  '2012-11-18 23:59:59'
+                        AND ((estPublic =1) OR ( 1 = aci_evenement.idUtilisateur ))";
 				
 				
                 $resultats = $conn->query($sql);
                 $resultats->setFetchMode(PDO::FETCH_ASSOC);
+                
                 if ($resultats != null) {
                     $i=0;
-					
                     while ($row = $resultats->fetch()) {
                         //on recup�re un tableau contenant les date et les titre long)
                         $donnees[$i]["dateDebut"] = htmlentities($row["DATEDEBUT"], ENT_QUOTES);
@@ -180,44 +156,45 @@
                 }
                 
                 
-                for ($i = 0 ; $i <= 23 ; $i++) { //heures de 0 � 23
+                for ($i = 0 ; $i <= 23 ; $i++) { //heures de 0 à 23
                     echo '<tr>';
-                    echo '<td>'.$i.':00</td>';
+                    echo '<td class="nomHeure">'.$i.':00</td>';
                     
                     $heure = $i.':00';
                     $time = explode(":", $heure);
-                    for ($j = 1 ; $j < 8 ; $j++) { //jours de 1 � 7
+                    for ($j = 1 ; $j < 8 ; $j++) { //jours de 1 à 7
                         $boucle = 0;
                         
-						if (!empty($donnees)) {
-							for ($k = 0 ; $k < count($donnees) ; $k++) {
-								$heureTestee = date("Y-m-d H:i:s", mktime($time[0], 00, 00, $mois1, $jourDebut, $annee1));
-								//echo $heureTestee."<br>";
-								if($heureTestee == $donnees[$k]["dateDebut"]) {
-									$libelleCourt[$boucle] = $donnees[$k]["libelleCourt"];
-									$libelleLong[$boucle] = $donnees[$k]["libelleLong"];
-									$boucle++;
-								}
-							}
-						}
-						echo '<td class="caseDuMois">';
-						if ($boucle >= 1) {
-							echo '<ul>';
-							for ($l = 0 ; $l < $boucle ; $l++) {
-								echo '<li class="info">';
-								echo $libelleCourt[$l];
-								echo '<span>' . $libelleLong[$l] . '</span>';
-								echo '</li>';
-							}
-							echo '</ul>';
-						}
-						echo'</td>';                            
-						$jourDebut++;
+                        if (!empty($donnees)) {
+                            for ($k = 0 ; $k < count($donnees) ; $k++) {
+                                $heureTestee = date("Y-m-d H:i:s", mktime($time[0], 00, 00, $mois1, $jourDebut, $annee1));
+                                //echo $heureTestee."<br>";
+                                if($heureTestee == $donnees[$k]["dateDebut"]) {
+                                    $libelleCourt[$boucle] = $donnees[$k]["libelleCourt"];
+                                    $libelleLong[$boucle] = $donnees[$k]["libelleLong"];
+                                    $boucle++;
+                                }
+                            }
+                        }
+                        echo '<td>';
+                        if ($boucle >= 1) {
+                            echo '<ul>';
+                            for ($l = 0 ; $l < $boucle ; $l++) {
+                                echo '<li class="info">';
+                                echo $libelleCourt[$l];
+                                echo '<span>' . $libelleLong[$l] . '</span>';
+                                echo '</li>';
+                            }
+                            echo '</ul>';
+                        }
+                        echo'</td>';                            
+                        $jourDebut++;       
                     }
-					$jourDebut = $jourDebut-7;
+                    $jourDebut = $jourDebut-7;
                     echo '</tr>';
                 }
                 ?>
+            </table>
         </div><!--
     --></body>
 </html>
