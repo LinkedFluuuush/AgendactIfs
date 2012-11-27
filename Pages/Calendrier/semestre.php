@@ -8,7 +8,6 @@
     <body>
         <div class="nav">
             <?php include("../miniCalendrier.php");?>
-
         </div>
 
 <?php
