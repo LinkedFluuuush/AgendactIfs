@@ -132,7 +132,7 @@ html, body {
 /* PARTIE MOIS */
 #corpsCal.mois td {
     /* hauteur des cases */
-    height: 113px; 
+    height: 111px; 
     vertical-align: top;
     
     /* marges */
@@ -147,6 +147,7 @@ html, body {
     text-align: right;
     padding-right: 30px; /* pour que les num de semaines ne soient pas collés au tableau du mois */
     background-color: #e6e6e6;
+    width: 50px;
 }
 
 #corpsCal.mois td.numSemaine a {
