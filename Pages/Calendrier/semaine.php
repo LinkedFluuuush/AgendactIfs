@@ -114,13 +114,13 @@
             <table>
                 <tr>
                     <th></th>
-                    <th>Lundi</th>
-                    <th>Mardi</th>
-                    <th>Mercredi</th>
-                    <th>Jeudi</th>
-                    <th>Vendredi</th>
-                    <th>Samedi</th>
-                    <th>Dimanche</th>
+                    <th><?php echo('<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=3\'>Lundi</a>'); ?></th>
+                    <th><?php echo('<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jour+1).'&u=3\'>Mardi</a>'); ?></th>
+                    <th><?php echo('<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jour+2).'&u=3\'>Mercredi</a>'); ?></th>
+                    <th><?php echo('<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jour+3).'&u=3\'>Jeudi</a>'); ?></th>
+                    <th><?php echo('<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jour+4).'&u=3\'>Vendredi</a>'); ?></th>
+                    <th><?php echo('<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jour+5).'&u=3\'>Samedi</a>'); ?></th>
+                    <th><?php echo('<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jour+6).'&u=3\'>Dimanche</a>'); ?></th>
                 </tr>
                 
                 <?php
@@ -169,7 +169,7 @@
                                 }
                             }
                         }
-                        echo '<td>';
+                        echo '<td onclick="document.location.href =\'jour.php?a='.$annee.'&m='.$mois.'&j='.($jour + $j-1).'&u=3\';">';
                         if ($boucle >= 1) {
                             echo '<ul>';
                             for ($l = 0 ; $l < $boucle ; $l++) {
