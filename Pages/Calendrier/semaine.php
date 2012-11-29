@@ -38,24 +38,43 @@
         $timestamp = mktime(23, 59, 59, $mois, $jour, $annee);
         $jourSemaine = date('N', $timestamp); // indique quel jour se trouve le timestamp (ex : 1 = lundi)
         
-        if($mois == 1) {
-            $moisPrec = 12;
-            $anneePrec = $annee - 1;
-        }
-        else {
-            $moisPrec = $mois - 1;
-            $anneePrec = $annee;
-        }
+	$moisSuiv = $mois;
+	$anneeSuiv = $annee;
+	$moisPrec = $mois;
+	$anneePrec = $annee;
 
-        if($mois == 12) {
-            $moisSuiv = 1;
-            $anneeSuiv = $annee + 1;
-        }
-        else {
-            $moisSuiv = $mois + 1;
-            $anneeSuiv = $annee;
-        }
-        
+	if($jour > retourneJour($annee, $mois)-7){
+	    if($mois == 12) {
+		$moisSuiv = 1;
+		$anneeSuiv = $annee + 1;
+	    }
+	    else {
+		$moisSuiv = $mois + 1;
+		$anneeSuiv = $annee;
+	    }
+    	    $jourSuiv = ($jour+7)%7;
+	}
+	else{
+	    $jourSuiv = $jour+7;
+	}
+	
+	echo $jourSuiv.' '.$moisSuiv.' '.$anneeSuiv;
+	
+	if($jour <= 7){
+	    if($mois == 1) {
+		$moisPrec = 12;
+		$anneePrec = $annee - 1;
+	    }
+	    else {
+		$moisPrec = $mois - 1;
+		$anneePrec = $annee;
+	    }
+	    $jourPrec = retourneJour($anneePrec, $moisPrec) + ($jour-7);
+	}
+	else{
+	    $jourPrec = $jour-7;
+	}
+	        
         $jourDebut = $jour; // correspond au lundi de chaque semaine
         $mois1 = $mois;
         $mois2 = $mois;
@@ -103,11 +122,9 @@
         --><div id="corpsCal" class="semaine">
             <table class="titreCal">                
                 <tr class="titreCal">
-                    <th><a href="#"> |< </a></th>
-                    <th><a href="#"> < </a></th>
+                    <th><?php echo '<a href=\'semaine.php?annee='.$anneePrec.'&mois='.$moisPrec.'&jour='.$jourPrec.'\'> < </a>';?></th>
                     <th colspan="3"><?php echo "$jourDebut $nomMois1 $annee1 au $jourFin $nomMois2 $annee2"; ?></th>
-                    <th><a href="#"> > </a></th>
-                    <th><a href="#"> >| </a></th>
+                    <th><?php echo '<a href=\'semaine.php?annee='.$anneeSuiv.'&mois='.$moisSuiv.'&jour='.$jourSuiv.'\'> > </a>';?></th>
                 </tr>
             </table>
             
