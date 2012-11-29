@@ -13,23 +13,16 @@
         include("../../Fonctions_Php/diverses_fonctions.php");
 	
 	$annee = date('Y');
-        $mois = date('m');
+    $mois = date('m');
 	$jourDebut = date('d');
 	$jourFin = date('d')+7;
 	$mois1 = $mois;
-        $mois2 = $mois;
+    $mois2 = $mois;
 	$annee1 = $annee;
 	$annee2 = $annee;
         
         // TEST A EFFACER PLUS TARD
         $idUtil = 1;
-		
-        /* $jourDebut = 12;
-        $jourFin = 18;
-        $mois1 = 11;
-        $mois2 = 11;
-        $annee1 = 2012;
-        $annee2 = 2012; */
                         
         if ((!empty($_GET['jourDebutPrec'])) && (!empty($_GET['jourFinPrec']))) {
             $jourDebut = $_GET['jourDebutPrec'];
@@ -132,12 +125,12 @@
                 
                 <?php
 
-                $sql = "SELECT aci_evenement . * , aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert
+                $sql = "SELECT aci_evenement.* , aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert
                         FROM aci_evenement
                         JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
                         JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
-                        WHERE dateFin >=  '2012-11-12 00:00:00'
-                        AND dateDebut <=  '2012-11-18 23:59:59'
+                        WHERE dateFin >=  '$annee1-$mois1-$jourDebut 00:00:00'
+                        AND dateDebut <=  '$annee2-$mois2-$jourFin 23:59:59'
                         AND ((estPublic =1) OR ( 1 = aci_evenement.idUtilisateur ))";
 				
 				
