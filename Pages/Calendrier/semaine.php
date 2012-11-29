@@ -52,13 +52,13 @@
 		$moisSuiv = $mois + 1;
 		$anneeSuiv = $annee;
 	    }
-    	    $jourSuiv = ($jour+7)%7;
+    	    $jourSuiv = ($jour+7) - retourneJour($annee, $mois);
 	}
 	else{
 	    $jourSuiv = $jour+7;
 	}
 	
-	echo $jourSuiv.' '.$moisSuiv.' '.$anneeSuiv;
+//	echo $jourSuiv.' '.$moisSuiv.' '.$anneeSuiv;
 	
 	if($jour <= 7){
 	    if($mois == 1) {
