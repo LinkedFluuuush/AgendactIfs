@@ -58,7 +58,7 @@
 	    $jourSuiv = $jour+7;
 	}
 	
-	echo $jourSuiv.' '.$moisSuiv.' '.$anneeSuiv;
+//	echo $jourSuiv.' '.$moisSuiv.' '.$anneeSuiv;
 	
 	if($jour <= 7){
 	    if($mois == 1) {
