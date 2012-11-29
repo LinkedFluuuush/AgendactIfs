@@ -1,7 +1,7 @@
 <?php 			
 	$host = 'localhost'; //Votre host, souvent localhost
 	$user = 'root'; //votre login
-	$pass = ''; //Votre mot de passe
+	$pass = '300691'; //Votre mot de passe
 	$db = 'aci_bdd'; // Le nom de la base de donnee
 	
 	try
