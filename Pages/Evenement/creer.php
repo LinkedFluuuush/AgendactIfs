@@ -67,32 +67,16 @@ include("../../Fonctions_Php/connexion.php");
 	<select name="groupe1" id ="groupe1" onchange="selectGroupe2()">
 		<?php
 		//Récupération lieu
-		$sql = "SELECT libelle FROM aci_groupe where length(idgroupe) = 1";
+		$sql = "SELECT idgroupe, libelle FROM aci_groupe where length(idgroupe) = 1";
 				
 		$resultats = $conn->query($sql);
 		while($row = $resultats->fetch())
-			echo '<option value="'.utf8_encode($row['libelle']).'"> '.utf8_encode($row['libelle']).'</option>';
+			echo '<option value="'.utf8_encode($row['idgroupe']).'"> '.utf8_encode($row['libelle']).'</option>';
 		?>
 	</select>
 	<select name="groupe2" id ="groupe2">
-		<?php
-		//Récupération lieu
-		$sql = "SELECT libelle FROM aci_bdd.aci_contenir JOIN aci_groupe ON (aci_groupe.idgroupe = aci_contenir.idgroupe_1) where aci_contenir.idgroupe = 1;";
-				
-		$resultats = $conn->query($sql);
-		while($row = $resultats->fetch())
-			echo '<option value="'.utf8_encode($row['libelle']).'"> '.utf8_encode($row['libelle']).'</option>';
-		?>
 	</select>
 	<select name="groupe3" id ="groupe3">
-		<?php
-		//Récupération lieu
-		$sql = "SELECT libelle FROM aci_bdd.aci_contenir JOIN aci_groupe ON (aci_groupe.idgroupe = aci_contenir.idgroupe_1) where aci_contenir.idgroupe = 12;";
-				
-		$resultats = $conn->query($sql);
-		while($row = $resultats->fetch())
-			echo '<option value="'.utf8_encode($row['libelle']).'"> '.utf8_encode($row['libelle']).'</option>';
-		?>
 	</select>
 	</td></tr>
 	<div id="Eve_Message" class="message"></div>
@@ -115,18 +99,17 @@ if(!empty($_POST['titreCourt']))
 <script>
 function selectGroupe2(){
 	var list = document.getElementById('groupe1');
-	var selectionne = list.options[list.selectedIndex].innerHTML;
-	
-	var valueSend =  encodeURIComponent(selectionne);
+	var selectionne = list.value;
 	
 	var xhr = new XMLHttpRequest();
 	xhr.open('POST','../../Fonctions_Php/XMLSelectEvent.php');
 	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xhr.send('valeur='+valueSend);
+	xhr.send('valeur='+selectionne);
 	
 	xhr.onreadystatechange = function(){
 		if(xhr.readystate = xhr.DONE && (xhr.status == 200 || xhr.status == 0)){
 			var options = xhr.responseXML.getElementsByTagName('option');
+			alert('test');
 			var i;
 			var select = document.getElementById('groupe2');
 			for(i = 0; i < options.length; i++){
