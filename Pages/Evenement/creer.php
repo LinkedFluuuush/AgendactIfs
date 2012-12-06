@@ -1,81 +1,80 @@
 ﻿<?php
 //connexion a la bdd
 include("../../Fonctions_Php/connexion.php");
-
-$groupes = "";
-
-$query = mysql_query("SELECT * FROM eve_groupe ORDER BY nomGroupe");
-while($back = mysql_fetch_assoc($query)) 
-{
-	$groupes = $groupes . '<option value="' . $back["numeroGroupe"] . '">' . $back["nomGroupe"] . '</option>';
-}
 ?>
 
 <div id="titreCal"> Cr&eacute;er un &eacute;v&eacute;nement : </div>
 <div id="corpsCal">
 <center>
-<form action="" name="FormCreaEvenement" method="post" enctype="multipart/form-data">
+
+
+
+<form action="" name="FormCreaEvenement" method="post" enctype="multipart/form-data" id="formCreation">
 	<table cellpadding="4">
 		<tr>
 			<td class="descForm">Titre long : </td>
-			<td class="Form"><input type="text" name="Eve_titreLong" id="Eve_titreLong" value="" class="titreLong" maxlength=60 /></td>
+			<td class="Form"><input type="text" name="titreLong" id="Eve_titreLong" value="" class="titreLong" maxlength=32 /></td>
 		</tr>
 		<tr>
 			<td class="descForm">Titre court : </td>
-			<td class="Form"><input type="text" name="Eve_titreCourt" id="Eve_titreCourt" value="" class="titreCourt" maxlength=12 /></td>
+			<td class="Form"><input type="text" name="titreCourt" id="Eve_titreCourt" value="" class="titreCourt" maxlength=5 /></td>
 		</tr>
 		<tr>
 			<td class="descForm">Description :</td>
-			<td class="Form"><textarea name="Eve_description" rows="5" cols="45" id="Eve_description" class="area"></textarea></td>
+			<td class="Form"><textarea name="description" rows="5" cols="45" id="Eve_description" class="area"></textarea></td>
 		</tr>
 		<tr>
-			<td class="descForm"><span onclick="ds_sh(this, 'Eve_Form');">Date : </span></td>
-			<td class="Form">
-				<select name="Eve_Form_annee" id="Eve_Form_annee" class="date" onChange="modification('Eve_Form');">
-				</select>
-				<select name="Eve_Form_mois" id="Eve_Form_mois" class="date" onChange="modification('Eve_Form');">
-				</select>
-				<select name="Eve_Form_jour" id="Eve_Form_jour" class="date">
-				</select>
-			</td>
+			<td class="descForm">Date de début :</td>
+			<td class="Form"><input type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YY" class="dateDebut" maxlength=8 /></td>
 		</tr>
 		<tr>
-			<td class="descForm">Dur&eacute;e (en jour) : </td>
-			<td class="Form"><input type="text" name="Eve_duree" id="Eve_duree" value="" class="duree" maxlength=3/></td>
+			<td class="descForm">Date de fin :</td>
+			<td class="Form"><input type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YY" class="dateFin" maxlength=8 /></td>
 		</tr>
 		<tr>
 			<td class="descForm">Lieu : </td>
-			<td class="Form"><input type="text" name="Eve_lieu" id="Eve_lieu" value="" class="lieu" maxlength=50/></td>
+			<td class="Form">
+			<select name="lieu">
+				<?php
+				//Récupération lieu
+				$sql = "SELECT libelle FROM aci_lieu";
+						
+				$resultats = $conn->query($sql);
+				while($row = $resultats->fetch())
+					echo '<option value="'.$row['libelle'].'"> '.$row['libelle'].'</option>';
+				?>
+			</select>
+			
 		</tr>
 		<tr>
 			<td class="descForm"> Type : </td>
-			<td class="Form"> <input type="radio" name="Eve_public" id="public" value="1" checked="checked"> <label for="public">public</label> <input type="radio" name="Eve_public" id="prive" value="0"> <label for="prive">priv&eacute;</label> </td>
-		</tr>
-		<!--
-		<tr>
-			<td class="descForm">Groupe concern&eacute; : </td>
-			
 			<td class="Form">
-				<select name="Eve_groupeConcern" id="Eve_groupeConcern" class="groupe">
-					<?php //echo $groupes; ?>
-				</select>
+			<input type="radio" name="public" id="public" value="1" checked="checked"> <label for="public">public</label>
+			<input type="radio" name="public" id="prive" value="0"> <label for="prive">priv&eacute;</label>
 			</td>
 		</tr>
 		<tr>
-			<td class="descForm">Groupe rappel&eacute; : </td>
-			<td class="Form">
-				<select name="Eve_groupeRappel" id="Eve_groupeRappel" class="groupe">
-					<?php //echo $groupes; ?>
-				</select>
-			</td>
+			<td class="descForm"> Ajouter un participant : </td>
+			<td class="Form"> <input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/> <a id="plusParticipant" href=""> <img src="../../Images/boutonPlusReduit.png"> </a></td>
 		</tr>
-		-->
-		
+		<tr>
+			<td class="descForm"> Ajouter un groupe de participants : </td>
+			<td class="Form"> <input type="text" name="addGroupeParticipant" id="addGroupeParticipant" class="boutonForm"/> <a id="plusGroupeParticipant" href=""> <img src="../../Images/boutonPlusReduit.png"> </a></td>
+		</tr>
 	</table>
 	<br>
 	<div id="Eve_Message" class="message"></div>
-	<input type="button" value="Valider" class="boutonForm" onclick="clickCreation();"/>
+	<input type="submit" value="Valider" class="boutonForm"/>
 	<input type="reset" value="R&eacute;initialiser" class="boutonForm"/>
 </form>
 </center>
 </div>
+
+<?php
+if(!empty($_POST['titreCourt']))
+{
+	$sql = "INSERT INTO `aci_bdd`.`aci_evenement` (`IDEVENEMENT`, `IDUTILISATEUR`, `IDPRIORITE`, `IDLIEU`, `LIBELLELONG`, `LIBELLECOURT`, `DESCRIPTION`, `DATEDEBUT`, `DATEFIN`, `ESTPUBLIC`, `DATEINSERT`) 
+	VALUES ((select max(idevenement) from aci_evenement), '1', '1', '1', 'Test Insertion', 'test', 'Test d''insertion d''événement', '2012-12-16 21:00:00', '2012-12-17 03:00:00', '1', '2012-12-01 00:00:00');";
+						
+	$resultats = $conn->query($sql);
+}
