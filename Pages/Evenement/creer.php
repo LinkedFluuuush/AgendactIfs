@@ -113,9 +113,26 @@ if(!empty($_POST['titreCourt']))
 ?>
 
 <script>
-    function selectGroupe2(){
+function selectGroupe2(){
 	var list = document.getElementById('groupe1');
 	var selectionne = list.options[list.selectedIndex].innerHTML;
-	alert(selectionne);
-    }
+	
+	var valueSend =  encodeURIComponent(selectionne);
+	
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST','../../Fonctions_Php/XMLSelectEvent.php');
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhr.send('valeur='+valueSend);
+	
+	xhr.onreadystatechange = function(){
+		if(xhr.readystate = xhr.DONE && (xhr.status == 200 || xhr.status == 0)){
+			var options = xhr.responseXML.getElementsByTagName('option');
+			var i;
+			var select = document.getElementById('groupe2');
+			for(i = 0; i < options.length; i++){
+				select.appendChild(options[i]);
+			}
+		}
+	}
+}
 </script>
