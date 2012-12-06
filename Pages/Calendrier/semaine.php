@@ -34,6 +34,12 @@
             $mois = $_GET['mois'];
             $annee = $_GET['annee'];
         }
+        //sinon, on utilise les session
+        else if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty($_SESSION['jour']))) {
+            $annee = $_SESSION['annee'];
+            $mois = $_SESSION['mois'];
+            $jour = $_SESSION['jour'];
+        }
         
         $timestamp = mktime(23, 59, 59, $mois, $jour, $annee);
         $jourSemaine = date('N', $timestamp); // indique quel jour se trouve le timestamp (ex : 1 = lundi)

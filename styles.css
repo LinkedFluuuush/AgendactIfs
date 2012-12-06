@@ -45,6 +45,23 @@ html, body {
    color: #72777b;
 }
 
+.titreCalMenu { 
+   padding-top: 4px;
+   padding-bottom: 2px;
+   
+   font-family : "Hoefler Text", "Bookman Antiqua", Palatino, "Utopia", "Times New Roman", Times, "New Century Schoolbook",  Georgia, "New York", serif ;
+   font-size: 100%;
+   font-weight: bold;
+   text-align: center;
+   vertical-align: middle;
+   
+   border-bottom: dashed #6894ae 1px;
+   
+   background-color: #a7d1eb;
+   
+   color: #72777b;
+}
+
 #corpsCal {
     /* position du bloc */
     display: inline-block;
@@ -129,9 +146,31 @@ html, body {
 
 
 /* MENU */
-td.menu {
+.menu table {
+    width: 100%;
+    background-color: #e6e6e6;
+    border-collapse: collapse;
+    border: none;
+} 
+
+.menu td {
     width: 100px;
-    text-align: center;
+    text-align: left;
+    cursor: pointer;
+    padding: 0 10px 0 10px;
+}
+
+
+.menu td:hover {
+    /*text-align: right;*/
+    background-color: #edeeef;
+}
+
+.menu td a {
+    color: #72777b;
+    text-decoration: none;
+    font-family: Helvetica;
+    font-size: 85%;
 }
 
 /* FIN MENU */
