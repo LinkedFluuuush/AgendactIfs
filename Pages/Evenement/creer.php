@@ -78,3 +78,10 @@ if(!empty($_POST['titreCourt']))
 						
 	$resultats = $conn->query($sql);
 }
+?>
+
+<script>
+  var div = document.getElementById('addGroupeParticipant');
+
+  alert(div);
+</script>
