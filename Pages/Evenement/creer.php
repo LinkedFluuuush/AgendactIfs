@@ -64,7 +64,7 @@ include("../../Fonctions_Php/connexion.php");
 	</table>
 	<br>
 	<tr><td>
-	<select name="groupe1">
+	<select name="groupe1" id ="groupe1" onchange="selectGroupe2()">
 		<?php
 		//Récupération lieu
 		$sql = "SELECT libelle FROM aci_groupe where length(idgroupe) = 1";
@@ -74,7 +74,7 @@ include("../../Fonctions_Php/connexion.php");
 			echo '<option value="'.utf8_encode($row['libelle']).'"> '.utf8_encode($row['libelle']).'</option>';
 		?>
 	</select>
-	<select name="groupe2">
+	<select name="groupe2" id ="groupe2">
 		<?php
 		//Récupération lieu
 		$sql = "SELECT libelle FROM aci_bdd.aci_contenir JOIN aci_groupe ON (aci_groupe.idgroupe = aci_contenir.idgroupe_1) where aci_contenir.idgroupe = 1;";
@@ -84,7 +84,7 @@ include("../../Fonctions_Php/connexion.php");
 			echo '<option value="'.utf8_encode($row['libelle']).'"> '.utf8_encode($row['libelle']).'</option>';
 		?>
 	</select>
-	<select name="groupe3">
+	<select name="groupe3" id ="groupe3">
 		<?php
 		//Récupération lieu
 		$sql = "SELECT libelle FROM aci_bdd.aci_contenir JOIN aci_groupe ON (aci_groupe.idgroupe = aci_contenir.idgroupe_1) where aci_contenir.idgroupe = 12;";
@@ -111,3 +111,11 @@ if(!empty($_POST['titreCourt']))
 	$resultats = $conn->query($sql);
 }
 ?>
+
+<script>
+    function selectGroupe2(){
+	var list = document.getElementById('groupe1');
+	var selectionne = list.options[list.selectedIndex].innerHTML;
+	alert(selectionne);
+    }
+</script>
