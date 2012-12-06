@@ -17,6 +17,24 @@ function retourneEve($numEvenement)
     return $Eve;
 }
 
+function explodeDate($date)
+{
+	$date = explode(' ', $date);
+	$heure = substr($date[1], 0, 5);
+	$date = explode('-', $date[0]);
+	$date[3] = $heure;
+	
+	return $date;
+}
+
+function formattageDate($dateI)
+{
+	$date[0] = $dateI[3];
+	$date[1] = $dateI[2].'-'.$dateI[1].'-'.$dateI[0];
+	
+	return $date;
+}
+
 /* cette fonction sert à verifier si une connection ldap est valide */
 function sessionValide($utilisateur, $pass)
 {

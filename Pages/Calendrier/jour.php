@@ -67,18 +67,21 @@
                 $i=1;
                 while ($row = $resultats->fetch() and $i != 0) {
                     $numeroEve = htmlentities($row['IDEVENEMENT'], ENT_QUOTES);	
-                    $timestamp = htmlentities($row["DATEDEBUT"], ENT_QUOTES);
+                    $dateDebut = htmlentities($row["DATEDEBUT"], ENT_QUOTES);
+                    $dateFin = htmlentities($row["DATEFIN"], ENT_QUOTES);
                     $titre = stripcslashes(htmlentities($row["LIBELLELONG"], ENT_QUOTES));
                     $desc = stripcslashes(htmlentities($row["DESCRIPTION"], ENT_QUOTES));
                     $auteur = stripcslashes(htmlentities($row["prenom"], ENT_QUOTES)).' '.stripcslashes(htmlentities($row["nom"], ENT_QUOTES));
                     $idAuteur = stripcslashes(htmlentities($row["idUtilisateur"], ENT_QUOTES));
-
                     $lieu = stripcslashes(htmlentities($row["lieu"], ENT_QUOTES));
 
                     $dateInsert = substr($row["DATEINSERT"],0,10);
                     $tabDateInsert = explode('-', $dateInsert);
-                    $dateInsert = $tabDateInsert[2].'/'.$tabDateInsert[1].'/'.$tabDateInsert[0]; ?>
-
+                    $dateInsert = $tabDateInsert[2].'/'.$tabDateInsert[1].'/'.$tabDateInsert[0];
+					
+					$dateDebut = formattageDate(explodeDate($dateDebut));
+					$dateFin = formattageDate(explodeDate($dateFin));
+					?>
                     <br><span class="titre"><?php echo trim($titre); ?></span>
                     
                     <?php if($nomSession == $auteur) { ?>
@@ -87,10 +90,14 @@
                     <?php } ?>
                     
                     <p>
-                        <?php echo $desc.'<br>'; ?>
-                        <?php if(!empty($lieu))
-                            echo '<b>Lieu : </b>' . $lieu . '<br>'; 
-                        echo '<b>Post&eacute; par</b> ' . $auteur . ' <b>le</b> ' . $dateInsert . '<br>'; ?>
+                    <?php
+						echo 'A '.$dateDebut[0].' le '.$dateDebut[1];
+						if(!empty($dateFin))
+							echo' jusqu\'à '.$dateFin[0].' le '.$dateFin[1];
+						echo '<br>'.$desc.'<br>';
+                        if(!empty($lieu))
+                            echo 'Lieu : ' . $lieu . '<br>'; 
+                        echo 'Post&eacute; par ' . $auteur . ' le ' . $dateInsert . '<br>'; ?>
                     </p>
                     <?php $i++;
                 }

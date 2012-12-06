@@ -52,7 +52,7 @@
 		$moisSuiv = $mois + 1;
 		$anneeSuiv = $annee;
 	    }
-    	    $jourSuiv = ($jour+7)%7;
+    	    $jourSuiv = ($jour+7) - retourneJour($annee, $mois);
 	}
 	else{
 	    $jourSuiv = $jour+7;
