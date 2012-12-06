@@ -63,6 +63,38 @@ include("../../Fonctions_Php/connexion.php");
 		</tr>
 	</table>
 	<br>
+	<tr><td>
+	<select name="groupe1">
+		<?php
+		//Récupération lieu
+		$sql = "SELECT libelle FROM aci_groupe where length(idgroupe) = 1";
+				
+		$resultats = $conn->query($sql);
+		while($row = $resultats->fetch())
+			echo '<option value="'.utf8_encode($row['libelle']).'"> '.utf8_encode($row['libelle']).'</option>';
+		?>
+	</select>
+	<select name="groupe2">
+		<?php
+		//Récupération lieu
+		$sql = "SELECT libelle FROM aci_bdd.aci_contenir JOIN aci_groupe ON (aci_groupe.idgroupe = aci_contenir.idgroupe_1) where aci_contenir.idgroupe = 1;";
+				
+		$resultats = $conn->query($sql);
+		while($row = $resultats->fetch())
+			echo '<option value="'.utf8_encode($row['libelle']).'"> '.utf8_encode($row['libelle']).'</option>';
+		?>
+	</select>
+	<select name="groupe3">
+		<?php
+		//Récupération lieu
+		$sql = "SELECT libelle FROM aci_bdd.aci_contenir JOIN aci_groupe ON (aci_groupe.idgroupe = aci_contenir.idgroupe_1) where aci_contenir.idgroupe = 12;";
+				
+		$resultats = $conn->query($sql);
+		while($row = $resultats->fetch())
+			echo '<option value="'.utf8_encode($row['libelle']).'"> '.utf8_encode($row['libelle']).'</option>';
+		?>
+	</select>
+	</td></tr>
 	<div id="Eve_Message" class="message"></div>
 	<input type="submit" value="Valider" class="boutonForm"/>
 	<input type="reset" value="R&eacute;initialiser" class="boutonForm"/>
@@ -78,3 +110,4 @@ if(!empty($_POST['titreCourt']))
 						
 	$resultats = $conn->query($sql);
 }
+?>
