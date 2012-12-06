@@ -25,11 +25,11 @@ include("../../Fonctions_Php/connexion.php");
 		</tr>
 		<tr>
 			<td class="descForm">Date de début :</td>
-			<td class="Form"><input type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YY" class="dateDebut" maxlength=8 /></td>
+			<td class="Form"><input type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YYYY" class="dateDebut" maxlength=10 /></td>
 		</tr>
 		<tr>
 			<td class="descForm">Date de fin :</td>
-			<td class="Form"><input type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YY" class="dateFin" maxlength=8 /></td>
+			<td class="Form"><input type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" class="dateFin" maxlength=10 /></td>
 		</tr>
 		<tr>
 			<td class="descForm">Lieu : </td>
