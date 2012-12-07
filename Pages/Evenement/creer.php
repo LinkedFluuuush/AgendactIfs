@@ -102,20 +102,21 @@ function selectGroupe2(){
 	var selectionne = list.value;
 	
 	var xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function(){
+	    if(xhr.readystate == 4 && (xhr.status == 200 || xhr.status == 0)){
+		    alert('test');
+		    var options = xhr.responseXML.getElementsByTagName('option');
+		    var i;
+		    var select = document.getElementById('groupe2');
+		    for(i = 0; i < options.length; i++){
+			    select.appendChild(options[i]);
+		    }
+	    }
+	}
+	
 	xhr.open('POST','../../Fonctions_Php/XMLSelectEvent.php');
 	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xhr.send('valeur='+selectionne);
-	
-	xhr.onreadystatechange = function(){
-		if(xhr.readystate = xhr.DONE && (xhr.status == 200 || xhr.status == 0)){
-			var options = xhr.responseXML.getElementsByTagName('option');
-			alert('test');
-			var i;
-			var select = document.getElementById('groupe2');
-			for(i = 0; i < options.length; i++){
-				select.appendChild(options[i]);
-			}
-		}
-	}
 }
 </script>
