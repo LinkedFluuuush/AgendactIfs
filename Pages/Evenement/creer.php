@@ -65,6 +65,7 @@ include("../../Fonctions_Php/connexion.php");
 	<br>
 	<tr><td>
 	<select name="groupe1" id ="groupe1" onchange="selectGroupe2()">
+	    <option value="0"></option>
 		<?php
 		//Récupération lieu
 		$sql = "SELECT idgroupe, libelle FROM aci_groupe where length(idgroupe) = 1";
@@ -74,9 +75,11 @@ include("../../Fonctions_Php/connexion.php");
 			echo '<option value="'.utf8_encode($row['idgroupe']).'"> '.utf8_encode($row['libelle']).'</option>';
 		?>
 	</select>
-	<select name="groupe2" id ="groupe2">
+	<select name="groupe2" id ="groupe2" onchange="selectGroupe3()">
+	    <option value="0"></option>
 	</select>
 	<select name="groupe3" id ="groupe3">
+	    <option value="0"></option>
 	</select>
 	</td></tr>
 	<div id="Eve_Message" class="message"></div>
@@ -103,14 +106,45 @@ function selectGroupe2(){
 	
 	var xhr = new XMLHttpRequest();
 	
-	xhr.onreadystatechange = function(){
-	    if(xhr.readystate == 4 && (xhr.status == 200 || xhr.status == 0)){
-		    alert('test');
-		    var options = xhr.responseXML.getElementsByTagName('option');
-		    var i;
-		    var select = document.getElementById('groupe2');
-		    for(i = 0; i < options.length; i++){
-			    select.appendChild(options[i]);
+	xhr.onreadystatechange = function (){
+	    if(xhr.readyState == 4){
+		    if(xhr.status == 200 || xhr.status == 0){
+			/*var response = xhr.responseXML;
+			alert(xhr.getAllResponseHeaders());
+			var options = response.getElementsByTagName('option');
+			var i;
+			var select = document.getElementById('groupe2');
+			for(i = 0; i < options.length; i++){
+				select.appendChild(options[i]);
+			}*/
+			document.getElementById('groupe2').innerHTML += xhr.responseText;
+		    }
+	    }
+	}
+	
+	xhr.open('POST','../../Fonctions_Php/XMLSelectEvent.php');
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhr.send('valeur='+selectionne);
+}
+
+function selectGroupe3(){
+	var list = document.getElementById('groupe2');
+	var selectionne = list.value;
+	
+	var xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function (){
+	    if(xhr.readyState == 4){
+		    if(xhr.status == 200 || xhr.status == 0){
+			/*var response = xhr.responseXML;
+			alert(xhr.getAllResponseHeaders());
+			var options = response.getElementsByTagName('option');
+			var i;
+			var select = document.getElementById('groupe3');
+			for(i = 0; i < options.length; i++){
+				select.appendChild(options[i]);
+			}*/
+			document.getElementById('groupe3').innerHTML += xhr.responseText;
 		    }
 	    }
 	}
