@@ -117,7 +117,8 @@ function selectGroupe2(){
 			for(i = 0; i < options.length; i++){
 				select.appendChild(options[i]);
 			}*/
-			document.getElementById('groupe2').innerHTML += xhr.responseText;
+			document.getElementById('groupe2').innerHTML = "<option value=0></option>" + xhr.responseText;
+			document.getElementById('groupe3').innerHTML = "<option value=0></option>";
 		    }
 	    }
 	}
@@ -144,7 +145,7 @@ function selectGroupe3(){
 			for(i = 0; i < options.length; i++){
 				select.appendChild(options[i]);
 			}*/
-			document.getElementById('groupe3').innerHTML += xhr.responseText;
+			document.getElementById('groupe3').innerHTML = "<option value=0></option>" + xhr.responseText;
 		    }
 	    }
 	}
