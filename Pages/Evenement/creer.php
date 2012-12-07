@@ -64,40 +64,27 @@ include("../../Fonctions_Php/connexion.php");
 	</table>
 	<br>
 	<tr><td>
-	<select name="groupe1">
+	<select name="groupe1" id ="groupe1" onchange="selectGroupe2()">
+	    <option value="0"></option>
 		<?php
 		//Récupération lieu
-		$sql = "SELECT libelle FROM aci_groupe where length(idgroupe) = 1";
+		$sql = "SELECT idgroupe, libelle FROM aci_groupe where length(idgroupe) = 1";
 				
 		$resultats = $conn->query($sql);
 		while($row = $resultats->fetch())
-			echo '<option value="'.utf8_encode($row['libelle']).'"> '.utf8_encode($row['libelle']).'</option>';
+			echo '<option value="'.utf8_encode($row['idgroupe']).'"> '.utf8_encode($row['libelle']).'</option>';
 		?>
 	</select>
-	<select name="groupe2">
-		<?php
-		//Récupération lieu
-		$sql = "SELECT libelle FROM aci_bdd.aci_contenir JOIN aci_groupe ON (aci_groupe.idgroupe = aci_contenir.idgroupe_1) where aci_contenir.idgroupe = 1;";
-				
-		$resultats = $conn->query($sql);
-		while($row = $resultats->fetch())
-			echo '<option value="'.utf8_encode($row['libelle']).'"> '.utf8_encode($row['libelle']).'</option>';
-		?>
+	<select name="groupe2" id ="groupe2" onchange="selectGroupe3()">
+	    <option value="0"></option>
 	</select>
-	<select name="groupe3">
-		<?php
-		//Récupération lieu
-		$sql = "SELECT libelle FROM aci_bdd.aci_contenir JOIN aci_groupe ON (aci_groupe.idgroupe = aci_contenir.idgroupe_1) where aci_contenir.idgroupe = 12;";
-				
-		$resultats = $conn->query($sql);
-		while($row = $resultats->fetch())
-			echo '<option value="'.utf8_encode($row['libelle']).'"> '.utf8_encode($row['libelle']).'</option>';
-		?>
+	<select name="groupe3" id ="groupe3">
+	    <option value="0"></option>
 	</select>
 	</td></tr>
 	<div id="Eve_Message" class="message"></div>
 	<input type="submit" value="Valider" class="boutonForm"/>
-	<input type="reset" value="R&eacute;initialiser" class="boutonForm"/>
+	<input type="reset" value="R&eacute;initialiser" class="boutonForm" onclick="reset()"/>
 </form>
 </center>
 </div>
@@ -111,3 +98,65 @@ if(!empty($_POST['titreCourt']))
 	$resultats = $conn->query($sql);
 }
 ?>
+
+<script>
+function selectGroupe2(){
+	var list = document.getElementById('groupe1');
+	var selectionne = list.value;
+	
+	var xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function (){
+	    if(xhr.readyState == 4){
+		    if(xhr.status == 200 || xhr.status == 0){
+			/*var response = xhr.responseXML;
+			alert(xhr.getAllResponseHeaders());
+			var options = response.getElementsByTagName('option');
+			var i;
+			var select = document.getElementById('groupe2');
+			for(i = 0; i < options.length; i++){
+				select.appendChild(options[i]);
+			}*/
+			document.getElementById('groupe2').innerHTML = "<option value=0></option>" + xhr.responseText;
+			document.getElementById('groupe3').innerHTML = "<option value=0></option>";
+		    }
+	    }
+	}
+	
+	xhr.open('POST','../../Fonctions_Php/XMLSelectEvent.php');
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhr.send('valeur='+selectionne);
+}
+
+function selectGroupe3(){
+	var list = document.getElementById('groupe2');
+	var selectionne = list.value;
+	
+	var xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function (){
+	    if(xhr.readyState == 4){
+		    if(xhr.status == 200 || xhr.status == 0){
+			/*var response = xhr.responseXML;
+			alert(xhr.getAllResponseHeaders());
+			var options = response.getElementsByTagName('option');
+			var i;
+			var select = document.getElementById('groupe3');
+			for(i = 0; i < options.length; i++){
+				select.appendChild(options[i]);
+			}*/
+			document.getElementById('groupe3').innerHTML = "<option value=0></option>" + xhr.responseText;
+		    }
+	    }
+	}
+	
+	xhr.open('POST','../../Fonctions_Php/XMLSelectEvent.php');
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhr.send('valeur='+selectionne);
+}
+
+function reset(){
+    document.getElementById('groupe2').innerHTML = "<option value=0></option>";
+    document.getElementById('groupe3').innerHTML = "<option value=0></option>";   
+}
+</script>
