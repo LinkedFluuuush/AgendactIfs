@@ -16,6 +16,7 @@
     $mois = date('m');
 	$jourDebut = date('d');
 	$jourFin = date('d')+7;
+        $jour = date('d');
 	$mois1 = $mois;
     $mois2 = $mois;
 	$annee1 = $annee;
