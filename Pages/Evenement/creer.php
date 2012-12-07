@@ -84,7 +84,7 @@ include("../../Fonctions_Php/connexion.php");
 	</td></tr>
 	<div id="Eve_Message" class="message"></div>
 	<input type="submit" value="Valider" class="boutonForm"/>
-	<input type="reset" value="R&eacute;initialiser" class="boutonForm"/>
+	<input type="reset" value="R&eacute;initialiser" class="boutonForm" onclick="reset()"/>
 </form>
 </center>
 </div>
@@ -153,5 +153,10 @@ function selectGroupe3(){
 	xhr.open('POST','../../Fonctions_Php/XMLSelectEvent.php');
 	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xhr.send('valeur='+selectionne);
+}
+
+function reset(){
+    document.getElementById('groupe2').innerHTML = "<option value=0></option>";
+    document.getElementById('groupe3').innerHTML = "<option value=0></option>";   
 }
 </script>
