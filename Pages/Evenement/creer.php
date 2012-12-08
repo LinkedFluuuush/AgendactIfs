@@ -34,16 +34,18 @@ include("../../Fonctions_Php/connexion.php");
 		<tr>
 			<td class="descForm">Lieu : </td>
 			<td class="Form">
-			<select name="lieu">
+<!--			<select name="lieu">
 				<?php
-				//Récupération lieu
-				$sql = "SELECT libelle FROM aci_lieu";
-						
-				$resultats = $conn->query($sql);
-				while($row = $resultats->fetch())
-					echo '<option value="'.$row['libelle'].'"> '.$row['libelle'].'</option>';
+//				//Récupération lieu
+//				$sql = "SELECT libelle FROM aci_lieu";
+//						
+//				$resultats = $conn->query($sql);
+//				while($row = $resultats->fetch())
+//					echo '<option value="'.$row['libelle'].'"> '.$row['libelle'].'</option>';
 				?>
-			</select>
+			</select>-->
+			<input type="text" name="lieu" id="Eve_lieu" autocomplete="off" />
+			<div id="resultsLieu"></div>
 			
 		</tr>
 		<tr>
@@ -159,4 +161,91 @@ function reset(){
     document.getElementById('groupe2').innerHTML = "<option value=0></option>";
     document.getElementById('groupe3').innerHTML = "<option value=0></option>";   
 }
+
+(function(){
+
+    var searchElement = document.getElementById('Eve_lieu');
+    var results = document.getElementById('resultsLieu');
+    var value = searchElement.value;
+    var selectedResult = -1;
+    var previousRequest;
+    var previousValue = searchElement.value;
+    
+    function getLieu(value){
+	var xhr = new XMLHttpRequest();
+
+	xhr.onreadystatechange = function() {
+	    if(xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)){
+		afficheLieu(xhr.responseText);
+	    }
+	}
+	
+	xhr.open('POST', '../../Fonctions_Php/XMLgetLieu.php');
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhr.send('valeur='+value);
+	
+	return xhr;
+    }
+
+    function afficheLieu(response){
+	results.style.display = response.length ? 'block' : 'none';
+
+	if(response.length){
+	    var lieux = response.split('|');
+	    
+	    results.innerHTML = '';
+
+	    for(var i = 0, div; i < lieux.length ; i++){
+		div = results.appendChild(document.createElement('div'));
+		div.innerHTML = lieux[i];
+
+		div.onclick = function(){
+		    chooseResult(this);
+		}
+	    }
+	}
+    }
+
+    function chooseResult(result){
+	searchElement.value = result.innerHTML;
+	results.style.display = 'none';
+	result.className = '';
+	searchElement.focus();
+    }
+    
+    searchElement.onkeyup = function(e){
+	e = e || window.event;
+	    
+	var divs = results.getElementsByTagName('div');
+	if(e.keyCode == 38 && selectedResult > -1){
+		divs[selectedResult--].className = '';
+		if(selectedResult > -1){
+			divs[selectedResult].className = 'result_focus';
+		}
+	}
+	else if(e.keyCode == 40 && selectedResult < divs.length-1){
+		results.style.display = 'block';
+		if(selectedResult > -1){
+			divs[selectedResult].className = 'result_focus';
+		}
+		divs[++selectedResult].className = '';
+	}
+	else if(e.keyCode == 13 && selectedResult > -1){
+		chooseResult(divs[selectedResult]);
+	}
+	else if(searchElement.value == ''){
+	    results.innerHTML = '';
+	}
+	else if(searchElement.value != previousValue){
+		previousValue = searchElement.value;
+		
+		if(previousRequest && previousRequest.readyState < 4){
+			previousRequest.abort();
+		}
+		
+		previousRequest = getLieu(previousValue);
+		selectedResult = -1;
+	}
+    }
+})();
 </script>
