@@ -94,7 +94,7 @@ function getMois(annee, mois)
 			{
 				document.getElementById("contenu").innerHTML = xhr.responseText;
 				document.getElementById("corpsCal").setAttribute("class", "mois");
-				retour = 2;
+				retour = 2;getElementById
 				setDate(annee, mois, 0, 'Menu_annee', 'Menu_mois', 'Menu_jour');
 			}
 		}
