@@ -16,6 +16,7 @@
     $mois = date('m');
 	$jourDebut = date('d');
 	$jourFin = date('d')+7;
+        $jour = date('d');
 	$mois1 = $mois;
     $mois2 = $mois;
 	$annee1 = $annee;
@@ -33,6 +34,12 @@
             $jour = $_GET['jour'];
             $mois = $_GET['mois'];
             $annee = $_GET['annee'];
+        }
+        //sinon, on utilise les session
+        else if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty($_SESSION['jour']))) {
+            $annee = $_SESSION['annee'];
+            $mois = $_SESSION['mois'];
+            $jour = $_SESSION['jour'];
         }
         
         $timestamp = mktime(23, 59, 59, $mois, $jour, $annee);

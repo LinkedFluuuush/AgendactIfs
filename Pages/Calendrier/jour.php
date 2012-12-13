@@ -108,19 +108,22 @@
                 if(!empty($nomSession))
                     echo '<a href="javascript:getEveCrea(' . $annee . ', ' . $mois . ', ' . $jour .');">Ajouter</a>';
 
-                if ($_GET['u'] == 1) {
-                    echo '<a href="semestre.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
+                if(!empty($_GET['u'])){
+                    if ($_GET['u'] == 1) {
+                        echo '<a href="semestre.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
+                    }
+
+                    if ($_GET['u'] == 2) {
+                        echo '<a href="mois.php?annee=' . $annee . '&mois=' . $mois . '">Retour</a>';
+                    } 
+
+                    if ($_GET['u'] == 3) {
+                        $ts = mktime(0,0,0,$mois,$jour,$annee);
+                        $jourDebut = date('N', $ts);
+                        echo '<a href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. ($jour-$jourDebut+1) .'">Retour</a>';
+                    }
                 }
-                
-                if ($_GET['u'] == 2) {
-                    echo '<a href="mois.php?annee=' . $annee . '&mois=' . $mois . '">Retour</a>';
-                } 
-		
-		if ($_GET['u'] == 3) {
-		    $ts = mktime(0,0,0,$mois,$jour,$annee);
-		    $jourDebut = date('N', $ts);
-                    echo '<a href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. ($jour-$jourDebut+1) .'">Retour</a>';
-                }?>
+            ?>
         </div><!--
     --></body>
 </html>
