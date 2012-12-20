@@ -30,9 +30,6 @@
             if($mois == 13)
                 $mois = 0;
         }
-        
-        include("../menu.php");
-
         //sinon, on utilise les sessions
         if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty($_SESSION['jour']))) {
             $annee = $_SESSION['annee'];
@@ -42,6 +39,9 @@
             if($mois == 13)
                 $mois = 0;
         }
+        
+        include("../menu.php");
+
 
         // Nombre de jours du mois
         $days = retourneJour($annee, $mois);
