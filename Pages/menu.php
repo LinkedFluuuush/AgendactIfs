@@ -1,5 +1,6 @@
 <div id="nav"><!--
-    --><div class="titreCal">MENU</div>
+    --><script type="text/javascript" src="../../Fonctions_Javascript/miniCalendrier.js"></script>
+    <div class="titreCal">MENU</div>
     <div class="menu">
         <table>
             <tr>
@@ -9,6 +10,11 @@
                 <td><a href="#">Rechercher</a></td>
             </tr>
         </table>
+    </div>
+    <br>
+    <div class="titreCal">MINI CALENDRIER</div>
+    <div class="menu" id="Calendrier">
+	<script type="text/javascript">miniCalendrier(<?php echo "$annee, $mois-1"; ?>);</script>
     </div>
     <br>
     <div class="titreCal">VUE</div>
