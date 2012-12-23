@@ -4,7 +4,7 @@
     <head>
         <title>Page semaine</title>
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
-        <link href="../../styles.css" rel="stylesheet" type="text/css">
+        <link href="../../style.css" rel="stylesheet" type="text/css">
     </head>
     <body>
         <?php
@@ -17,7 +17,7 @@
 	$jourFin = date('d')+7;
         $jour = date('d');
 	$mois1 = $mois;
-    $mois2 = $mois;
+        $mois2 = $mois;
 	$annee1 = $annee;
 	$annee2 = $annee;
         

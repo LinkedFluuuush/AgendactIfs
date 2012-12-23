@@ -5,7 +5,7 @@
     <head>
         <title>Page mois</title>
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
-        <link href="../../styles.css" rel="stylesheet" type="text/css">
+        <link href="../../style.css" rel="stylesheet" type="text/css">
     </head>
     <body>
         <?php

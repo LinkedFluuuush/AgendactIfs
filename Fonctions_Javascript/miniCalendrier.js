@@ -68,13 +68,13 @@ function miniCalendrier(a, m){
 		var cSamedi = document.createElement('th');
 		var cDimanche = document.createElement('th');
 		
-		cLundi.appendChild(document.createTextNode("Lun"));
-		cMardi.appendChild(document.createTextNode("Mar"));
-		cMercredi.appendChild(document.createTextNode("Mer"));
-		cJeudi.appendChild(document.createTextNode("Jeu"));
-		cVendredi.appendChild(document.createTextNode("Ven"));
-		cSamedi.appendChild(document.createTextNode("Sam"));
-		cDimanche.appendChild(document.createTextNode("Dim"));
+		cLundi.appendChild(document.createTextNode("L"));
+		cMardi.appendChild(document.createTextNode("M"));
+		cMercredi.appendChild(document.createTextNode("M"));
+		cJeudi.appendChild(document.createTextNode("J"));
+		cVendredi.appendChild(document.createTextNode("V"));
+		cSamedi.appendChild(document.createTextNode("S"));
+		cDimanche.appendChild(document.createTextNode("D"));
 		
 	//	corpsLigneTete.appendChild(cVide);
 		corpsLigneTete.appendChild(cLundi);
