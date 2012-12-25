@@ -39,8 +39,7 @@
             if($mois == 13)
                 $mois = 0;
         }
-        
-        include("../menu.php");
+
 
 
         // Nombre de jours du mois
@@ -69,9 +68,9 @@
         //----------
 
         $idUtil = 1;
-	$idSession = 1; //$_SESSION['login'];
-	$nomSession = 'Test';
-        
+        $idSession = 1; //$_SESSION['login'];
+        $nomSession = 'Test';
+
         //Le lien : précédent
         if($mois == 1) {
             $moisPrec = 12;
@@ -91,8 +90,11 @@
             $moisSuiv = $mois + 1;
             $anneeSuiv = $annee;
         }
-        ?><!--
-        --><div id="corpsCal" class="mois">
+        ?>
+        
+        <div id="global">
+            <?php include('../menu.php'); ?>
+        <div id="corpsCal" class="mois">
             <!-- Affichage du nom du mois + année et des liens du mois précédent/suivant -->
             <table class="titreCal">
                 <tr class="titreCal">
@@ -103,7 +105,7 @@
                     <th><a href="mois.php?annee=<?php echo $annee; ?>&amp;mois=12"> &gt;| </a></th>
                 </tr>
             </table>
-            
+
             <table>
                 <tr>
                     <th class="numSemaine"></th>
@@ -118,12 +120,12 @@
 
                 <?php
                 $sql = "SELECT aci_evenement.*, aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert FROM aci_evenement
-					JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
-					JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
-					where dateFin >= '$annee-$mois-01 00:00:00'
-					and dateDebut <= '$annee-$mois-$days 23:59:59'
-					and ((estPublic = 1)
-						or ($idUtil = aci_evenement.idUtilisateur))";
+                                        JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
+                                        JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
+                                        where dateFin >= '$annee-$mois-01 00:00:00'
+                                        and dateDebut <= '$annee-$mois-$days 23:59:59'
+                                        and ((estPublic = 1)
+                                                or ($idUtil = aci_evenement.idUtilisateur))";
 
                 $resultats = $conn->query($sql);
 
@@ -144,15 +146,15 @@
                 //tant que notre nombre de semaines n'est pas atteint
                 for($i = 1; $i <= $nbWeek; $i++) {   
                     echo'<tr>';
-                    
+
                     // Affichage des n° de semaines + lien avec paramètres transmis à semaine.php
                     //-------------------------------------------------------------------------------------------------------------------
-                    
+
                     $timestamp = mktime(23, 59, 59, $mois, $jour, $annee);
                     $numSemaine = date('W', $timestamp); // indique le numéro de semaine
-                    
+
                     echo '<td class="numSemaine" onclick="document.location.href = \'semaine.php?annee='.$annee.'&amp;mois='.$mois.'&amp;jour='.$jour.'\';"><a href="semaine.php?annee='.$annee.'&amp;mois='.$mois.'&amp;jour='.$jour.'">'. $numSemaine . '</a></td>';
-                    
+
                     // 1er jour de la prochaine semaine
                     $jour = jourProchain($mois, $jour, $annee);
 
@@ -210,6 +212,7 @@
                 }
                 ?>
             </table>
-        </div><!--
-    --></body>
+        </div>
+        </div>
+    </body>
 </html>

@@ -1,5 +1,6 @@
 <?php session_start(); ?>
 
+<!DOCTYPE html>
 <html>
     <head>
         <title>Page jour</title>
@@ -40,7 +41,6 @@
                     $mois = 0;
         }
 	
-        include("../menu.php");
 
         $idUtil = 1;
         
@@ -60,8 +60,10 @@
         $dateTimestampDebutMEPJ = mktime(00, 00, 00, $mois, $jour, $annee);
         $date = miseEnPageJour($dateTimestampDebutMEPJ);
 
-        ?><!--
-        --><div id="corpsCal" class="jour">
+        ?>
+        <div id="global">
+            <?php include('../menu.php'); ?>
+        <div id="corpsCal" class="jour">
             <div class="titreCal"><?php echo $date; ?></div>
             <?php		
             if ($resultats != null) {
@@ -125,6 +127,7 @@
                     }
                 }
             ?>
-        </div><!--
-    --></body>
+        </div>
+        </div>
+    </body>
 </html>

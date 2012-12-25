@@ -1,32 +1,28 @@
-html {
-    /* bug redimensionnement du texte IE */
-    font-size: 100%;
+html, body {
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    /* on retire les marges */ 
-    margin: 0;
-    padding: 0;
-    
-    /* couleur de fond par défaut */
-    background-image: url('Images/background.jpg');
-    background-position: center;
-    
-    /* couleur de police par défaut */
-    color: #ffffff;
-    font-family: Arial;
-    
-    padding: 30px 50px 30px 50px;
+    /*padding-left: 20px;*/
+}
+
+/* contient la navigation et le corps */
+#global {
+    width: 100%;
+    overflow: hidden;
+    min-width: 1024px;
 }
 
 #nav {
     float: left;
-    width: 200px;
-    
-    background-color: chocolate;
+    background-color: coral;
+    width: 180px;
 }
 
 #corpsCal {
-    background-color: #6894ae;
+	margin-left: 190px;
+        background-color: cornflowerblue;
+        height: 100%;
+        width: 100%;
 }
-

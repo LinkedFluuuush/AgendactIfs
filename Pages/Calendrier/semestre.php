@@ -3,6 +3,7 @@
 session_start();
 ?>
 
+<!DOCTYPE html>
 <html>
     <head>
         <title>Page semestre</title>
@@ -35,9 +36,6 @@ session_start();
             $mois = $_SESSION['mois'];
             $jour = $_SESSION['jour'];
         }
-	
-        include("../menu.php");
-
 
         //on definit le semestre
         if(empty($semestre)){
@@ -78,9 +76,11 @@ session_start();
             $anneeSuiv = $annee + 1;
             $semestreSuiv = 1;
         }
-        ?><!--
+        ?>
         
-        --><div id="corpsCal" class="semestre">
+        <div id="global">
+            <?php include('../menu.php'); ?>
+        <div id="corpsCal" class="semestre">
             <table class="titreCal">
                 <tr class="titreCal">
                     <th><a href="semestre.php?a=<?php echo $anneePrec; ?>&s=<?php echo $semestrePrec; ?>">< </a></th>
@@ -201,6 +201,7 @@ session_start();
                     echo'</tr>';
                 } ?>	
             </table>
+        </div>
         </div>
     </body>
 </html>
