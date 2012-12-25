@@ -6,7 +6,9 @@
         <title>Page jour</title>
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../style.css" rel="stylesheet" type="text/css">
-    </head>
+        <!--[if IE 7]>
+            <link href="../../style-ie.css" rel="stylesheet" type="text/css">
+        <![endif]-->
     <body>
         <?php
         include("../../Fonctions_Php/connexion.php");
@@ -64,7 +66,7 @@
         <div id="global">
             <?php include('../menu.php'); ?>
         <div id="corpsCal" class="jour">
-            <div class="titreCal"><?php echo $date; ?></div>
+            <div class="titreCal"><tr class="titreCal"><th><?php echo $date; ?></th></tr></div>
             <?php		
             if ($resultats != null) {
                 $i=1;

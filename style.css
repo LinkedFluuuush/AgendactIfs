@@ -1,28 +1,429 @@
-html, body {
+/* Essai menu */
+
+
+
+
+/* PARTIE GENERALE */
+html {
+    /* on retire toutes les marges */
     margin: 0;
     padding: 0;
+    
+    /* police par défaut */
+    font-family: Helvetica;
+    font-size: 100%; /* correction d'un bug IE */
+    color: black;
+    
+    /* font */
+    /*background-image: url('Images/background.jpg');
+    background-position: center;*/
+    background: #e1e1e1;
+    
 }
 
 body {
-    /*padding-left: 20px;*/
+    /* taille police */
+    font-size: .8em;
 }
 
 /* contient la navigation et le corps */
 #global {
-    width: 100%;
-    overflow: hidden;
+    margin-left: 20px;
+    width: 96%;
     min-width: 1024px;
+    overflow: hidden;
 }
 
-#nav {
+/* contient le calendrier et le titre */
+#corpsCal {
+    margin-left: 220px;
+    
+    /* hauteur et largeur */
+    min-height: 768px;
+    height: 100%;
+       
+    /* couleur de fond */
+    background-color: #e6e6e6;
+}
+
+/* titre des calendrier et sous-menus */
+.titreCal {
+   /*height: 25px;*/
+   /*text-align: center;*/
+   
+   background: #4d7fb8; /* Old browsers */
+   background: -moz-linear-gradient(top, #4d7fb8 0%, #4572a5 100%); /* FF3.6+ */
+   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4d7fb8), color-stop(100%,#4572a5)); /* Chrome,Safari4+ */
+   background: -webkit-linear-gradient(top, #4d7fb8 0%,#4572a5 100%); /* Chrome10+,Safari5.1+ */
+   background: -o-linear-gradient(top, #4d7fb8 0%,#4572a5 100%); /* Opera 11.10+ */
+   background: -ms-linear-gradient(top, #4d7fb8 0%,#4572a5 100%); /* IE10+ */
+   background: linear-gradient(to bottom, #4d7fb8 0%,#4572a5 100%); /* W3C */
+   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d7fb8', endColorstr='#4572a5',GradientType=0 ); /* IE6-9 */
+
+   color: #203f61;
+   text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);
+   text-transform: uppercase;
+}
+
+/* FIN PARTIE GENERALE */
+
+
+
+/* PARTIE SOUS-MENU */
+
+ul.nav {
     float: left;
-    background-color: coral;
+    margin: 0;
+    padding: 0;
+}
+
+ul.nav * {
+    margin: 0;
+    padding: 0;
+    list-style: none;
     width: 180px;
 }
 
-#corpsCal {
-	margin-left: 190px;
-        background-color: cornflowerblue;
-        height: 100%;
-        width: 100%;
+ul.nav > li {
+    margin-bottom: 20px;
 }
+
+ul.nav > li > div.header {
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 12px;
+    border-bottom: 1px #396e9f solid;
+}
+
+ul.nav > li ul li {
+    background-color: #ececec;
+    padding: 12px; 
+    border-bottom: 1px solid #dcdcdc; 
+    border-top: 1px solid #fff;
+    color: #727272; 
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8);
+}
+
+ul.nav > li ul li a {
+    text-decoration: none;
+    color: #727272;
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8);
+}
+
+ul.nav > li ul li:last-child { 
+    border-bottom: none;
+}
+
+ul.nav div.header {
+    color: #203f61;
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);
+
+    background: #4d7fb8; /* Old browsers */
+    background: -moz-linear-gradient(top, #4d7fb8 0%, #4572a5 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4d7fb8), color-stop(100%,#4572a5)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #4d7fb8 0%,#4572a5 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #4d7fb8 0%,#4572a5 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #4d7fb8 0%,#4572a5 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #4d7fb8 0%,#4572a5 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d7fb8', endColorstr='#4572a5',GradientType=0 ); /* IE6-9 */
+}
+
+ul.nav > li ul li:hover {
+    background: #e7e7e7; /* Old browsers */
+    cursor: pointer;
+}
+
+/* PARTIE SOUS-MENU */
+
+
+
+
+/* PARTIE CORPS DU CALENDRIER */
+
+#corpsCal table {
+    width:80%; /* taille du calendrier */
+    border-collapse: collapse;
+}
+
+#corpsCal th {
+    text-align: center;
+    
+    /* largeur de colonne */
+    width:9%;
+}
+
+/* bandeau du titre du calendrier */
+#corpsCal table.titreCal {
+    width: 100%;
+}
+
+/* liens à l'intérieur du titre */
+#corpsCal table.titreCal th a {
+    color: white;
+}
+
+/* cases des calendriers */
+#corpsCal td {
+    /* propriétés des bordures */
+    border-width: 1px;
+    border-color: #d9d9d9;
+    border-style: solid;
+
+    /* couleur de fond du tableau */
+    background-color: #f1f2f3;
+    
+    /* affiche le curseur "main" */
+    cursor: pointer;
+}
+
+#corpsCal td:hover {
+    background-color: #edeeef;
+}
+
+/* liens dans le calendrier */
+#corpsCal a {
+    color: black;
+    text-decoration: none;
+}
+
+/* FIN PARTIE CORPS DU CALENDRIER */
+
+
+
+
+
+/* DEBUT DE LA PARTIE SEMESTRE */
+
+#corpsCal.semestre td {
+    /* hauteur des cases */
+   height: 22px;
+   
+   /* alignement du texte à l'intérieur des cases */
+   vertical-align: middle;
+}
+
+#corpsCal.semestre td a {
+    text-decoration: none;
+    color: #72777b;
+}
+
+/* Infobulle */
+
+#corpsCal.semestre td.info a {
+   text-decoration: none;
+}
+
+#corpsCal.semestre td.info span {
+   display: none; /* on masque l'infobulle */
+}
+
+#corpsCal.semestre td.info:hover {
+   background: none; /* correction d'un bug IE */
+   z-index: 500; /* on définit une valeur pour l'ordre d'affichage */
+}
+
+#corpsCal.semestre td.info:hover span {
+   display: inline; /* on affiche l'infobulle */
+   position: absolute;
+
+   white-space: nowrap; /* on change la valeur de la propriété white-space pour qu'il n'y ait pas de retour à la ligne non-désiré */
+
+   background: white;
+
+   color: black;
+   margin-top:18px;
+   padding: 3px;
+
+   border: 1px solid black;
+}
+
+/* FIN DE LA PARTIE SEMESTRE */
+
+
+
+/* PARTIE MOIS */
+
+/* cases du calendrier */
+#corpsCal.mois td {
+    /* hauteur des cases */
+    height: 111px; 
+    vertical-align: top;
+    
+    /* marges */
+    padding-top:5px;
+    padding-left:1%;
+}
+
+/* cases contenant le numéro de semaine */
+#corpsCal.mois td.numSemaine {
+    vertical-align: middle;
+    border-style: none;
+    text-align: right;
+    padding-right: 20px; /* pour que les num de semaines ne soient pas collés au tableau du mois */
+    background-color: #e6e6e6;
+}
+
+#corpsCal.mois td.numSemaine a {
+   text-decoration: none;
+   font-family: Impact;
+   color: #72777b;
+}
+
+#corpsCal.mois td.caseDuMois {
+   cursor: pointer;
+   border-style: solid;
+}
+
+#corpsCal.mois td.caseDuMois a {
+   text-decoration: none;
+   color: #72777b;
+}
+
+#corpsCal.mois td.caseDuMois:hover {
+    background-color: #edeeef;
+}
+
+#corpsCal.mois td.caseAutreMois {
+   border-style: none;
+   background-color: #e6e6e6;
+   cursor: default;
+}
+
+/* ul = liste des rdv */
+#corpsCal.mois ul {
+    text-align: left;
+    padding: 0;
+    margin-top: 5px;
+    margin-left: 0px;
+    list-style-type: none;
+}
+
+/* Infobulle */
+#corpsCal.mois li.info {
+   position: relative;
+   text-decoration: none;
+}
+
+#corpsCal.mois li.info span {
+   display: none; /* on masque l'infobulle */
+}
+
+#corpsCal.mois li.info:hover {
+   background: none; /* correction d'un bug IE */
+   z-index: 500; /* on définit une valeur pour l'ordre d'affichage */
+}
+
+#corpsCal.mois li.info:hover span {
+   display: inline; /* on affiche l'infobulle */
+   position: absolute;
+
+   white-space: nowrap; /* on change la valeur de la propriété white-space pour qu'il n'y ait pas de retour à la ligne non-désiré */
+
+   background: white;
+   
+   color: black;
+   margin-top:18px;
+   padding: 3px;
+
+   border: 1px solid black;
+}
+
+/* FIN DE LA PARTIE MOIS */
+
+
+
+
+/* DEBUT DE LA PARTIE SEMAINE */
+
+#corpsCal.semaine th {
+    width:9%;
+}
+
+#corpsCal.semaine td {
+   /* hauteur des cases */
+   height: 27px;
+      
+   /* alignement du texte à l'intérieur des cases */
+   vertical-align: middle;
+}
+
+#corpsCal.semaine td.nomHeure {
+    vertical-align: middle;
+    border-style: none;
+    text-align: right;
+    padding-right: 30px; /* pour que les num de semaines ne soient pas collés au tableau du mois */
+    background-color: #e6e6e6;
+    cursor: default;
+}
+
+#corpsCal.semaine ul {
+    text-align: left;
+    list-style-type: none;
+    padding: 0;
+    padding-top: 3px;
+    padding-left: 3px;
+}
+
+/* Infobulle */
+
+#corpsCal.semaine li.info {
+    margin:0;
+   position: relative;
+   text-decoration: none;
+   /*border-bottom: 1px gray dotted;*/ /* on souligne le texte */
+}
+#corpsCal.semaine li.info span {
+   display: none; /* on masque l'infobulle */
+}
+#corpsCal.semaine li.info:hover {
+   background: none; /* correction d'un bug IE */
+   z-index: 500; /* on définit une valeur pour l'ordre d'affichage */
+
+}
+#corpsCal.semaine li.info:hover span {
+   display: inline; /* on affiche l'infobulle */
+   position: absolute;
+
+   white-space: nowrap; /* on change la valeur de la propriété white-space pour qu'il n'y ait pas de retour à la ligne non-désiré */
+
+   background: white;
+   
+   color: black;
+   margin-top:18px;
+   padding: 3px;
+
+   border: 1px solid black;
+}
+/* FIN DE LA PARTIE SEMAINE */
+
+
+
+
+
+/* PARTIE JOUR */
+
+#corpsCal.jour span.titre{
+    margin-left: 30px;
+    margin-right: 2%;
+
+    font-size: 140%;
+    font-weight: bold;
+    text-align: left;
+}
+
+#corpsCal.jour p {
+    margin-left: 30px;
+    font-size: 100%;
+    text-align: justify ;
+}
+
+#corpsCal.jour a {
+    margin-left: 30px;
+    text-decoration: none;
+    color: #72777b;
+}
+#corpsCal.jour a:hover {
+    text-decoration: none;
+}
+
+/* FIN DE LA PARTIE JOUR */

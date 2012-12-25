@@ -6,6 +6,9 @@
         <title>Page semaine</title>
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../style.css" rel="stylesheet" type="text/css">
+        <!--[if IE 7]>
+            <link href="../../style-ie.css" rel="stylesheet" type="text/css">
+        <![endif]-->
     </head>
     <body>
         <?php
@@ -131,9 +134,9 @@
         <div id="corpsCal" class="semaine">
             <table class="titreCal">                
                 <tr class="titreCal">
-                    <td><?php echo '<a href=\'semaine.php?annee='.$anneePrec.'&mois='.$moisPrec.'&jour='.$jourPrec.'\'> < </a>';?></td>
-                    <td colspan="3"><?php echo "$jourDebut $nomMois1 $annee1 au $jourFin $nomMois2 $annee2"; ?></td>
-                    <td><?php echo '<a href=\'semaine.php?annee='.$anneeSuiv.'&mois='.$moisSuiv.'&jour='.$jourSuiv.'\'> > </a>';?></td>
+                    <th><?php echo '<a href=\'semaine.php?annee='.$anneePrec.'&mois='.$moisPrec.'&jour='.$jourPrec.'\'> < </a>';?></th>
+                    <th colspan="3"><?php echo "$jourDebut $nomMois1 $annee1 au $jourFin $nomMois2 $annee2"; ?></th>
+                    <th><?php echo '<a href=\'semaine.php?annee='.$anneeSuiv.'&mois='.$moisSuiv.'&jour='.$jourSuiv.'\'> > </a>';?></th>
                 </tr>
             </table>
             
