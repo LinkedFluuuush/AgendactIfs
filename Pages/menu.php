@@ -1,11 +1,4 @@
-<!--<div id="nav">
-   <script type="text/javascript" src="../../Fonctions_Javascript/miniCalendrier.js"></script>
-   
-   <div class="menu" id="Calendrier">
-	<script type="text/javascript">miniCalendrier(<?php echo "$annee, $mois-1"; ?>);</script>
-   </div>
-</div>-->
-
+<script type="text/javascript" src="../../Fonctions_Javascript/miniCalendrier.js"></script>
 <ul class="nav">
      <li>
          <div class="header">Evénement</div>
@@ -23,4 +16,8 @@
              <li onclick ="document.location.href ='jour.php'"><a href="jour.php">Jour</a></li>
          </ul>
      </li>
+     <li>
+	<script type="text/javascript">miniCalendrier(<?php echo "$annee, $mois-1"; ?>);</script>
+     </li>
  </ul>
+

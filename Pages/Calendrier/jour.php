@@ -6,6 +6,7 @@
         <title>Page jour</title>
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../style.css" rel="stylesheet" type="text/css">
+        <link href="../../style-minicalendrier.css" rel="stylesheet" type="text/css">
         <!--[if IE 7]>
             <link href="../../style-ie.css" rel="stylesheet" type="text/css">
         <![endif]-->
