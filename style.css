@@ -38,7 +38,7 @@ body {
     height: 100%;
        
     /* couleur de fond */
-    background-color: #e6e6e6;
+    background-color: #ececec;
 }
 
 /* titre des calendrier et sous-menus */
@@ -67,8 +67,12 @@ body {
 
 /* PARTIE SOUS-MENU */
 
-ul.nav {
+#nav {
     float: left;
+    width: 180px;
+}
+
+ul.nav {
     margin: 0;
     padding: 0;
 }
@@ -129,7 +133,7 @@ ul.nav > li ul li:hover {
     cursor: pointer;
 }
 
-/* PARTIE SOUS-MENU */
+/* FIN PARTIE SOUS-MENU */
 
 
 

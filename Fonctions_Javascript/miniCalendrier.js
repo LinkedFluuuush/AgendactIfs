@@ -5,9 +5,10 @@ function miniCalendrier(a, m){
 	var href;
 	
 	
-	var mainDiv = document.getElementById('Calendrier');
+	var mainDiv = document.getElementById('miniCalendrier');
 	
 		var bandeau = document.createElement('table');
+                bandeau.id="bandeau";
 		var bandeauLigne = document.createElement('tr');
 		var cg = document.createElement('td');
 		var cm = document.createElement('td');
@@ -43,23 +44,24 @@ function miniCalendrier(a, m){
 				}
 			}			
 	
+                //cm.colspan="5";
 		cg.appendChild(precMois);
 		cm.appendChild(lienMois);
 		cd.appendChild(suivMois);
 		
-		bandeauLigne.appendChild(document.createElement('td'));
+		//bandeauLigne.appendChild(document.createElement('td'));
 		bandeauLigne.appendChild(cg);
-		bandeauLigne.appendChild(document.createElement('td'));
+		//bandeauLigne.appendChild(document.createElement('td'));
 		bandeauLigne.appendChild(cm);
-		bandeauLigne.appendChild(document.createElement('td'));
+		//bandeauLigne.appendChild(document.createElement('td'));
 		bandeauLigne.appendChild(cd);
-		bandeauLigne.appendChild(document.createElement('td'));
+		//bandeauLigne.appendChild(document.createElement('td'));
 		
 		bandeau.appendChild(bandeauLigne);
 			
 		var corps = document.createElement('table');
 		var corpsLigneTete = document.createElement('tr');
-		var cVide = document.createElement('th');
+		//var cVide = document.createElement('th');
 		var cLundi = document.createElement('th');
 		var cMardi = document.createElement('th');
 		var cMercredi = document.createElement('th');
