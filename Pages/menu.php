@@ -5,7 +5,7 @@
          <li>
              <div class="header">Evénement</div>
              <ul class="menu">
-                 <li onclick ="document.location.href ='#'"><a href="#">Ajouter</a></li>
+                 <li onclick ="document.location.href ='../Evenement/creer.php'"><a href="../Evenement/creer.php">Ajouter</a></li>
                  <li onclick ="document.location.href ='#'"><a href="#">Rechercher</a></li>
              </ul>
          </li>
