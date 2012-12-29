@@ -6,9 +6,7 @@ function miniCalendrier(a, m){
         
 	var mainDiv = document.getElementById('miniCalendrier');
 	
-		/*var bandeau = document.createElement('table');*/
                 var calendrier = document.createElement('table');
-                /*bandeau.id="bandeau";*/
 		var bandeauLigne = document.createElement('tr');
 		var cg = document.createElement('th');
 		var cm = document.createElement('th');
@@ -53,10 +51,8 @@ function miniCalendrier(a, m){
 		bandeauLigne.appendChild(cm);
 		bandeauLigne.appendChild(cd);
 		
-		//bandeau.appendChild(bandeauLigne);
                 calendrier.appendChild(bandeauLigne);
 			
-		/*var corps = document.createElement('table');*/
 		var corpsLigneTete = document.createElement('tr');
                 corpsLigneTete.id = "nomJourSemaine";
 		//var cVide = document.createElement('th');
@@ -85,7 +81,6 @@ function miniCalendrier(a, m){
 		corpsLigneTete.appendChild(cSamedi);
 		corpsLigneTete.appendChild(cDimanche);
 		
-		//corps.appendChild(corpsLigneTete);
                 calendrier.appendChild(corpsLigneTete);
 		
 		var cSemaine, c, cLigne, lienJour;
@@ -121,7 +116,6 @@ function miniCalendrier(a, m){
 			cLigne.appendChild(c);
 			nSemaine++;
 			if(nSemaine % 7 == 0 || i == retourneJourMois(date.getMonth(), date.getFullYear())-1){
-				//corps.appendChild(cLigne);
                                 calendrier.appendChild(cLigne);
 				cLigne = document.createElement('tr');
                                 cLigne.id = "jourMois";
@@ -129,8 +123,6 @@ function miniCalendrier(a, m){
 		}
 	
         mainDiv.appendChild(calendrier);
-	//mainDiv.appendChild(bandeau);
-	//mainDiv.appendChild(corps);
 }
 
 function retourneMois(mois){
