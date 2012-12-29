@@ -87,9 +87,9 @@ session_start();
         <div id="corpsCal" class="semestre">
             <table class="titreCal">
                 <tr class="titreCal">
-                    <th><a href="semestre.php?a=<?php echo $anneePrec; ?>&s=<?php echo $semestrePrec; ?>">< </a></th>
+                    <th><a href="semestre.php?a=<?php echo $anneePrec; ?>&s=<?php echo $semestrePrec; ?>"> &#9668; </a></th>
                     <th colspan="4"><?php echo $annee . ' Semestre ' . $semestre; ?></th>
-                    <th><a href="semestre.php?a=<?php echo $anneeSuiv; ?>&s=<?php echo $semestreSuiv; ?>"> > </a></th>
+                    <th><a href="semestre.php?a=<?php echo $anneeSuiv; ?>&s=<?php echo $semestreSuiv; ?>"> &#9658; </a></th>
                 </tr>
             </table>
             

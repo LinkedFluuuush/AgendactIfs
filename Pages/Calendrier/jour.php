@@ -67,7 +67,7 @@
         <div id="global">
             <?php include('../menu.php'); ?>
         <div id="corpsCal" class="jour">
-            <div class="titreCal"><tr class="titreCal"><th><?php echo $date; ?></th></tr></div>
+            <table class="titreCal"><tr class="titreCal"><th><?php echo $date; ?></th></tr></table>
             <?php		
             if ($resultats != null) {
                 $i=1;
