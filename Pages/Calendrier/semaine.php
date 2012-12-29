@@ -1,10 +1,12 @@
 <?php session_start(); ?>
 
+<!DOCTYPE html>
 <html>
     <head>
         <title>Page semaine</title>
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
-        <link href="../../styles.css" rel="stylesheet" type="text/css">
+        <link href="../../style.css" rel="stylesheet" type="text/css">
+        <link href="../../style-minicalendrier.css" rel="stylesheet" type="text/css">
     </head>
     <body>
         <?php
@@ -12,12 +14,12 @@
         include("../../Fonctions_Php/diverses_fonctions.php");
 	
 	$annee = date('Y');
-    $mois = date('m');
+        $mois = date('m');
 	$jourDebut = date('d');
 	$jourFin = date('d')+7;
         $jour = date('d');
 	$mois1 = $mois;
-    $mois2 = $mois;
+        $mois2 = $mois;
 	$annee1 = $annee;
 	$annee2 = $annee;
         
@@ -40,8 +42,6 @@
             $mois = $_SESSION['mois'];
             $jour = $_SESSION['jour'];
         }
-	
-        include("../menu.php");
         
         $timestamp = mktime(23, 59, 59, $mois, $jour, $annee);
         $jourSemaine = date('N', $timestamp); // indique quel jour se trouve le timestamp (ex : 1 = lundi)
@@ -123,16 +123,18 @@
         $nomMois1 = $tabMois[$mois1 - 1];
         $nomMois2 = $tabMois[$mois2 - 1];
         
-        $idSession = 1; //$_SESSION['login'];
+        $idSession = 1;
+        //$_SESSION['login'];
+        ?>
         
-        ?><!-- 
-        
-        --><div id="corpsCal" class="semaine">
+        <div id="global">
+            <?php include('../menu.php'); ?>
+        <div id="corpsCal" class="semaine">
             <table class="titreCal">                
                 <tr class="titreCal">
-                    <th><?php echo '<a href=\'semaine.php?annee='.$anneePrec.'&mois='.$moisPrec.'&jour='.$jourPrec.'\'> < </a>';?></th>
+                    <th><?php echo '<a href=\'semaine.php?annee='.$anneePrec.'&mois='.$moisPrec.'&jour='.$jourPrec.'\'> &#9668; </a>';?></th>
                     <th colspan="3"><?php echo "$jourDebut $nomMois1 $annee1 au $jourFin $nomMois2 $annee2"; ?></th>
-                    <th><?php echo '<a href=\'semaine.php?annee='.$anneeSuiv.'&mois='.$moisSuiv.'&jour='.$jourSuiv.'\'> > </a>';?></th>
+                    <th><?php echo '<a href=\'semaine.php?annee='.$anneeSuiv.'&mois='.$moisSuiv.'&jour='.$jourSuiv.'\'> &#9658; </a>';?></th>
                 </tr>
             </table>
             
@@ -213,6 +215,7 @@
                 }
                 ?>
             </table>
-        </div><!--
-    --></body>
+        </div>
+        </div>
+    </body>
 </html>

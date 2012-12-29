@@ -1,13 +1,12 @@
-﻿<?php
-//on utilisera les variable de session
-session_start();
-?>
+﻿<?php session_start(); ?>
 
+<!DOCTYPE html>
 <html>
     <head>
         <title>Page semestre</title>
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
-        <link href="../../styles.css" rel="stylesheet" type="text/css">
+        <link href="../../style.css" rel="stylesheet" type="text/css">
+        <link href="../../style-minicalendrier.css" rel="stylesheet" type="text/css">
     </head>
     <body>
         <?php
@@ -35,9 +34,6 @@ session_start();
             $mois = $_SESSION['mois'];
             $jour = $_SESSION['jour'];
         }
-	
-        include("../menu.php");
-
 
         //on definit le semestre
         if(empty($semestre)){
@@ -78,14 +74,16 @@ session_start();
             $anneeSuiv = $annee + 1;
             $semestreSuiv = 1;
         }
-        ?><!--
+        ?>
         
-        --><div id="corpsCal" class="semestre">
+        <div id="global">
+            <?php include('../menu.php'); ?>
+        <div id="corpsCal" class="semestre">
             <table class="titreCal">
                 <tr class="titreCal">
-                    <th><a href="semestre.php?a=<?php echo $anneePrec; ?>&s=<?php echo $semestrePrec; ?>">< </a></th>
+                    <th><a href="semestre.php?a=<?php echo $anneePrec; ?>&s=<?php echo $semestrePrec; ?>"> &#9668; </a></th>
                     <th colspan="4"><?php echo $annee . ' Semestre ' . $semestre; ?></th>
-                    <th><a href="semestre.php?a=<?php echo $anneeSuiv; ?>&s=<?php echo $semestreSuiv; ?>"> > </a></th>
+                    <th><a href="semestre.php?a=<?php echo $anneeSuiv; ?>&s=<?php echo $semestreSuiv; ?>"> &#9658; </a></th>
                 </tr>
             </table>
             
@@ -201,6 +199,7 @@ session_start();
                     echo'</tr>';
                 } ?>	
             </table>
+        </div>
         </div>
     </body>
 </html>

@@ -1,11 +1,13 @@
 <?php session_start(); ?>
 
+<!DOCTYPE html>
 <html>
     <head>
         <title>Page jour</title>
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
-        <link href="../../styles.css" rel="stylesheet" type="text/css">
-    </head>
+        <link href="../../style.css" rel="stylesheet" type="text/css">
+        <link href="../../style-minicalendrier.css" rel="stylesheet" type="text/css">
+	</head>
     <body>
         <?php
         include("../../Fonctions_Php/connexion.php");
@@ -40,7 +42,6 @@
                     $mois = 0;
         }
 	
-        include("../menu.php");
 
         $idUtil = 1;
         
@@ -60,9 +61,11 @@
         $dateTimestampDebutMEPJ = mktime(00, 00, 00, $mois, $jour, $annee);
         $date = miseEnPageJour($dateTimestampDebutMEPJ);
 
-        ?><!--
-        --><div id="corpsCal" class="jour">
-            <div class="titreCal"><?php echo $date; ?></div>
+        ?>
+        <div id="global">
+            <?php include('../menu.php'); ?>
+        <div id="corpsCal" class="jour">
+            <table class="titreCal"><tr class="titreCal"><th><?php echo $date; ?></th></tr></table>
             <?php		
             if ($resultats != null) {
                 $i=1;
@@ -125,6 +128,7 @@
                     }
                 }
             ?>
-        </div><!--
-    --></body>
+        </div>
+        </div>
+    </body>
 </html>
