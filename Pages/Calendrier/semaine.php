@@ -8,7 +8,6 @@
     </head>
     <body>
         <?php
-        include("../menu.php");
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
 	
@@ -41,6 +40,8 @@
             $mois = $_SESSION['mois'];
             $jour = $_SESSION['jour'];
         }
+	
+        include("../menu.php");
         
         $timestamp = mktime(23, 59, 59, $mois, $jour, $annee);
         $jourSemaine = date('N', $timestamp); // indique quel jour se trouve le timestamp (ex : 1 = lundi)

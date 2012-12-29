@@ -11,7 +11,6 @@ session_start();
     </head>
     <body>
         <?php
-        include("../menu.php");
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
 
@@ -36,6 +35,9 @@ session_start();
             $mois = $_SESSION['mois'];
             $jour = $_SESSION['jour'];
         }
+	
+        include("../menu.php");
+
 
         //on definit le semestre
         if(empty($semestre)){

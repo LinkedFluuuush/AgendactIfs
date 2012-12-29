@@ -9,7 +9,6 @@
     </head>
     <body>
         <?php
-        include("../menu.php");
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
 
@@ -31,7 +30,6 @@
             if($mois == 13)
                 $mois = 0;
         }
-
         //sinon, on utilise les sessions
         if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty($_SESSION['jour']))) {
             $annee = $_SESSION['annee'];
@@ -41,6 +39,9 @@
             if($mois == 13)
                 $mois = 0;
         }
+        
+        include("../menu.php");
+
 
         // Nombre de jours du mois
         $days = retourneJour($annee, $mois);
@@ -95,11 +96,11 @@
             <!-- Affichage du nom du mois + année et des liens du mois précédent/suivant -->
             <table class="titreCal">
                 <tr class="titreCal">
-                    <th><a href="mois.php?annee=<?php echo $annee; ?>&mois=1"> |< </a></th>
-                    <th><a href="mois.php?annee=<?php echo $anneePrec; ?>&mois=<?php echo $moisPrec; ?>"> < </a></th>
+                    <th><a href="mois.php?annee=<?php echo $annee; ?>&amp;mois=1"> |&lt; </a></th>
+                    <th><a href="mois.php?annee=<?php echo $anneePrec; ?>&amp;mois=<?php echo $moisPrec; ?>"> &lt; </a></th>
                     <th colspan="3"><?php echo $nomMois . ' ' . $annee; ?></th>
-                    <th><a href="mois.php?annee=<?php echo $anneeSuiv; ?>&mois=<?php echo $moisSuiv; ?>"> > </a></th>
-                    <th><a href="mois.php?annee=<?php echo $annee; ?>&mois=12"> >| </a></th>
+                    <th><a href="mois.php?annee=<?php echo $anneeSuiv; ?>&amp;mois=<?php echo $moisSuiv; ?>"> &gt; </a></th>
+                    <th><a href="mois.php?annee=<?php echo $annee; ?>&amp;mois=12"> &gt;| </a></th>
                 </tr>
             </table>
             
@@ -150,7 +151,7 @@
                     $timestamp = mktime(23, 59, 59, $mois, $jour, $annee);
                     $numSemaine = date('W', $timestamp); // indique le numéro de semaine
                     
-                    echo '<td class="numSemaine" onclick="document.location.href = \'semaine.php?annee='.$annee.'&mois='.$mois.'&jour='.$jour.'\';"><a href="semaine.php?annee='.$annee.'&mois='.$mois.'&jour='.$jour.'">'. $numSemaine . '</a></td>';
+                    echo '<td class="numSemaine" onclick="document.location.href = \'semaine.php?annee='.$annee.'&amp;mois='.$mois.'&amp;jour='.$jour.'\';"><a href="semaine.php?annee='.$annee.'&amp;mois='.$mois.'&amp;jour='.$jour.'">'. $numSemaine . '</a></td>';
                     
                     // 1er jour de la prochaine semaine
                     $jour = jourProchain($mois, $jour, $annee);
@@ -188,7 +189,7 @@
                             echo '<td class="caseAutreMois"></td>';
                         }
                         else {
-                            echo '<td class="caseDuMois" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$num.'&u=2\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$num.'&u=2">';
+                            echo '<td class="caseDuMois" onclick="document.location.href = \'jour.php?a='.$annee.'&amp;m='.$mois.'&amp;j='.$num.'&amp;u=2\';"><a href="jour.php?a='.$annee.'&amp;m='.$mois.'&amp;j='.$num.'&amp;u=2">';
                             echo $num;
 
                             if ($boucle >= 1) {
@@ -201,7 +202,7 @@
                                 }
                                 echo '</ul>';
                             }
-                            echo'</td>';
+                            echo'</a></td>';
                             $num++;
                         }
                     }	

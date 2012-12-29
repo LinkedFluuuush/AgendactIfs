@@ -8,7 +8,6 @@
     </head>
     <body>
         <?php
-        include("../menu.php");
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
 
@@ -40,6 +39,8 @@
             if($mois == 13)
                     $mois = 0;
         }
+	
+        include("../menu.php");
 
         $idUtil = 1;
         
