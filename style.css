@@ -181,7 +181,7 @@ ul.nav > li ul li:hover {
     border-style: solid;
 
     /* couleur de fond du tableau */
-    background-color: #ffffff; /*#f1f2f3;*/
+    background-color: #f1f2f3;
     
     /* affiche le curseur "main" */
     cursor: pointer;
@@ -456,3 +456,20 @@ ul.nav > li ul li:hover {
 }
 
 /* FIN DE LA PARTIE JOUR */
+
+
+
+
+/* PARTIE CREER */
+
+#corpsCal.creer table {
+    
+}
+
+#corpsCal.creer td {
+    cursor: default;
+    border: none;
+    background-color: #ececec;
+}
+
+/* FIN DE LA PARTIE CREER */

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Page jour</title>
+        <title>Créer un évènement</title>
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../style.css" rel="stylesheet" type="text/css">
         <link href="../../style-minicalendrier.css" rel="stylesheet" type="text/css">
@@ -161,7 +161,7 @@
         ?>
         <div id="global">
             <?php include('../menu.php'); ?>
-        <div id="corpsCal" class="jour">
+        <div id="corpsCal" class="creer">
             <table class="titreCal"><tr class="titreCal"><th>créer un évènement</th></tr></table>
         <form action="" name="FormCreaEvenement" method="post" enctype="multipart/form-data" id="formCreation">
                 <table cellpadding="4" align="center">

@@ -15,6 +15,7 @@
      <div id="miniCalendrier">
         <script type="text/javascript">miniCalendrier(<?php echo "$annee, $mois-1"; ?>);</script>
      </div>
+    <br>
     <ul class="nav">
         <li>
             <div class="header">Vue</div>
