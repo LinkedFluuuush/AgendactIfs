@@ -181,7 +181,7 @@ ul.nav > li ul li:hover {
     border-style: solid;
 
     /* couleur de fond du tableau */
-    background-color: #f1f2f3;
+    background-color: #ffffff; /*#f1f2f3;*/
     
     /* affiche le curseur "main" */
     cursor: pointer;
