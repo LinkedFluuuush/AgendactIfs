@@ -6,7 +6,7 @@
             <div class="header">Connexion</div>
             <ul class="menu">
                 <form name="connexion">
-                    <input type="text" name="id" placeholder="Identifiant">
+                    <input type="text" name="id" placeholder="Identifiant"><br>
                     <input type="password" name="motdepasse" placeholder="Mot de passe">
                 </form>
             </ul>
@@ -14,7 +14,7 @@
          <li>
              <div class="header">Evénement</div>
              <ul class="menu">
-                 <li onclick ="document.location.href ='creer.php'"><a href="creer.php">Ajouter</a></li>
+                 <li onclick ="document.location.href ='..\\Evenement\\creer.php'"><a href="..\Evenement\creer.php">Ajouter</a></li>
                  <li onclick ="document.location.href ='#'"><a href="#">Rechercher</a></li>
              </ul>
          </li>
@@ -29,10 +29,10 @@
         <li>
             <div class="header">Vue</div>
             <ul class="menu">
-                <li onclick ="document.location.href ='semestre.php'"><a href="semestre.php">Semestre</a></li>
-                <li onclick ="document.location.href ='mois.php'"><a href="mois.php">Mois</a></li>
-                <li onclick ="document.location.href ='semaine.php'"><a href="semaine.php">Semaine</a></li>
-                <li onclick ="document.location.href ='jour.php'"><a href="jour.php">Jour</a></li>
+                <li onclick ="document.location.href ='..\\Calendrier\\semestre.php'"><a href="..\Calendrier\semestre.php">Semestre</a></li>
+                <li onclick ="document.location.href ='..\\Calendrier\\mois.php'"><a href="..\Calendrier\mois.php">Mois</a></li>
+                <li onclick ="document.location.href ='..\\Calendrier\\semaine.php'"><a href="..\Calendrier\semaine.php">Semaine</a></li>
+                <li onclick ="document.location.href ='..\\Calendrier\\jour.php'"><a href="..\Calendrier\jour.php">Jour</a></li>
             </ul>
         </li>
      </ul>

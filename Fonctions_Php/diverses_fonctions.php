@@ -1,5 +1,13 @@
 <?php header( 'content-type: text/html; charset=utf-8' );
 
+function saisieFormString($chaine)
+{
+	if(!empty($_POST["$chaine"]))
+		echo $_POST["$chaine"];
+	else
+		echo "";
+}
+
 function regexChaine($chaine, $limiteTaille)
 {
 	/* Gestion des accents */
