@@ -115,6 +115,7 @@ ul.nav > li ul li:last-child {
 
 ul.nav div.header {
     color: #203f61;
+    /*color: #e1e1e1;*/
     text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);
     
     background: #4d7fb8; /* Old browsers */

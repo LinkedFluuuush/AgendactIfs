@@ -146,12 +146,12 @@ if(!empty($_POST['submit']))
 			$resultats = $conn->query($sql);
 			
 			//TODO
-			$sqlDestUtilisateur = "INSERT INTO `aci_bdd`.`aci_destutilisateur` (`IDUTILISATEUR`, `IDEVENEMENT`, `DATEINSERT`) 
-			VALUES (, $idEv[0], curdate());";
+//			$sqlDestUtilisateur = "INSERT INTO `aci_bdd`.`aci_destutilisateur` (`IDUTILISATEUR`, `IDEVENEMENT`, `DATEINSERT`) 
+//			VALUES (, $idEv[0], curdate());";
 			
 			//TODO
-			$sqlDestGroupe = "INSERT INTO `aci_bdd`.`aci_destgroupe` (`IDEVENEMENT`, `IDGROUPE`, `DATEINSERT`) 
-			VALUES ($idEv[0], , curdate());";
+//			$sqlDestGroupe = "INSERT INTO `aci_bdd`.`aci_destgroupe` (`IDEVENEMENT`, `IDGROUPE`, `DATEINSERT`) 
+//			VALUES ($idEv[0], , curdate());";
 			
 			if(!empty($resultats))
 				$insertion = true;
