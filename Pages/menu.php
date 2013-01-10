@@ -2,6 +2,15 @@
 <div id="nav">
     <!-- sous-menus -->
     <ul class="nav">
+        <li>
+            <div class="header">Connexion</div>
+            <ul class="menu">
+                <form name="connexion">
+                    <input type="text" name="id" placeholder="Identifiant">
+                    <input type="password" name="motdepasse" placeholder="Mot de passe">
+                </form>
+            </ul>
+        </li>
          <li>
              <div class="header">Evénement</div>
              <ul class="menu">
