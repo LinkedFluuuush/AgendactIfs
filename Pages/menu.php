@@ -8,6 +8,7 @@
                 <form name="connexion">
                     <input type="text" name="id" placeholder="Identifiant"><br>
                     <input type="password" name="motdepasse" placeholder="Mot de passe">
+                    <input type="submit" name="valider_conn" value="Valider">
                 </form>
             </ul>
         </li>
