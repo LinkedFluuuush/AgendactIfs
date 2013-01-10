@@ -1,4 +1,73 @@
-﻿<?php 
+<?php header( 'content-type: text/html; charset=utf-8' );
+
+function regexChaine($chaine, $limiteTaille)
+{
+	/* Gestion des accents */
+	$chaine = utf8_decode($chaine);
+	$chaine = strtr($chaine,
+	utf8_decode("ÀÁÂÃÄÅáãåÒÓÔÕÖØòóôõøÈÉÊËÇÌÍÎÏìíÙÚÛÜùúûÿÑñ"),
+	utf8_decode("AAAAAAaaaOOOOOOoooooEEEECIIIIiiUUUUuuuyNn"));
+	$chaine = utf8_encode($chaine);
+
+	$regex = "#^[A-Za-z0-9\'\" /_()[],;\.:!?%£°=+*€$#éèàöôäâçùïî-]{1,$limiteTaille}$#";
+	
+	if(!preg_match($regex, $chaine))
+		return false;
+	else
+		return true;
+}
+
+function regexDate($date)
+{
+	if(empty($date))
+		return false;
+		
+	if(!preg_match("#^[0-9]{2}/[0-9]{2}/[0-9]{4}$#", $date))
+		return false;
+	else
+	{
+		$date = explode('/', $date);
+		if($date[0] < 1 || $date[0] > retourneJour($date[2], $date[1]))
+			return false;
+		if($date[1] < 1 || $date[1] > 12)
+			return false;
+		if($date[2] < 1 || $date[2] > date("Y"))
+			return false;
+			
+		return true;
+	}
+}
+
+function regexHeure($heure)
+{
+	if(empty($heure))
+		return false;
+		
+	if(!preg_match("#^[0-9]{2}:[0-9]{2}$#", $heure))
+		return false;
+	else
+	{
+		$heure = explode(':', $heure);
+		if($heure[0] < 0 || $heure[0] > 23)
+			return false;
+		if($heure[1] < 0 || $heure[1] > 59)
+			return false;
+			
+		return true;
+	}
+}
+
+//Elimine tous les accents non français
+function accents($texte)
+{
+	$texte = utf8_decode($texte);
+	$texte = strtr($texte,
+	utf8_decode("ÀÁÂÃÄÅáâãåÒÓÔÕÖØòóõøÈÉÊËÇÌÍÎÏìíÙÚÛÜúÑñ"),
+	utf8_decode("AAAAAAAAAAOOOOOOOOOOEEEEçIIIIIIUUUUUNN"));
+	$texte = utf8_encode($texte);
+	
+	return $texte;
+}
 
 /* cette fonction retourne l'evenement correspondant au numero passe en parametre */
 function retourneEve($numEvenement)

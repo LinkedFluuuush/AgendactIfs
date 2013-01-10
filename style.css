@@ -456,3 +456,20 @@ ul.nav > li ul li:hover {
 }
 
 /* FIN DE LA PARTIE JOUR */
+
+
+
+
+/* PARTIE CREER */
+
+#corpsCal.creer table {
+    
+}
+
+#corpsCal.creer td {
+    cursor: default;
+    border: none;
+    background-color: #ececec;
+}
+
+/* FIN DE LA PARTIE CREER */
