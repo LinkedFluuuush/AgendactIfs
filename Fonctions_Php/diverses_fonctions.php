@@ -162,7 +162,7 @@ function miseEnPageJour($timestamp)
     return $jour[date("w", $timestamp)]." ".date("d", $timestamp)." ".$mois[date("n", $timestamp)]." ".date("Y", $timestamp);
 }
 
-function jourProchain ($mois, $jour, $annee) {
+function jourProchain($mois, $jour, $annee) {
     $timestamp = mktime(23, 59, 59, $mois, $jour, $annee);
     $jourSemaine = date('N', $timestamp); // indique quel jour se trouve le timestamp (ex : 1 = lundi)
     
