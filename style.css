@@ -40,6 +40,10 @@ body {
     background-color: #ececec;
 }
 
+input, textarea, select {
+    outline : none;
+}
+
 /* titre des calendrier et sous-menus */
 .titreCal {
    height: 25px;
