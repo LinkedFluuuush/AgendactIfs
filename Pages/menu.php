@@ -5,11 +5,16 @@
         <li>
             <div class="header">Connexion</div>
             <ul class="menu">
-                <form name="connexion">
-                    <input type="text" name="id" placeholder="Identifiant"><br>
-                    <input type="password" name="motdepasse" placeholder="Mot de passe">
+                <?php if(empty($_SESSION['id'])){ ?>
+		<form name="connexion" action="../../Fonctions_Php/connexionLDAP.php" method="POST">
+                    <input type="text" name="login" placeholder="Identifiant"><br>
+                    <input type="password" name="mdp" placeholder="Mot de passe">
                     <input type="submit" name="valider_conn" value="Valider">
                 </form>
+		<?php }else{
+		    echo "<li>".$_SESSION['prenom']." ".$_SESSION['nom']."</li>";
+		    echo "<li onclick =\"document.location.href ='../../Fonctions_Php/deconnexion.php'\"><a href=\"../../Fonctions_Php/deconnexion.php\">Déconnexion</a></li>";
+		} ?>
             </ul>
         </li>
         <li>
