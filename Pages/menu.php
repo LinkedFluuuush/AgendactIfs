@@ -5,7 +5,10 @@
         <li>
             <div class="header">Connexion</div>
             <ul class="menu">
-                <?php if(empty($_SESSION['id'])){ ?>
+                <?php if(empty($_SESSION['id'])){ 
+		    if(isset($_GET['login']) && $_GET['login'] == 0){
+			echo "<span style=\"color:red\">Connexion echouée</span>";
+		    } ?>
 		<form name="connexion" action="../../Fonctions_Php/connexionLDAP.php" method="POST">
                     <input type="text" name="login" placeholder="Identifiant"><br>
                     <input type="password" name="mdp" placeholder="Mot de passe">
