@@ -73,7 +73,7 @@ if($row = $resultats->fetch()){
 			    echo "Fermeture de la connexion";
 			    ldap_close($connLDAP);
 			    
-			    //header("location:../");
+			    header("location:../");
 		    }
 		    else{
 			header("location:../Pages/Calendrier/mois.php?login=0");
