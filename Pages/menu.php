@@ -23,7 +23,7 @@
         <li>
             <div class="header">Evénement</div>
             <ul class="menu">
-                <li onclick ="document.location.href ='..\\Evenement\\creer.php'"><a href="..\Evenement\creer.php">Créer</a></li>
+                <li onclick ="document.location.href ='../Evenement/creer.php'"><a href="../Evenement/creer.php">Créer</a></li>
                 <li onclick ="document.location.href ='#'"><a href="#">Gérer</a></li>
                 <li onclick ="document.location.href ='#'"><a href="#">Rechercher</a></li>
             </ul>
@@ -47,10 +47,10 @@
         <li>
             <div class="header">Vue</div>
             <ul class="menu">
-                <li onclick ="document.location.href ='..\\Calendrier\\semestre.php'"><a href="..\Calendrier\semestre.php">Semestre</a></li>
-                <li onclick ="document.location.href ='..\\Calendrier\\mois.php'"><a href="..\Calendrier\mois.php">Mois</a></li>
-                <li onclick ="document.location.href ='..\\Calendrier\\semaine.php'"><a href="..\Calendrier\semaine.php">Semaine</a></li>
-                <li onclick ="document.location.href ='..\\Calendrier\\jour.php'"><a href="..\Calendrier\jour.php">Jour</a></li>
+                <li onclick ="document.location.href ='../Calendrier/semestre.php'"><a href="../Calendrier/semestre.php">Semestre</a></li>
+                <li onclick ="document.location.href ='../Calendrier/mois.php'"><a href="../Calendrier/mois.php">Mois</a></li>
+                <li onclick ="document.location.href ='../Calendrier/semaine.php'"><a href="../Calendrier/semaine.php">Semaine</a></li>
+                <li onclick ="document.location.href ='../Calendrier/jour.php'"><a href="../Calendrier/jour.php">Jour</a></li>
             </ul>
         </li>
      </ul>
