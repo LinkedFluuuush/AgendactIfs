@@ -164,6 +164,7 @@
 				}
 			}
 			 
+                        $weekend = date('N', mktime(00, 00, 00, $mois, $jour, $annee));
                         
 			// CAS 0 : le jour n'existe pas (31 fevrier)
 			if($jour > retourneJour($annee, $mois)) {
@@ -171,12 +172,18 @@
 			}
 			// Cas 1 : aucun événement
 			else if ($boucle == 0) {
-                            echo '<td onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.$jour.'</a></td>';
+                            if ($weekend == 6 or $weekend == 7) {
+                                echo '<td id="weekend" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.$jour.'</a></td>';
+                            }
+                            else {
+                                echo '<td onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.$jour.'</a></td>';
+                            }
 			}
 			
 			// Cas 2 : plusieurs evenements
 			else if ($boucle > 1) {
-				echo '<td class="info" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
+                            if ($weekend == 6 or $weekend == 7) {
+				echo '<td class="info" id="weekend" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
 				echo $jour . /*'<img STYLE="vertical-align: -3px; margin-left: 5px; margin-right: 2px;" src="./Images/warning_exclamation.png" height="15" width="15">' . */' Evenements : ' . $boucle;
 
 				echo '<span>';
@@ -187,13 +194,34 @@
 				}
 				echo '</span>';
 				echo '</td>';
+                            }
+                            else {
+                                echo '<td class="info" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
+				echo $jour . /*'<img STYLE="vertical-align: -3px; margin-left: 5px; margin-right: 2px;" src="./Images/warning_exclamation.png" height="15" width="15">' . */' Evenements : ' . $boucle;
+
+				echo '<span>';
+				for ($i=0 ; $i<$boucle ; $i++) {
+					echo '<div>';
+					echo ($i + 1) . ': ' .$titreLong[$i]; 
+					echo '</div>';
+				}
+				echo '</span>';
+				echo '</td>';
+                            }
 			}
 			
 			// Cas 3 : 1 seul evenement
 			else {
-				echo '<td class="info" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
-				echo $jour . ' ' . $titreCourt[0] . '<span>' . $titreLong[0] . '</span>';
-				echo'</td>';
+                            if ($weekend == 6 or $weekend == 7) {
+                                echo '<td class="info" id="weekend" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
+                                echo $jour . ' ' . $titreCourt[0] . '<span>' . $titreLong[0] . '</span>';
+                                echo'</td>';
+                            }
+                            else {
+                                echo '<td class="info" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
+                                echo $jour . ' ' . $titreCourt[0] . '<span>' . $titreLong[0] . '</span>';
+                                echo'</td>';
+                            }
 			}
                     }
                     echo'</tr>';
