@@ -97,7 +97,7 @@ if(!empty($_POST['submit']))
 			$erreurDateDebut = "La date saisie est invalide";
 		}
 		
-		/*if(regexDate($_POST['dateFin']) && comparaisonDate($_POST['dateFin'], date("d/m/Y")))
+		if(regexDate($_POST['dateFin']) && comparaisonDate($_POST['dateFin'], date("d/m/Y")))
 			$dateFin = $_POST['dateFin'];
 		else if (empty($_POST['dateFin']))
 		{
@@ -107,7 +107,7 @@ if(!empty($_POST['submit']))
 		{
 			$valide = false;
 			$erreurDateFin = "La date saisie est invalide";
-		}*/
+		}
 			
 		//Heure
 		if(regexHeure($_POST['heureDebut']))
