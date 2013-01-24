@@ -83,10 +83,15 @@
                     $tabDateInsert = explode('-', $dateInsert);
                     $dateInsert = $tabDateInsert[2].'/'.$tabDateInsert[1].'/'.$tabDateInsert[0];
 					
-					$dateDebut = formattageDate(explodeDate($dateDebut));
-					$dateFin = formattageDate(explodeDate($dateFin));
-					?>
-                    <br><span class="titre"><?php echo trim($titre); ?></span>
+                    $dateDebut = formattageDate(explodeDate($dateDebut));
+                    $dateFin = formattageDate(explodeDate($dateFin));
+                    ?>
+            
+                    <br><span class="titre"><?php echo $dateDebut[0]; ?></span>
+                    <?php if(!empty($dateFin))
+                              echo '<h5>jusqu\'à '.$dateFin[0].' le '.$dateFin[1].'</h5>'; ?>
+                    
+                    
                     
                     <?php if($nomSession == $auteur) { ?>
                         <a href="javascript:getEveModif(<?php echo $numeroEve; ?>);">Modifier</a>
@@ -95,10 +100,8 @@
                     
                     <p>
                     <?php
-						echo 'A '.$dateDebut[0].' le '.$dateDebut[1];
-						if(!empty($dateFin))
-							echo' jusqu\'à '.$dateFin[0].' le '.$dateFin[1];
-						echo '<br>'.$desc.'<br>';
+                        echo "<b>".trim($titre)."</b>";
+                        echo '<br>'.$desc.'<br>';
                         if(!empty($lieu))
                             echo 'Lieu : ' . $lieu . '<br>'; 
                         echo 'Post&eacute; par ' . $auteur . ' le ' . $dateInsert . '<br>'; ?>

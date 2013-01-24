@@ -445,6 +445,11 @@ ul.nav > li ul li:hover {
     text-align: left;
 }
 
+#corpsCal.jour h5 {
+    margin-left: 30px;
+    font-size: 0.9em;
+}
+
 #corpsCal.jour p {
     margin-left: 30px;
     font-size: 100%;
