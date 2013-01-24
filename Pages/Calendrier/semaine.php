@@ -1,4 +1,12 @@
-<?php session_start(); ?>
+<?php session_start(); 
+if(!empty($_POST['priorite']))
+	$_SESSION['priorite'] = $_POST['priorite'];
+
+if(!empty($_SESSION['priorite']))
+	$priorite = $_SESSION['priorite'];
+else
+	$priorite = 3;
+?>
 
 <!DOCTYPE html>
 <html>
@@ -158,6 +166,7 @@
                         JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
                         WHERE dateFin >=  '$annee1-$mois1-$jourDebut 00:00:00'
                         AND dateDebut <=  '$annee2-$mois2-$jourFin 23:59:59'
+						AND idpriorite <= $priorite
                         AND ((estPublic =1) OR ( 1 = aci_evenement.idUtilisateur ))";
 				
 				

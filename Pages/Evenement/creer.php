@@ -86,7 +86,6 @@ if(!empty($_POST['submit']))
 		$description = accents($description);
 		
 		$description = htmlspecialchars($description);
-		
 		//Date
 		if(regexDate($_POST['dateDebut']) && comparaisonDate($_POST['dateDebut'], date("d/m/Y")))
 			$dateDebut = $_POST['dateDebut'];
@@ -137,7 +136,7 @@ if(!empty($_POST['submit']))
 		{
 			//Récupération du prochain numéro d'événement attribuable
 			$lieu = 11;
-			$reqIdEv = "select ifnull(max(idevenement)+1, 1) from aci_evenement";
+			$reqIdEv = "select ifnull(max(idevenement), 0)+1 from aci_evenement";
 			$temp = $conn->query($reqIdEv);
 			$idEv = $temp->fetch();
 			echo "$idEv[0], $idUtil, $priorite, $lieu, $libelleLong, $libelleCourt, $description, $dateDebut $heureDebut, $dateFin $heureFin, $public";

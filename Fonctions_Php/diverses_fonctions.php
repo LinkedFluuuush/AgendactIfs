@@ -116,7 +116,7 @@ function comparaisonDate($date, $date2)
 {
 	$date = explode('/', $date);
 	$date2 = explode('/', $date2);
-	
+	echo $date[2];
 	if($date[2] < $date2[2])
 		return false;
 	else if($date[2] == $date2[2])
