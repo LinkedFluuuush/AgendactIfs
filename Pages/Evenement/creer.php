@@ -244,6 +244,23 @@ if(!empty($_POST['submit']))
 			<select name="groupe3" id ="groupe3">
 				<option value="0"></option>
 			</select>
+			
+		</td><td class="Form">
+			<select name="groupe" id ="groupe">
+				<option value="0"></option>
+				<?php
+					$req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe NOT IN (SELECT idgroupe_1 FROM aci_contenir)";
+					$resultats = $conn -> query($req);
+					while($row = $resultats->fetch()){
+						echo '<option value="'.utf8_encode($row['idgroupe']).'"> '.utf8_encode($row['libelle']).'</option>';
+						$req2 = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe IN (SELECT idgroupe_1 FROM aci_contenir WHERE idgroupe = ".$row['idgroupe'].")";
+						$resultats2 = $conn->query($req2);
+						while($row2 = $resultats2->fetch()){
+							echo '<option value="'.utf8_encode($row2['idgroupe']).'">--'.utf8_encode($row2['libelle']).'</option>';
+						}
+					}
+				?>
+			</select>
 		</td></tr>
 		<tr><td>
 			<input type="submit" name="submit" value="Valider" class="boutonForm"/>
