@@ -163,12 +163,12 @@
 					}
 				}
 			}
-			    
+			 
+                        
 			// CAS 0 : le jour n'existe pas (31 fevrier)
 			if($jour > retourneJour($annee, $mois)) {
                             echo '<th></th>'; //un peu sale, a modifier avec des styles
 			}
-			
 			// Cas 1 : aucun événement
 			else if ($boucle == 0) {
                             echo '<td onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.$jour.'</a></td>';

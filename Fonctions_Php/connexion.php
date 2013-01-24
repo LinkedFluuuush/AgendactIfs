@@ -10,7 +10,7 @@
 	}
 	catch(Exception $e)
 	{
-		echo 'Echec de la connexion à la base de donnée';
+		echo 'Echec de la connexion à la base de donnée.';
 		exit();
 	}
 ?>
