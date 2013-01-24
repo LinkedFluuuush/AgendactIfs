@@ -55,7 +55,7 @@ function regexDate($date)
 			return false;
 		if($date[1] < 1 || $date[1] > 12)
 			return false;
-		if($date[2] < 1 || $date[2] > date("Y"))
+		if($date[2] < date("Y"))
 			return false;
 			
 		return true;
@@ -128,6 +128,27 @@ function formattageDate($dateI)
 	return $date;
 }
 
+function comparaisonDate($date, $date2)
+{
+	$date = explode('/', $date);
+	$date2 = explode('/', $date2);
+	echo $date[2];
+	if($date[2] < $date2[2])
+		return false;
+	else if($date[2] == $date2[2])
+	{
+		if($date[1] < $date2[1])
+			return false;
+		else if($date[1] == $date2[1])
+		{
+			if($date[0] < $date2[0])
+				return false;
+			else
+				return true;
+		}
+	}
+}
+
 /* cette fonction sert à verifier si une connection ldap est valide */
 function sessionValide($utilisateur, $pass)
 {
@@ -178,7 +199,7 @@ function miseEnPageJour($timestamp)
     return $jour[date("w", $timestamp)]." ".date("d", $timestamp)." ".$mois[date("n", $timestamp)]." ".date("Y", $timestamp);
 }
 
-function jourProchain($mois, $jour, $annee) {
+function jourProchain ($mois, $jour, $annee) {
     $timestamp = mktime(23, 59, 59, $mois, $jour, $annee);
     $jourSemaine = date('N', $timestamp); // indique quel jour se trouve le timestamp (ex : 1 = lundi)
     

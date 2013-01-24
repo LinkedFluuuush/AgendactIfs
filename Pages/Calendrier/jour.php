@@ -1,4 +1,12 @@
-<?php session_start(); ?>
+<?php session_start();
+ if (!empty($_POST['priorite']))
+     $_SESSION['priorite'] = $_POST['priorite'];
+ 
+ if (!empty($_SESSION['priorite']))
+     $priorite = $_SESSION['priorite'];
+ else
+     $priorite = 3;
+ ?>
 
 <!DOCTYPE html>
 <html>
@@ -52,6 +60,7 @@
 		JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
 		where dateFin >= '$annee-$mois-$jour 00:00:00'
 		and dateDebut <= '$annee-$mois-$jour 23:59:59'
+                and idpriorite <= $priorite
 		and ((estPublic = 1)
 			or ($idUtil = aci_evenement.idUtilisateur))";
         
@@ -83,10 +92,15 @@
                     $tabDateInsert = explode('-', $dateInsert);
                     $dateInsert = $tabDateInsert[2].'/'.$tabDateInsert[1].'/'.$tabDateInsert[0];
 					
-					$dateDebut = formattageDate(explodeDate($dateDebut));
-					$dateFin = formattageDate(explodeDate($dateFin));
-					?>
-                    <br><span class="titre"><?php echo trim($titre); ?></span>
+                    $dateDebut = formattageDate(explodeDate($dateDebut));
+                    $dateFin = formattageDate(explodeDate($dateFin));
+                    ?>
+            
+                    <br><span class="titre"><?php echo $dateDebut[0]; ?></span>
+                    <?php if(!empty($dateFin))
+                              echo '<h5>jusqu\'à '.$dateFin[0].' le '.$dateFin[1].'</h5>'; ?>
+                    
+                    
                     
                     <?php if($nomSession == $auteur) { ?>
                         <a href="javascript:getEveModif(<?php echo $numeroEve; ?>);">Modifier</a>
@@ -95,10 +109,8 @@
                     
                     <p>
                     <?php
-						echo 'A '.$dateDebut[0].' le '.$dateDebut[1];
-						if(!empty($dateFin))
-							echo' jusqu\'à '.$dateFin[0].' le '.$dateFin[1];
-						echo '<br>'.$desc.'<br>';
+                        echo "<b>".trim($titre)."</b>";
+                        echo '<br>'.$desc.'<br>';
                         if(!empty($lieu))
                             echo 'Lieu : ' . $lieu . '<br>'; 
                         echo 'Post&eacute; par ' . $auteur . ' le ' . $dateInsert . '<br>'; ?>

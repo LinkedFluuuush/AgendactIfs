@@ -86,9 +86,10 @@ if(!empty($_POST['submit']))
 		$description = accents($description);
 		
 		$description = htmlspecialchars($description);
-		
+		echo $_POST['dateDebut'];echo"<br>";
+		echo date("d/m/Y");
 		//Date
-		if(regexDate($_POST['dateDebut']))
+		if(regexDate($_POST['dateDebut']) && comparaisonDate($_POST['dateDebut'], date("d/m/Y")))
 			$dateDebut = $_POST['dateDebut'];
 		else
 		{
@@ -96,7 +97,7 @@ if(!empty($_POST['submit']))
 			$erreurDateDebut = "La date saisie est invalide";
 		}
 		
-		if(regexDate($_POST['dateFin']))
+		/*if(regexDate($_POST['dateFin']) && comparaisonDate($_POST['dateFin'], date("d/m/Y")))
 			$dateFin = $_POST['dateFin'];
 		else if (empty($_POST['dateFin']))
 		{
@@ -106,7 +107,7 @@ if(!empty($_POST['submit']))
 		{
 			$valide = false;
 			$erreurDateFin = "La date saisie est invalide";
-		}
+		}*/
 			
 		//Heure
 		if(regexHeure($_POST['heureDebut']))
@@ -146,12 +147,12 @@ if(!empty($_POST['submit']))
 			$resultats = $conn->query($sql);
 			
 			//TODO
-//			$sqlDestUtilisateur = "INSERT INTO `aci_bdd`.`aci_destutilisateur` (`IDUTILISATEUR`, `IDEVENEMENT`, `DATEINSERT`) 
-//			VALUES (, $idEv[0], curdate());";
+			$sqlDestUtilisateur = "INSERT INTO `aci_bdd`.`aci_destutilisateur` (`IDUTILISATEUR`, `IDEVENEMENT`, `DATEINSERT`) 
+			VALUES (, $idEv[0], curdate());";
 			
 			//TODO
-//			$sqlDestGroupe = "INSERT INTO `aci_bdd`.`aci_destgroupe` (`IDEVENEMENT`, `IDGROUPE`, `DATEINSERT`) 
-//			VALUES ($idEv[0], , curdate());";
+			$sqlDestGroupe = "INSERT INTO `aci_bdd`.`aci_destgroupe` (`IDEVENEMENT`, `IDGROUPE`, `DATEINSERT`) 
+			VALUES ($idEv[0], , curdate());";
 			
 			if(!empty($resultats))
 				$insertion = true;
@@ -169,11 +170,9 @@ if(!empty($_POST['submit']))
 			<td class="descForm">Priorité : </td>
 			<td class="Form">
 			<select name="priorite" id ="priorite">
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3" selected>3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
+				<option value="1">Haute</option>';
+				<option value="2" selected>Moyenne</option>';
+				<option value="3">Basse</option>';
 			</select>
 			</td>
 		<tr>
@@ -194,16 +193,16 @@ if(!empty($_POST['submit']))
 		<tr>
 			<td class="descForm">Date de début :</td>
 			<td class="Form">
-				<input type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateDebut");?>" class="dateDebut" maxlength=10 size=10/>
-				<input type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="<?php saisieFormString("heureDebut");?>" class="heureDebut" maxlength=5 size=3/>
+				<input type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateDebut");?>" class="dateDebut" maxlength=10 size=11/>
+				<input type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="<?php saisieFormString("heureDebut");?>" class="heureDebut" maxlength=5 size=4/>
 				<?php echo "<br><b id=\"formErreur\"> $erreurDateDebut $erreurHeureDebut </b>"; ?>
 			</td>
 		</tr>
 		<tr>
 			<td class="descForm">Date de fin :</td>
 			<td class="Form">
-				<input type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateFin");?>"class="dateFin" maxlength=10 size=10/>
-				<input type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php saisieFormString("heureFin");?>" class="heureFin" maxlength=5 size=3/>
+				<input type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateFin");?>"class="dateFin" maxlength=10 size=11/>
+				<input type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php saisieFormString("heureFin");?>" class="heureFin" maxlength=5 size=4/>
 				<?php echo "<br><b id=\"formErreur\"> $erreurDateFin $erreurHeureFin </b>"; ?>
 			</td>
 		</tr>
@@ -218,11 +217,11 @@ if(!empty($_POST['submit']))
 			<td class="descForm"> Type : </td>
 			<td class="Form">
 			<input type="radio" name="public" id="public" value="1" checked="checked"> <label for="public">public</label>
-			<input type="radio" name="public" id="prive" value="0"> <label for="prive">priv&eacute;</label>
+			<input type="radio" name="public" id="prive" value="0"> <label for="prive">privé</label>
 			</td>
 		</tr>
 		<tr>
-			<td class="descForm"> Ajouter un participant : </td>
+			<td class="descForm"> Ajouter un destinataire : </td>
 			<td class="Form"> <input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/> <a id="plusParticipant" href=""> <img src="../../Images/boutonPlusReduit.png"> </a></td>
 		</tr>
 		<tr><td class="descForm"> Ajouter un groupe de participants : </td>
@@ -247,8 +246,6 @@ if(!empty($_POST['submit']))
 </form>
 
 <?php if($insertion) echo '<h3 align="center">Insertion réalisée avec succés</h2>'; ?>
-        </div>
-</div>
 </body>
 </HTML>
 
