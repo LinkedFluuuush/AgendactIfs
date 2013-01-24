@@ -86,8 +86,7 @@ if(!empty($_POST['submit']))
 		$description = accents($description);
 		
 		$description = htmlspecialchars($description);
-		echo $_POST['dateDebut'];echo"<br>";
-		echo date("d/m/Y");
+		
 		//Date
 		if(regexDate($_POST['dateDebut']) && comparaisonDate($_POST['dateDebut'], date("d/m/Y")))
 			$dateDebut = $_POST['dateDebut'];
@@ -137,12 +136,13 @@ if(!empty($_POST['submit']))
 		if($valide)
 		{
 			//Récupération du prochain numéro d'événement attribuable
-			$reqIdEv = "select max(idevenement)+1 from aci_evenement";
+			$lieu = 11;
+			$reqIdEv = "select ifnull(max(idevenement)+1, 1) from aci_evenement";
 			$temp = $conn->query($reqIdEv);
 			$idEv = $temp->fetch();
-			echo "$idEv[0], $idUtil, $priorite, 1, $libelleLong, $libelleCourt, $description, $dateDebut $heureDebut, $dateFin $heureFin, $public";
+			echo "$idEv[0], $idUtil, $priorite, $lieu, $libelleLong, $libelleCourt, $description, $dateDebut $heureDebut, $dateFin $heureFin, $public";
 			$sql = "INSERT INTO `aci_evenement` (`IDEVENEMENT`, `IDUTILISATEUR`, `IDPRIORITE`, `IDLIEU`, `LIBELLELONG`, `LIBELLECOURT`, `DESCRIPTION`, `DATEDEBUT`, `DATEFIN`, `ESTPUBLIC`, `DATEINSERT`) 
-			VALUES ($idEv[0], $idUtil, $priorite, 1, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, curdate());";
+			VALUES ($idEv[0], $idUtil, $priorite, $lieu, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, curdate());";
 			
 			$resultats = $conn->query($sql);
 			
