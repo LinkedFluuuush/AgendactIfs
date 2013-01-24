@@ -8,15 +8,18 @@
         <link href="../../style.css" rel="stylesheet" type="text/css">
         <link href="../../style-minicalendrier.css" rel="stylesheet" type="text/css">
     </head>
+    
     <body>
         <?php
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
 	
+        // Initialisations des variables utilisées dans le fichier à la date d'aujourd'hui
+        // Ne serviront que si elles ne sont pas définies par GET ou les SESSIONS
 	$annee = date('Y');
         $mois = date('m');
 	$jourDebut = date('d');
-	$jourFin = date('d')+7;
+	$jourFin = date('d')+7; // FAUX si $jourDebut n'est pas un lundi
         $jour = date('d');
 	$mois1 = $mois;
         $mois2 = $mois;
@@ -24,17 +27,22 @@
 	$annee2 = $annee;
         
         // TEST A EFFACER PLUS TARD
-        $idUtil = 1;
+        //$idUtil = 1;
                         
         if ((!empty($_GET['jourDebutPrec'])) && (!empty($_GET['jourFinPrec']))) {
             $jourDebut = $_GET['jourDebutPrec'];
+            echo $jourDebut.' ';
             $jourFin = $_GET['jourFinPrec'];
+            echo $jourFin.' ';
         }
         
         if ((!empty($_GET['jour'])) && (!empty($_GET['annee'])) && (!empty($_GET['mois']))) {
             $jour = $_GET['jour'];
+            echo $jour.' ';
             $mois = $_GET['mois'];
+            echo $mois.' ';
             $annee = $_GET['annee'];
+            echo $annee.' ';
         }
         //sinon, on utilise les session
         else if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty($_SESSION['jour']))) {
@@ -43,14 +51,18 @@
             $jour = $_SESSION['jour'];
         }
         
-        $timestamp = mktime(23, 59, 59, $mois, $jour, $annee);
-        $jourSemaine = date('N', $timestamp); // indique quel jour se trouve le timestamp (ex : 1 = lundi)
+        // indique sur quel jour de la semaine on est (ex : lundi = 1)
+        $jourSemaine = date('N', mktime(23, 59, 59, $mois, $jour, $annee));
         
+        // on initialise le mois précédent et suivant
+        $moisPrec = $mois;
 	$moisSuiv = $mois;
+        
+        // on initalise l'année précédente et suivante
+        $anneePrec = $annee;
 	$anneeSuiv = $annee;
-	$moisPrec = $mois;
-	$anneePrec = $annee;
-
+	
+	// si le jour dépasse la fin du mois
 	if($jour > retourneJour($annee, $mois)-7){
 	    if($mois == 12) {
 		$moisSuiv = 1;
@@ -65,9 +77,7 @@
 	else{
 	    $jourSuiv = $jour+7;
 	}
-	
-//	echo $jourSuiv.' '.$moisSuiv.' '.$anneeSuiv;
-	
+		
 	if($jour <= 7){
 	    if($mois == 1) {
 		$moisPrec = 12;
@@ -112,10 +122,6 @@
             }
         }     
         
-        
-/*         $dateTimestampDebut = mktime(00,00,00, $mois1, $jourDebut, $annee1);
-        $dateTimestampFin = mktime(23,59,59, $mois2, $jourFin, $annee2); */
-        
         // Liste des mois
         $tabMois = array('janv.', 'f&eacute;v.', 'mars', 'avril', 'mai', 'juin',
         'juil.', 'ao&ucirc;t', 'sept.', 'oct.', 'nov.', 'd&eacute;c.');
@@ -137,17 +143,17 @@
                     <th><?php echo '<a href=\'semaine.php?annee='.$anneeSuiv.'&mois='.$moisSuiv.'&jour='.$jourSuiv.'\'> &#9658; </a>';?></th>
                 </tr>
             </table>
-            
+
             <table>
                 <tr>
                     <th></th>
-                    <th><?php echo('<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=3\'>Lundi</a>'); ?></th>
-                    <th><?php echo('<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jour+1).'&u=3\'>Mardi</a>'); ?></th>
-                    <th><?php echo('<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jour+2).'&u=3\'>Mercredi</a>'); ?></th>
-                    <th><?php echo('<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jour+3).'&u=3\'>Jeudi</a>'); ?></th>
-                    <th><?php echo('<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jour+4).'&u=3\'>Vendredi</a>'); ?></th>
-                    <th><?php echo('<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jour+5).'&u=3\'>Samedi</a>'); ?></th>
-                    <th><?php echo('<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jour+6).'&u=3\'>Dimanche</a>'); ?></th>
+                    <th><?php echo '<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=3\'>Lundi</a> '.$jour; ?></th>
+                    <th><?php echo '<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jour+1).'&u=3\'>Mardi</a>'; ?></th>
+                    <th><?php echo '<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jour+2).'&u=3\'>Mercredi</a>'; ?></th>
+                    <th><?php echo '<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jour+3).'&u=3\'>Jeudi</a>'; ?></th>
+                    <th><?php echo '<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jour+4).'&u=3\'>Vendredi</a>'; ?></th>
+                    <th><?php echo '<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jour+5).'&u=3\'>Samedi</a>'; ?></th>
+                    <th><?php echo '<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jour+6).'&u=3\'>Dimanche</a>'; ?></th>
                 </tr>
                 
                 <?php
