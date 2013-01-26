@@ -1,11 +1,14 @@
-<?php session_start();
- if (!empty($_POST['priorite']))
-     $_SESSION['priorite'] = $_POST['priorite'];
- 
- if (!empty($_SESSION['priorite']))
-     $priorite = $_SESSION['priorite'];
- else
-     $priorite = 3;
+<?php
+    session_start();
+    
+    // Permet de gérer les priorités dans la vue semaine
+    if (!empty($_POST['priorite']))
+        $_SESSION['priorite'] = $_POST['priorite'];
+
+    if (!empty($_SESSION['priorite']))
+        $priorite = $_SESSION['priorite'];
+    else
+        $priorite = 3;
  ?>
 
 <!DOCTYPE html>
@@ -19,23 +22,24 @@
     
     <body>
         <?php
-        include("../../Fonctions_Php/connexion.php");
+        include("../../Fonctions_Php/connexion.php"); // connexion à la base de données
         include("../../Fonctions_Php/diverses_fonctions.php");
 	
         // Initialisations des variables utilisées dans le fichier à la date d'aujourd'hui
         // Ne serviront que si elles ne sont pas définies par GET ou les SESSIONS
 	$annee = date('Y');
+        echo 'Initialisation : ';
+        echo $annee.' ';
         $mois = date('m');
+        echo $mois.' ';
 	$jourDebut = date('d');
 	$jourFin = date('d')+7; // FAUX si $jourDebut n'est pas un lundi
         $jour = date('d');
+        echo $jour.' ';
 	$mois1 = $mois;
         $mois2 = $mois;
 	$annee1 = $annee;
 	$annee2 = $annee;
-        
-        // TEST A EFFACER PLUS TARD
-        //$idUtil = 1;
                         
         if ((!empty($_GET['jourDebutPrec'])) && (!empty($_GET['jourFinPrec']))) {
             $jourDebut = $_GET['jourDebutPrec'];
@@ -44,16 +48,16 @@
             echo $jourFin.' ';
         }
         
-        if ((!empty($_GET['jour'])) && (!empty($_GET['annee'])) && (!empty($_GET['mois']))) {
+        if ((!empty($_GET['j'])) && (!empty($_GET['a'])) && (!empty($_GET['m']))) {
             $jour = $_GET['jour'];
+            echo 'GET : ';
             echo $jour.' ';
             $mois = $_GET['mois'];
             echo $mois.' ';
             $annee = $_GET['annee'];
             echo $annee.' ';
         }
-        //sinon, on utilise les session
-        else if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty($_SESSION['jour']))) {
+        else if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty($_SESSION['jour']))) { //sinon, on utilise les session
             $annee = $_SESSION['annee'];
             $mois = $_SESSION['mois'];
             $jour = $_SESSION['jour'];
@@ -136,6 +140,9 @@
 
         $nomMois1 = $tabMois[$mois1 - 1];
         $nomMois2 = $tabMois[$mois2 - 1];
+        
+        // TEST A EFFACER PLUS TARD
+        $idUtil = 1;
         
         $idSession = 1;
         //$_SESSION['login'];

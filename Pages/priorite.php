@@ -1,5 +1,5 @@
 <li>
-	<div class="header">Définir évènements visibles</div>
+	<div class="header">Evénements visibles</div>
 	<ul class="menu"><li>
 	<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
 		<select name="priorite">
