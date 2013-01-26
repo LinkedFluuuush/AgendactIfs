@@ -24,13 +24,6 @@
         <?php
         include("../../Fonctions_Php/connexion.php"); // connexion à la base de données
         include("../../Fonctions_Php/diverses_fonctions.php");
-                        
-        /*if ((!empty($_GET['jourDebutPrec'])) && (!empty($_GET['jourFinPrec']))) {
-            $jourDebut = $_GET['jourDebutPrec'];
-            echo $jourDebut.' ';
-            $jourFin = $_GET['jourFinPrec'];
-            echo $jourFin.' ';
-        }*/
         
         // INITIALISATION DES VARIABLES $jour, $mois, $annee --------------------------------------------------
         
@@ -40,7 +33,7 @@
             $annee = $_GET['annee'];
             
             // TEST
-            echo "GET : $jour $mois $annee<br>";
+            //echo "GET : $jour $mois $annee<br>";
         }
         else if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty($_SESSION['jour']))) {
             $jour = $_SESSION['jour'];
@@ -48,7 +41,7 @@
             $annee = $_SESSION['annee'];
             
             // TEST
-            echo "SESSION : $jour $mois $annee<br>";
+            //echo "SESSION : $jour $mois $annee<br>";
         }
         else {
             $annee = date('Y');
@@ -56,7 +49,7 @@
             $jour = date('d');
             
             // TEST
-            echo "INITIALISATION : $jour $mois $annee";
+            //echo "INITIALISATION : $jour $mois $annee";
         }
              
 	
@@ -74,7 +67,7 @@
 	    }
 	    $jourPrec = retourneJour($anneePrec, $moisPrec) + ($jour-7);
 	}
-	else{
+	else {
 	    $jourPrec = $jour-7;
             $moisPrec = $mois;
             $anneePrec = $annee;
@@ -92,7 +85,7 @@
 	    }
     	    $jourSuiv = ($jour+7) - retourneJour($annee, $mois);
 	}
-	else{
+	else {
 	    $jourSuiv = $jour+7;
             $moisSuiv = $mois;
             $anneeSuiv = $annee;
@@ -103,15 +96,16 @@
         $annee1 = $annee;
         $annee2 = $annee;
         
+        
         // DEFINIR LE 1ER JOUR DE LA SEMAINE (AVEC MOIS ET ANNEE) -------------------------------------------------------
         
         // indique sur quel jour de la semaine on est (ex : lundi = 1)
         $jourSemaine = date('N', mktime(23, 59, 59, $mois, $jour, $annee));
-        $jourDebut = $jour;
+        //$jourDebut = $jour;
         
         // pour une semaine en début de mois
         // Permet d'ajouter à la semaine les jours du mois précédent
-        if ($jourDebut == 1 && $jourSemaine != 1) { // si le premier jour du mois n'est pas un lundi
+        /*if ($jourDebut == 1 && $jourSemaine != 1) { // si le premier jour du mois n'est pas un lundi
             $jourDebut = (retourneJour($annee, $moisPrec)+1)-($jourSemaine-1);
             $mois1 = $moisPrec;
             // Pour la première semaine de l'année
@@ -119,8 +113,11 @@
                 $annee1 = $anneePrec;
             }
         }
-        else {
+        else {*/
             switch ($jourSemaine) {
+                case 1: // lundi
+                    $jourDebut = $jour;
+                    break;
                 case 2: // mardi
                     $jourDebut = $jour-1;
                     break;
@@ -139,26 +136,37 @@
                 case 7: // dimanche
                     $jourDebut = $jour-6;
                     break;
-                default: // lundi
-                    $jourDebut = $jour;
+                default:
+                    echo 'Erreur';
                     break;
+            }
+        //}
+        
+        if ($jourDebut <= 0) {
+            $jourDebutTmp = $jourDebut;
+            $jourDebut = retourneJour($anneePrec, $moisPrec) + $jourDebutTmp;
+            $mois1 = $moisPrec;
+            // Pour la première semaine de l'année
+            if ($mois == 1) {
+                $annee1 = $anneePrec;
             }
         }
         
+        
         // DEFINIR LE DERNIER JOUR DE LA SEMAINE (AVEC MOIS ET ANNEE) ---------------------------------------------------
 
-        $jourFin = jourProchain($mois, $jourDebut, $annee)-1; // correspond au dimanche de chaque semaine
+        $jourFin = jourProchain($mois, $jourDebut, $annee)-1; // correspond au dimanche de chaque semaine (lundi - 1)
         // Pour une semaine en fin de mois
         // fonction permettant de passer du "29 octobre au 35 octobre" à "29 octobre au 4 novembre"
-        if ($jourFin > retourneJour($annee, $mois)) {
-            $jourEnTrop = $jourFin - retourneJour($annee, $mois);
+        if ($jourFin > retourneJour($annee, $moisPrec)) {
+            $jourEnTrop = $jourFin - retourneJour($annee, $moisPrec);
             $mois2 = $moisSuiv;
             $jourFin = $jourEnTrop;
             // Pour la dernière semaine de l'année
             if ($mois == 12) {
                 $annee2 = $anneeSuiv;
             }
-        }  
+        }
         
         // Liste des mois
         $tabMois = array('janv.', 'f&eacute;v.', 'mars', 'avril', 'mai', 'juin',
@@ -177,9 +185,9 @@
         <div id="corpsCal" class="semaine">
             <table class="titreCal">                
                 <tr class="titreCal">
-                    <th><?php /*echo '<a href=\'semaine.php?annee='.$anneePrec.'&mois='.$moisPrec.'&jour='.$jourPrec.'\'> &#9668; </a>';*/ ?></th>
+                    <th><?php echo '<a href=\'semaine.php?annee='.$anneePrec.'&mois='.$moisPrec.'&jour='.$jourPrec.'\'> &#9668; </a>'; ?></th>
                     <th colspan="3"><?php echo "$jourDebut $nomMois1 $annee1 au $jourFin $nomMois2 $annee2"; ?></th>
-                    <th><?php /*echo '<a href=\'semaine.php?annee='.$anneeSuiv.'&mois='.$moisSuiv.'&jour='.$jourSuiv.'\'> &#9658; </a>';*/ ?></th>
+                    <th><?php echo '<a href=\'semaine.php?annee='.$anneeSuiv.'&mois='.$moisSuiv.'&jour='.$jourSuiv.'\'> &#9658; </a>'; ?></th>
                 </tr>
             </table>
 

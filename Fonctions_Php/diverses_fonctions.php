@@ -145,20 +145,17 @@ function sessionValide($utilisateur, $pass)
     return (oci_connect($utilisateur,$pass,"info"));
 }
 
-/* cette fonction permet de retourner le nombre de jour pour un mois et une annee donnee */
+/* cette fonction permet de retourner le nombre de jours pour un mois et une annee donnee */
 function retourneJour($annee, $mois)
 {
-    //on défini le nombre de jour du mois
-    if ($mois == 1 || $mois == 3 || $mois == 5 || $mois == 7 || $mois == 8 || $mois == 10 || $mois == 12) 
-    {
+    //on définit le nombre de jour du mois
+    if ($mois == 1 || $mois == 3 || $mois == 5 || $mois == 7 || $mois == 8 || $mois == 10 || $mois == 12) {
         $days = 31;
     } 
-    else if ($mois == 4 || $mois == 6 || $mois == 9 || $mois == 11) 
-    {
+    else if ($mois == 4 || $mois == 6 || $mois == 9 || $mois == 11) {
         $days = 30;
     } 
-    else 
-    {
+    else {
         $days = ($annee % 4 == 0) ? 29 : 28;
     }
     return $days;
