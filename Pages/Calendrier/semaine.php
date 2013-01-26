@@ -105,42 +105,32 @@
         
         // pour une semaine en début de mois
         // Permet d'ajouter à la semaine les jours du mois précédent
-        /*if ($jourDebut == 1 && $jourSemaine != 1) { // si le premier jour du mois n'est pas un lundi
-            $jourDebut = (retourneJour($annee, $moisPrec)+1)-($jourSemaine-1);
-            $mois1 = $moisPrec;
-            // Pour la première semaine de l'année
-            if ($mois == 1) {
-                $annee1 = $anneePrec;
-            }
+        switch ($jourSemaine) {
+            case 1: // lundi
+                $jourDebut = $jour;
+                break;
+            case 2: // mardi
+                $jourDebut = $jour-1;
+                break;
+            case 3: // mercredi
+                $jourDebut = $jour-2;
+                break;
+            case 4: // jeudi
+                $jourDebut = $jour-3;
+                break;
+            case 5: // vendredi
+                $jourDebut = $jour-4;
+                break;
+            case 6: // samedi
+                $jourDebut = $jour-5;
+                break;
+            case 7: // dimanche
+                $jourDebut = $jour-6;
+                break;
+            default:
+                echo 'Erreur';
+                break;
         }
-        else {*/
-            switch ($jourSemaine) {
-                case 1: // lundi
-                    $jourDebut = $jour;
-                    break;
-                case 2: // mardi
-                    $jourDebut = $jour-1;
-                    break;
-                case 3: // mercredi
-                    $jourDebut = $jour-2;
-                    break;
-                case 4: // jeudi
-                    $jourDebut = $jour-3;
-                    break;
-                case 5: // vendredi
-                    $jourDebut = $jour-4;
-                    break;
-                case 6: // samedi
-                    $jourDebut = $jour-5;
-                    break;
-                case 7: // dimanche
-                    $jourDebut = $jour-6;
-                    break;
-                default:
-                    echo 'Erreur';
-                    break;
-            }
-        //}
         
         if ($jourDebut <= 0) {
             $jourDebutTmp = $jourDebut;
@@ -191,6 +181,19 @@
                 </tr>
             </table>
 
+            <?php
+            
+            /*for ($i = 0 ; $i <= 6 ; $i++) {
+                $jourDebut + $i;
+                if ($mois == 1 || $mois == 3 || $mois == 5 || $mois == 7 || $mois == 8 || $mois == 10 || $mois == 12) {
+                    if ($jourDebut+$i == 32) {
+                        $jourDebut+$i = 1;
+                    }
+                }
+            }*/
+            
+            ?>
+            
             <table>
                 <tr>
                     <th></th>
