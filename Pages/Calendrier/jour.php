@@ -134,9 +134,10 @@
                     } 
 
                     if ($_GET['u'] == 3) {
-                        $ts = mktime(0,0,0,$mois,$jour,$annee);
+                        echo '<a href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. $jour .'">Retour</a>';
+                        /*$ts = mktime(0,0,0,$mois,$jour,$annee);
                         $jourDebut = date('N', $ts);
-                        echo '<a href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. ($jour-$jourDebut+1) .'">Retour</a>';
+                        echo '<a href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. ($jour-$jourDebut+1) .'">Retour</a>';*/
                     }
                 }
             ?>

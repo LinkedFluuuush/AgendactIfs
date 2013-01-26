@@ -184,8 +184,7 @@ function miseEnPageJour($timestamp)
 }
 
 function jourProchain ($mois, $jour, $annee) {
-    $timestamp = mktime(23, 59, 59, $mois, $jour, $annee);
-    $jourSemaine = date('N', $timestamp); // indique quel jour se trouve le timestamp (ex : 1 = lundi)
+    $jourSemaine = date('N', mktime(23, 59, 59, $mois, $jour, $annee)); // indique quel jour se trouve le timestamp (ex : 1 = lundi)
     
     // Permet de connaitre le 1er jour de la prochaine semaine
     if ($jour == 1) { // si c'est le premier jour du mois
@@ -204,8 +203,11 @@ function jourProchain ($mois, $jour, $annee) {
                 break;
             case 7: $jour += 1;
                 break;
+            default:
+                break;
         }
-    } else {
+    }
+    else {
         $jour += 7;
     }
     return $jour;
