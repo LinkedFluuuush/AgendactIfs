@@ -31,11 +31,11 @@
             </ul>
         </li>
         <?php 
-        /*$temp = explode("/", $_SERVER['PHP_SELF']);
+        $temp = explode("/", $_SERVER['PHP_SELF']);
         $nomPage = $temp[sizeof($temp)-1];
 
         if($nomPage == "semestre.php" || $nomPage == "mois.php" ||$nomPage == "semaine.php" ||$nomPage == "jour.php")
-            include("priorite.php");*/ ?>
+            include("priorite.php"); ?>
     </ul>
     
     <!-- mini-calendrier -->
