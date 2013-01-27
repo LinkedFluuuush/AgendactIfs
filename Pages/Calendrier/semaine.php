@@ -33,7 +33,7 @@
             $annee = $_GET['annee'];
             
             // TEST
-            echo "GET : $jour $mois $annee<br>";
+            //echo "GET : $jour $mois $annee<br>";
         }
         else if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty($_SESSION['jour']))) {
             $jour = $_SESSION['jour'];
@@ -191,20 +191,6 @@
                     <th><?php echo '<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jourDebut+5).'&u=3\'>Samedi</a>'; ?></th>
                     <th><?php echo '<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jourDebut+6).'&u=3\'>Dimanche</a>'; ?></th>
                 </tr>
-
-                <?php
-                /*$tabJour = array('Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche');
-                $moisTmp = $mois;
-                $jourDebutTmp = $jourDebut;
-                for ($i = 0 ; $i <= 6 ; $i++) {
-                    $jourDebutTmp = $jourDebut + $i;
-                    if ($jourDebutTmp > retourneJour($annee, $mois)) {
-                        $jourDebutTmp = $jourDebutTmp - retourneJour($annee, $mois);
-                        $moisTmp = $moisSuiv;
-                    }
-                    echo '<th><a href=\'./jour.php?a='.$annee.'&m='.$moisTmp.'&j='.$jourDebutTmp.'&u=3\'>'. $tabJour[$i] .' '.$jourDebutTmp.'</a></th>';
-                }
-                */?>
                 
                 <?php
                 $sql = "SELECT aci_evenement.* , aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert
