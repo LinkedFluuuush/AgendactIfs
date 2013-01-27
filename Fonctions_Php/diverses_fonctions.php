@@ -1,21 +1,5 @@
 <?php header( 'content-type: text/html; charset=utf-8' );
 
-function descGroupe($idGroupe, $conn, $i){
-	$req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe IN (SELECT idgroupe_1 FROM aci_contenir WHERE idgroupe = ".$idGroupe.")";
-	$resultats = $conn->query($req);
-	while($row = $resultats->fetch()){
-		$option =  '<option class = '.$idGroupe.' value="'.utf8_encode($row['idgroupe']).'">';
-		for($j = 0; $j < $i; $j++){
-			$option.="&nbsp &nbsp &nbsp";
-//			if($j < $i-1)
-//				$option .= "│";
-		}
-		$option .= '<img src="../Images/arborescencePlus.png" />'.utf8_encode($row['libelle']).'</option>';
-		echo $option;
-		descGroupe($row['idgroupe'], $conn, $i+1);
-	}
-}
-
 function saisieFormString($chaine)
 {
 	if(!empty($_POST["$chaine"]))

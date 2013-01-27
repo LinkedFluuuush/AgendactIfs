@@ -226,14 +226,37 @@ if(!empty($_POST['submit']))
 		</tr>
 		<tr><td class="descForm"> Ajouter un groupe de participants : </td>
 		<td class="Form">
+			<select name="groupe1" id ="groupe1" onchange="selectGroupe2()">
+				<option value="0"></option>
+				<?php
+				//Récupération lieu
+				$sql = "SELECT idgroupe, libelle FROM aci_groupe where length(idgroupe) = 1";
+						
+				$resultats = $conn->query($sql);
+				while($row = $resultats->fetch())
+					echo '<option value="'.utf8_encode($row['idgroupe']).'"> '.utf8_encode($row['libelle']).'</option>';
+				?>
+			</select>
+			<select name="groupe2" id ="groupe2" onchange="selectGroupe3()">
+				<option value="0"></option>
+			</select>
+			<select name="groupe3" id ="groupe3">
+				<option value="0"></option>
+			</select>
+			
+		</td><td class="Form">
 			<select name="groupe" id ="groupe">
 				<option value="0"></option>
 				<?php
 					$req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe NOT IN (SELECT idgroupe_1 FROM aci_contenir)";
 					$resultats = $conn -> query($req);
 					while($row = $resultats->fetch()){
-						echo '<option value="'.utf8_encode($row['idgroupe']).'"> <img src="../Images/arborescencePlus.png" />'.utf8_encode($row['libelle']).'</option>';
-						descGroupe($row['idgroupe'], $conn, 1);
+						echo '<option value="'.utf8_encode($row['idgroupe']).'"> '.utf8_encode($row['libelle']).'</option>';
+						$req2 = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe IN (SELECT idgroupe_1 FROM aci_contenir WHERE idgroupe = ".$row['idgroupe'].")";
+						$resultats2 = $conn->query($req2);
+						while($row2 = $resultats2->fetch()){
+							echo '<option value="'.utf8_encode($row2['idgroupe']).'">--'.utf8_encode($row2['libelle']).'</option>';
+						}
 					}
 				?>
 			</select>
