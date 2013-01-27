@@ -40,7 +40,7 @@
                     $mois = 0;
         }
 
-        //sinon, on utilise les session
+        //sinon, on utilise les sessions
         else if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty($_SESSION['jour']))) {
             $annee = $_SESSION['annee'];
             $mois = $_SESSION['mois'];
@@ -134,8 +134,8 @@
                     } 
 
                     if ($_GET['u'] == 3) {
-                        echo '<a href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. $jour .'">Retour</a>';
-                        /*$ts = mktime(0,0,0,$mois,$jour,$annee);
+                        /*echo '<a href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. $jour .'">Retour</a>';
+                        $ts = mktime(0,0,0,$mois,$jour,$annee);
                         $jourDebut = date('N', $ts);
                         echo '<a href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. ($jour-$jourDebut+1) .'">Retour</a>';*/
                     }

@@ -101,7 +101,6 @@
         
         // indique sur quel jour de la semaine on est (ex : lundi = 1)
         $jourSemaine = date('N', mktime(23, 59, 59, $mois, $jour, $annee));
-        //$jourDebut = $jour;
         
         // pour une semaine en début de mois
         // Permet d'ajouter à la semaine les jours du mois précédent
@@ -194,7 +193,7 @@
                             $jourDebutTmp = $jourDebutTmp - retourneJour($annee, $mois);
                             $moisTmp = $moisSuiv;
                         }
-                        echo '<th><a href=\'./jour.php?a='.$annee.'&m='.$moisTmp.'&j='.$jourDebutTmp.'&u=3\'>'. $tabJour[$i] .' </a>'.$jourDebutTmp.'</th>';
+                        echo '<th><a href=\'./jour.php?a='.$annee.'&m='.$moisTmp.'&j='.$jourDebutTmp.'&u=3\'>'. $tabJour[$i] .' '.$jourDebutTmp.'</a></th>';
                     }
                     ?>
                 </tr>
