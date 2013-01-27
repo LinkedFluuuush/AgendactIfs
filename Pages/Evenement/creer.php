@@ -226,22 +226,16 @@ if(!empty($_POST['submit']))
 		</tr>
 		<tr><td class="descForm"> Ajouter un groupe de participants : </td>
 		<td class="Form">
-			<select name="groupe1" id ="groupe1" onchange="selectGroupe2()">
+			<select name="groupe" id ="groupe">
 				<option value="0"></option>
 				<?php
-				//Récupération lieu
-				$sql = "SELECT idgroupe, libelle FROM aci_groupe where length(idgroupe) = 1";
-						
-				$resultats = $conn->query($sql);
-				while($row = $resultats->fetch())
-					echo '<option value="'.utf8_encode($row['idgroupe']).'"> '.utf8_encode($row['libelle']).'</option>';
+					$req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe NOT IN (SELECT idgroupe_1 FROM aci_contenir)";
+					$resultats = $conn -> query($req);
+					while($row = $resultats->fetch()){
+						echo '<option value="'.utf8_encode($row['idgroupe']).'"> <img src="../Images/arborescencePlus.png" />'.utf8_encode($row['libelle']).'</option>';
+						descGroupe($row['idgroupe'], $conn, 1);
+					}
 				?>
-			</select>
-			<select name="groupe2" id ="groupe2" onchange="selectGroupe3()">
-				<option value="0"></option>
-			</select>
-			<select name="groupe3" id ="groupe3">
-				<option value="0"></option>
 			</select>
 		</td></tr>
 		<tr><td>
