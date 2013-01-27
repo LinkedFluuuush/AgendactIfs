@@ -482,14 +482,14 @@ ul.nav > li ul li:hover {
 
 /* PARTIE CREER */
 
-#corpsCal.creer table {
-    
-}
-
 #corpsCal.creer td {
     cursor: default;
     border: none;
     background-color: #ececec;
+}
+
+#corpsCal.creer td:hover {
+    font-weight: normal;
 }
 
 /* FIN DE LA PARTIE CREER */

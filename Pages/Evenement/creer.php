@@ -1,5 +1,5 @@
 <?php header( 'content-type: text/html; charset=utf-8' ); ?>
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Créer un évènement</title>
@@ -86,7 +86,8 @@ if(!empty($_POST['submit']))
 		$description = accents($description);
 		
 		$description = htmlspecialchars($description);
-		echo $_POST['dateDebut'];echo"<br>";
+		echo $_POST['dateDebut'];
+                echo"<br>";
 		echo date("d/m/Y");
 		//Date
 		if(regexDate($_POST['dateDebut']) && comparaisonDate($_POST['dateDebut'], date("d/m/Y")))
@@ -163,7 +164,11 @@ if(!empty($_POST['submit']))
 <div id="global">
             <?php include('../menu.php'); ?>
         <div id="corpsCal" class="creer">
-            <table class="titreCal"><tr class="titreCal"><th>créer un évènement</th></tr></table>
+            <table class="titreCal">
+                <tr class="titreCal">
+                    <th>créer un évènement</th>
+                </tr>
+            </table>
 <form action="" name="FormCreaEvenement" method="post" enctype="multipart/form-data" id="formCreation">
 	<table cellpadding="4" align="center">
 		<tr>
@@ -245,9 +250,9 @@ if(!empty($_POST['submit']))
 	</table>
 </form>
 
-<?php if($insertion) echo '<h3 align="center">Insertion réalisée avec succés</h2>'; ?>
+<?php if($insertion) echo '<h3 align="center">Insertion réalisée avec succés</h3>'; ?>
 </body>
-</HTML>
+</html>
 
 <script>
 function selectGroupe2(){
