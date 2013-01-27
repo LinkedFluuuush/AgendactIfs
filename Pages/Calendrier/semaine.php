@@ -183,20 +183,28 @@
             <table>
                 <tr>
                     <th></th>
-                    <?php
-                    $tabJour = array('Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche');
-                    $moisTmp = $mois;
-                    $jourDebutTmp = $jourDebut;
-                    for ($i = 0 ; $i <= 6 ; $i++) {
-                        $jourDebutTmp = $jourDebut + $i;
-                        if ($jourDebutTmp > retourneJour($annee, $mois)) {
-                            $jourDebutTmp = $jourDebutTmp - retourneJour($annee, $mois);
-                            $moisTmp = $moisSuiv;
-                        }
-                        echo '<th><a href=\'./jour.php?a='.$annee.'&m='.$moisTmp.'&j='.$jourDebutTmp.'&u=3\'>'. $tabJour[$i] .' '.$jourDebutTmp.'</a></th>';
-                    }
-                    ?>
+                    <th><?php echo '<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.$jourDebut.'&u=3\'>Lundi</a> '; ?></th>
+                    <th><?php echo '<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jourDebut+1).'&u=3\'>Mardi</a>'; ?></th>
+                    <th><?php echo '<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jourDebut+2).'&u=3\'>Mercredi</a>'; ?></th>
+                    <th><?php echo '<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jourDebut+3).'&u=3\'>Jeudi</a>'; ?></th>
+                    <th><?php echo '<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jourDebut+4).'&u=3\'>Vendredi</a>'; ?></th>
+                    <th><?php echo '<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jourDebut+5).'&u=3\'>Samedi</a>'; ?></th>
+                    <th><?php echo '<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jourDebut+6).'&u=3\'>Dimanche</a>'; ?></th>
                 </tr>
+
+                <?php
+                /*$tabJour = array('Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche');
+                $moisTmp = $mois;
+                $jourDebutTmp = $jourDebut;
+                for ($i = 0 ; $i <= 6 ; $i++) {
+                    $jourDebutTmp = $jourDebut + $i;
+                    if ($jourDebutTmp > retourneJour($annee, $mois)) {
+                        $jourDebutTmp = $jourDebutTmp - retourneJour($annee, $mois);
+                        $moisTmp = $moisSuiv;
+                    }
+                    echo '<th><a href=\'./jour.php?a='.$annee.'&m='.$moisTmp.'&j='.$jourDebutTmp.'&u=3\'>'. $tabJour[$i] .' '.$jourDebutTmp.'</a></th>';
+                }
+                */?>
                 
                 <?php
                 $sql = "SELECT aci_evenement.* , aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert
