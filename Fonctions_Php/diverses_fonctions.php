@@ -10,7 +10,7 @@ function descGroupe($idGroupe, $conn, $i){
 //			if($j < $i-1)
 //				$option .= "│";
 		}
-		$option .= '<img src="../Images/arborescencePlus.png" />'.utf8_encode($row['libelle']).'</option>';
+		$option .= utf8_encode($row['libelle']).'</option>';
 		echo $option;
 		descGroupe($row['idgroupe'], $conn, $i+1);
 	}
