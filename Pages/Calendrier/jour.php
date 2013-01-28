@@ -118,11 +118,12 @@
                     <?php $i++;
                 }
             }
-            else { ?>
-                <p>Il n'y a aucun &eacute;v&eacute;nement à cette date.</p>
-            <?php }
+            else {
+                echo "Il n'y a aucun &eacute;v&eacute;nement à cette date.";
+            }
                 if(!empty($nomSession))
                     echo '<a href="javascript:getEveCrea(' . $annee . ', ' . $mois . ', ' . $jour .');">Ajouter</a>';
+
 
                 if(!empty($_GET['u'])){
                     if ($_GET['u'] == 1) {

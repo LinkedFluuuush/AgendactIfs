@@ -1,4 +1,4 @@
-﻿<?php session_start();
+<?php session_start();
  if (!empty($_POST['priorite']))
      $_SESSION['priorite'] = $_POST['priorite'];
  
