@@ -175,6 +175,7 @@
 			}
 			 
                         $weekend = date('N', mktime(00, 00, 00, $mois, $jour, $annee));
+                        $numJour = date('N', mktime(00, 00, 00, $mois, $jour, $annee));
                         
 			// CAS 0 : le jour n'existe pas (31 fevrier)
 			if($jour > retourneJour($annee, $mois)) {
@@ -182,6 +183,32 @@
 			}
 			// Cas 1 : aucun événement
 			else if ($boucle == 0) {
+                            /*switch ($numJour) {
+                                case 1:
+                                    echo '<td onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.'L '.$jour.'</a></td>';
+                                    break;
+                                case 2: 
+                                    echo '<td onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.'M '.$jour.'</a></td>';
+                                    break;
+                                case 3:
+                                    echo '<td onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.'M '.$jour.'</a></td>';
+                                    break;
+                                case 4:
+                                    echo '<td onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.'J '.$jour.'</a></td>';
+                                    break;
+                                case 5:
+                                    echo '<td onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.'V '.$jour.'</a></td>';
+                                    break;
+                                case 6:
+                                    echo '<td id="weekend" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.'S '.$jour.'</a></td>';
+                                    break;
+                                case 7:
+                                    echo '<td id="weekend" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.'D '.$jour.'</a></td>';
+                                    break;
+                                default:
+                                    break;
+                            }*/
+                            
                             if ($weekend == 6 or $weekend == 7) {
                                 echo '<td id="weekend" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.$jour.'</a></td>';
                             }
