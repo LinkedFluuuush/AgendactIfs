@@ -15,7 +15,8 @@
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../style.css" rel="stylesheet" type="text/css">
         <link href="../../style-minicalendrier.css" rel="stylesheet" type="text/css">
-	</head>
+        <link href="../../bootstrap.css" rel="stylesheet" type="text/css">
+    </head>
     <body>
         <?php
         include("../../Fonctions_Php/connexion.php");
@@ -122,7 +123,7 @@
                 <p>Il n'y a aucun &eacute;v&eacute;nement à cette date.</p>
             <?php }
                 if(!empty($nomSession))
-                    echo '<a href="javascript:getEveCrea(' . $annee . ', ' . $mois . ', ' . $jour .');">Ajouter</a>';
+                    echo '<a class="btn" href="javascript:getEveCrea(' . $annee . ', ' . $mois . ', ' . $jour .');">Ajouter</a>';
 
                 if(!empty($_GET['u'])){
                     if ($_GET['u'] == 1) {
