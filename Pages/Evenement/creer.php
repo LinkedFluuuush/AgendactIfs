@@ -231,17 +231,16 @@ if(!empty($_POST['submit']))
 		</tr>
 		<tr><td class="descForm"> Ajouter un groupe de participants : </td>
 		<td class="Form">
-			<select name="groupe" id ="groupe">
-				<option value="0"></option>
+			<div id="groupe" style="overflow:auto;height:250px;width:250px;border:1px solid;border-radius:5px;padding:5px;">
 				<?php
 					$req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe NOT IN (SELECT idgroupe_1 FROM aci_contenir)";
 					$resultats = $conn -> query($req);
 					while($row = $resultats->fetch()){
-						echo '<option value="'.utf8_encode($row['idgroupe']).'"> <img src="../Images/arborescencePlus.png" />'.utf8_encode($row['libelle']).'</option>';
+						echo '<img src="../../Images/arborescencePlus.png"> <label for="'.utf8_encode($row['idgroupe']).'">'.utf8_encode($row['libelle']).'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
 						descGroupe($row['idgroupe'], $conn, 1);
 					}
 				?>
-			</select>
+			</div>
 		</td></tr>
 		<tr><td>
 			<input type="submit" name="submit" value="Valider" class="boutonForm"/>
