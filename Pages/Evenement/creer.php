@@ -236,7 +236,7 @@ if(!empty($_POST['submit']))
 					$req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe NOT IN (SELECT idgroupe_1 FROM aci_contenir)";
 					$resultats = $conn -> query($req);
 					while($row = $resultats->fetch()){
-						echo '<img src="../../Images/arborescencePlus.png"> <label for="'.utf8_encode($row['idgroupe']).'">'.utf8_encode($row['libelle']).'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
+						echo '<img id="'.utf8_encode($row['idgroupe']).'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"> <label for="'.utf8_encode($row['idgroupe']).'">'.utf8_encode($row['libelle']).'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
 						descGroupe($row['idgroupe'], $conn, 1);
 					}
 				?>
@@ -400,4 +400,23 @@ function reset(){
 	}
     }
 })();
+
+function developper(idGroupe, close){
+	var spans = document.getElementsByClassName(idGroupe);
+	var i;
+	var img = document.getElementById(idGroupe);
+	
+	if(img.src.lastIndexOf("arborescencePlus.png") !=-1 && close != 1){
+		img.src="../../Images/arborescenceMoins.png";
+		for(i=0; i < spans.length; i++){
+			spans[i].style.display="inline";
+		}
+	}
+	else{
+		img.src="../../Images/arborescencePlus.png";
+		for(i=0; i < spans.length; i++){
+			spans[i].style.display="none";
+		}
+	}			
+}
 </script>

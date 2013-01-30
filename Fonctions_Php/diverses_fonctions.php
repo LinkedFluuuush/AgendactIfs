@@ -3,22 +3,12 @@
 function descGroupe($idGroupe, $conn, $i){
 	$req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe IN (SELECT idgroupe_1 FROM aci_contenir WHERE idgroupe = ".$idGroupe.")";
 	$resultats = $conn->query($req);
-	while($row = $resultats->fetch()){
-		//~ $option =  '<option class = '.$idGroupe.' value="'.utf8_encode($row['idgroupe']).'">';
-		//~ for($j = 0; $j < $i; $j++){
-			//~ $option.="&nbsp &nbsp &nbsp";
-//~ //			if($j < $i-1)
-//~ //				$option .= "│";
-		//~ }
-		//~ $option .= utf8_encode($row['libelle']).'</option>';
-		
-		$option='<span style="display:none;"><img src="../../Images/arborescencePlus.png"><label for="'.utf8_encode($row['idgroupe']).'">';
+	while($row = $resultats->fetch()){		
+		$option='<span class="'.$idGroupe.'" style="display:none;">';
 		for($j = 0; $j < $i; $j++){
 			$option.="&nbsp &nbsp &nbsp";
-//			if($j < $i-1)
-//				$option .= "│";
 		}
-		$option.=utf8_encode($row['libelle']).'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/></span>';
+		$option.='<img id="'.utf8_encode($row['idgroupe']).'" src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/> <label for="'.utf8_encode($row['idgroupe']).'">'.utf8_encode($row['libelle']).'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/></span>';
 		echo $option;
 		descGroupe($row['idgroupe'], $conn, $i+1);
 	}
