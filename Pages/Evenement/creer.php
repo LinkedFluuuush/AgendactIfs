@@ -227,7 +227,11 @@ if(!empty($_POST['submit']))
 		</tr>
 		<tr>
 			<td class="descForm"> Ajouter un destinataire : </td>
-			<td class="Form"> <input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/> <a id="plusParticipant" href=""> <img src="../../Images/boutonPlusReduit.png"> </a></td>
+			<td class="Form"> 
+			<div id="dest" style="overflow:auto;height:250px;width:250px;border:1px solid;border-radius:5px;padding:5px;">
+			</div>
+			<input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/> <a id="plusParticipant" href=""> <img src="../../Images/boutonPlusReduit.png"> </a>
+			<div id="resultsParticipant"></div></td>
 		</tr>
 		<tr><td class="descForm"> Ajouter un groupe de participants : </td>
 		<td class="Form">
@@ -236,7 +240,7 @@ if(!empty($_POST['submit']))
 					$req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe NOT IN (SELECT idgroupe_1 FROM aci_contenir)";
 					$resultats = $conn -> query($req);
 					while($row = $resultats->fetch()){
-						echo '<img id="'.utf8_encode($row['idgroupe']).'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"> <label for="'.utf8_encode($row['idgroupe']).'">'.utf8_encode($row['libelle']).'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
+						echo '<img id="'.utf8_encode($row['idgroupe']).'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/> <label for="'.utf8_encode($row['idgroupe']).'">'.utf8_encode($row['libelle']).'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
 						descGroupe($row['idgroupe'], $conn, 1);
 					}
 				?>
@@ -360,6 +364,105 @@ function reset(){
 
     function chooseResult(result){
 	searchElement.value = result.innerHTML;
+	results.style.display = 'none';
+	result.className = '';
+	searchElement.focus();
+    }
+    
+    searchElement.onkeyup = function(e){
+	e = e || window.event;
+	    
+	var divs = results.getElementsByTagName('div');
+	if(e.keyCode == 38 && selectedResult > -1){
+		divs[selectedResult--].className = '';
+		if(selectedResult > -1){
+			divs[selectedResult].className = 'result_focus';
+		}
+	}
+	else if(e.keyCode == 40 && selectedResult < divs.length-1){
+		results.style.display = 'block';
+		if(selectedResult > -1){
+			divs[selectedResult].className = 'result_focus';
+		}
+		divs[++selectedResult].className = '';
+	}
+	else if(e.keyCode == 13 && selectedResult > -1){
+		chooseResult(divs[selectedResult]);
+	}
+	else if(searchElement.value == ''){
+	    results.innerHTML = '';
+	}
+	else if(searchElement.value != previousValue){
+		previousValue = searchElement.value;
+		
+		if(previousRequest && previousRequest.readyState < 4){
+			previousRequest.abort();
+		}
+		
+		previousRequest = getLieu(previousValue);
+		selectedResult = -1;
+	}
+    }
+})();
+
+(function(){
+
+    var searchElement = document.getElementById('addParticipant');
+    var results = document.getElementById('resultsParticipant');
+    var selected = document.getElementById('dest');
+    var value = searchElement.value;
+    var selectedResult = -1;
+    var previousRequest;
+    var previousValue = searchElement.value;
+    
+    function getLieu(value){
+	var xhr = new XMLHttpRequest();
+
+	xhr.onreadystatechange = function() {
+	    if(xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)){
+		afficheLieu(xhr.responseText);
+	    }
+	}
+	
+	xhr.open('POST', '../../Fonctions_Php/XMLgetPersonne.php');
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhr.send('valeur='+value);
+	
+	return xhr;
+    }
+
+    function afficheLieu(response){
+	results.style.display = response.length ? 'block' : 'none';
+
+	if(response.length){
+	    var lieux = response.split('|');
+	    
+	    results.innerHTML = '';
+
+	    for(var i = 0, div; i < lieux.length ; i++){
+		div = results.appendChild(document.createElement('div'));
+		div.innerHTML = lieux[i];
+
+		div.onclick = function(){
+		    chooseResult(this);
+		}
+	    }
+	}
+    }
+
+    function chooseResult(result){
+	var div = document.createElement('div');
+	div.appendChild(document.createTextNode(result.innerHTML));
+	var img = document.createElement('img');
+	img.src="../../Images/boutonMoinsReduit.png";
+	img.onclick = function(){
+		img.parentNode.parentNode.removeChild(img.parentNode);
+	}
+	div.appendChild(img);
+	
+	selected.appendChild(div);
+    
+	searchElement.value = '';
 	results.style.display = 'none';
 	result.className = '';
 	searchElement.focus();

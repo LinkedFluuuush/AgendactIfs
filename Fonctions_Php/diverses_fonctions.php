@@ -8,7 +8,9 @@ function descGroupe($idGroupe, $conn, $i){
 		for($j = 0; $j < $i; $j++){
 			$option.="&nbsp &nbsp &nbsp";
 		}
-		$option.='<img id="'.utf8_encode($row['idgroupe']).'" src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/> <label for="'.utf8_encode($row['idgroupe']).'">'.utf8_encode($row['libelle']).'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
+		$option.='<img id="'.utf8_encode($row['idgroupe']).'" src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/>';
+		$option.='<label for="'.utf8_encode($row['idgroupe']).'">'.utf8_encode($row['libelle']).'</label>';
+		$option.='<input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
 		echo $option;
 		descGroupe($row['idgroupe'], $conn, $i+1);
 		echo "</div>";
