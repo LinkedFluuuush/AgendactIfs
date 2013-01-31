@@ -32,6 +32,15 @@
         </li>
     </ul>
     
+    <?php 
+    $temp = explode("/", $_SERVER['PHP_SELF']);
+    $nomPage = $temp[sizeof($temp)-1];
+
+    if($nomPage == "semestre.php" or $nomPage == "mois.php" or $nomPage == "semaine.php" or $nomPage == "jour.php")
+        include("priorite.php"); ?>
+    
+    <br>
+    
     <ul class="nav">
         <li>
             <div class="header">Vue</div>
@@ -43,15 +52,6 @@
             </ul>
         </li>
      </ul>
-    
-    <?php 
-    $temp = explode("/", $_SERVER['PHP_SELF']);
-    $nomPage = $temp[sizeof($temp)-1];
-
-    if($nomPage == "semestre.php" or $nomPage == "mois.php" or $nomPage == "semaine.php" or $nomPage == "jour.php")
-        include("priorite.php"); ?>
-    
-    <br>
     
     <?php
     $temp = explode("/", $_SERVER['PHP_SELF']);

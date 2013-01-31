@@ -15,6 +15,7 @@
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../style.css" rel="stylesheet" type="text/css">
         <link href="../../style-minicalendrier.css" rel="stylesheet" type="text/css">
+        <link href="../../bootstrap.css" rel="stylesheet" type="text/css">
 	</head>
     <body>
         <?php
@@ -127,7 +128,7 @@
 
                 if(!empty($_GET['u'])){
                     if ($_GET['u'] == 1) {
-                        echo '<a href="semestre.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
+                        echo '<a class="btn" href="semestre.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
                     }
 
                     if ($_GET['u'] == 2) {
