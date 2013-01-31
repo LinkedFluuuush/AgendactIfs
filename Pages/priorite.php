@@ -1,13 +1,5 @@
-<li>
-	<div class="header">Evénements visibles</div>
-	<ul class="menu"><li>
-	<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-		<select name="priorite">
-			<option value="1" <?php if($priorite == 1) echo "selected";?>>Haute</option>
-			<option value="2" <?php if($priorite == 2) echo "selected";?>>Moyenne</option>
-			<option value="3" <?php if(empty($priorite) || $priorite == 3) echo "selected";?>>Tout</option>
-		</select>
-		<input type="submit" name="valider" value="Sélectionner">
-	</form>
-	</li></ul>
-</li>
+<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post" name="priorite">
+    <input type="radio" name="priorite" value="1" id="1" <?php if($priorite == 1) echo "checked";?> onclick="document.forms['priorite'].submit();"><label for="1">Haute</label><br>
+    <input type="radio" name="priorite" value="2" id="2" <?php if($priorite == 2) echo "checked";?> onclick="document.forms['priorite'].submit();"><label for="2">Moyenne</label><br>
+    <input type="radio" name="priorite" value="3" id="3" <?php if(empty($priorite) || $priorite == 3) echo "checked";?> onclick="document.forms['priorite'].submit();"><label for="3">Tout</label>
+</form>
