@@ -451,7 +451,7 @@ function reset(){
     }
 
     function chooseResult(result){
-	var div = document.createElement('div');
+	var div = document.createElement('option');
 	div.appendChild(document.createTextNode(result.innerHTML));
 	var img = document.createElement('img');
 	img.src="../../Images/boutonMoinsReduit.png";
