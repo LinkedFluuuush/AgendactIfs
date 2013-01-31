@@ -277,14 +277,14 @@ if(!empty($_POST['submit']))
 		<tr>
 			<td class="descForm"> Ajouter un destinataire : </td>
 			<td class="Form"> 
-			<select id="dest" multiple style="width:250px;">
+			<select id="dest" multiple style="width:300px;height:150px;">
 			</select><br/>
 			<input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
 			<div id="resultsParticipant"></div></td>
 		</tr>
 		<tr><td class="descForm"> Ajouter un groupe de participants : </td>
 		<td class="Form">
-			<div id="groupe" style="overflow:auto;height:250px;width:250px;border:1px solid;border-radius:5px;padding:5px;">
+			<div id="groupe" style="overflow:auto;height:250px;width:250px;border:1px solid #abadb3;padding:5px;background-color:white;">
 				<?php
 					$req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe NOT IN (SELECT idgroupe_1 FROM aci_contenir)";
 					$resultats = $conn -> query($req);

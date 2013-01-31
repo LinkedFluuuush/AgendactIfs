@@ -170,6 +170,7 @@ ul.nav > li ul li:hover {
 /* bandeau du titre du calendrier */
 #corpsCal table.titreCal {
     width: 100%;
+    margin-bottom: 5px;
 }
 
 /* liens à l'intérieur du titre */
