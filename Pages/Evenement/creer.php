@@ -147,7 +147,6 @@ if(!empty($_POST['submit']))
 		if($valide)
 		{
 			//Récupération du prochain numéro d'événement attribuable
-
 			$reqIdEv = "select ifnull(max(idevenement),0)+1 from aci_evenement";
 			$temp = $conn->query($reqIdEv);
 			$idEv = $temp->fetch();
@@ -180,7 +179,7 @@ if(!empty($_POST['submit']))
 					$dest = $_POST["addParticipant$i"];
 
 					//Récupération de l'idutilisateur du participant à ajouter à l'événement
-					$sqlRecupId = "SELECT idutilisateur FROM aci_utilisateur WHERE concat(nom,' ',prenom) = '$dest'";
+					$sqlRecupId = "SELECT idutilisateur FROM aci_utilisateur WHERE adresse_mail = '$dest'";
 
 					$temp = $conn->query($sqlRecupId);
 					$id = $temp->fetch();
@@ -213,9 +212,13 @@ if(!empty($_POST['submit']))
 <div id="global">
             <?php include('../menu.php'); ?>
         <div id="corpsCal" class="creer">
-            <table class="titreCal"><tr class="titreCal"><th>Créer un évènement</th></tr></table>
+            <table class="titreCal">
+                <tr class="titreCal">
+                    <th>créer un évènement</th>
+                </tr>
+            </table>
 <form action="" name="FormCreaEvenement" method="post" enctype="multipart/form-data" id="formCreation">
-	<table cellpadding="4" align="center" id="formulaire">
+	<table cellpadding="4" align="center">
 		<tr>
 			<td class="descForm">Priorité : </td>
 			<td class="Form">
@@ -254,7 +257,6 @@ if(!empty($_POST['submit']))
 				<input type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateFin");?>"class="dateFin" maxlength=10 size=11/>
 				<input type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php saisieFormString("heureFin");?>" class="heureFin" maxlength=5 size=4/>
 				<?php echo "<br><b id=\"formErreur\"> $erreurDateFin $erreurHeureFin </b>"; ?>
-				<?php echo "<br><b id=\"formErreur\"> $erreurDate $erreurHeureFin </b>"; ?>
 			</td>
 		</tr>
 		<tr>
@@ -272,14 +274,12 @@ if(!empty($_POST['submit']))
 			</td>
 		</tr>
 		<tr>
-
 			<td class="descForm"> Ajouter un destinataire : </td>
 			<td class="Form"> 
-			<div id="dest" style="overflow:auto;height:250px;width:250px;border:1px solid;border-radius:5px;padding:5px;">
-			</div>
-			<input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/> <a id="plusParticipant" href=""> <img src="../../Images/boutonPlusReduit.png"> </a>
+			<select id="dest" multiple style="width:250px;">
+			</select><br/>
+			<input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
 			<div id="resultsParticipant"></div></td>
-
 		</tr>
 		<tr><td class="descForm"> Ajouter un groupe de participants : </td>
 		<td class="Form">
@@ -295,11 +295,9 @@ if(!empty($_POST['submit']))
 			</div>
 		</td></tr>
 		<tr><td>
-                
 			<input type="submit" name="submit" value="Valider" class="boutonForm"/>
-			<input type="reset" value="Réinitialiser" class="boutonForm" onclick="reset()"/>
-			</td>
-		</tr>
+			<input type="reset" value="R&eacute;initialiser" class="boutonForm" onclick="reset()"/>
+		</td></tr>
 	</table>
 </form>
 
@@ -307,65 +305,67 @@ if(!empty($_POST['submit']))
 </body>
 </html>
 
-<script id = "scripts">
-//PARTICIPANTS
-function test(){
-	var compteur = document.getElementsByName('moinsParticipant').length;
-	var btnMoins;
+<script>
+function selectGroupe2(){
+	var list = document.getElementById('groupe1');
+	var selectionne = list.value;
 	
-	if(compteur == 0){
-		btnMoins = document.createElement('a');
-		var imgMoins = document.createElement('img');
-		
-		imgMoins.src ="../../Images/boutonMoinsReduit.png";
-		btnMoins.id ="moinsParticipant";
-		btnMoins.name ="moinsParticipant";
-		btnMoins.href ="#nogo";
-		btnMoins.setAttribute("onClick", "test2()");
-		
-		btnMoins.appendChild(imgMoins);
+	var xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function (){
+	    if(xhr.readyState == 4){
+		    if(xhr.status == 200 || xhr.status == 0){
+			/*var response = xhr.responseXML;
+			alert(xhr.getAllResponseHeaders());
+			var options = response.getElementsByTagName('option');
+			var i;
+			var select = document.getElementById('groupe2');
+			for(i = 0; i < options.length; i++){
+				select.appendChild(options[i]);
+			}*/
+			document.getElementById('groupe2').innerHTML = "<option value=0></option>" + xhr.responseText;
+			document.getElementById('groupe3').innerHTML = "<option value=0></option>";
+		    }
+	    }
 	}
-	else {
-		btnMoins = document.getElementById('moinsParticipant');
-	}
-	var btnPlus = document.getElementById('plusParticipant');
 	
-	var newInput = document.createElement('input');
-	var newLigne = document.createElement('tr');
-	
-	newInput.type = 'text';												
-	newInput.name = 'addParticipant' + (compteur + 1);
-	newInput.id = 'addParticipant_' + (compteur + 1);
-	newInput.class = 'boutonForm';
-	newInput.autocomplete = 'off';
-	
-	btnPlus = btnPlus.parentNode.removeChild(btnPlus);
-	
-	newLigne.appendChild(newInput);
-	newLigne.appendChild(btnPlus);
-	newLigne.appendChild(btnMoins);
-	document.getElementById('destinataires').appendChild(newLigne);
+	xhr.open('POST','../../Fonctions_Php/XMLSelectEvent.php');
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhr.send('valeur='+selectionne);
 }
 
-function test2(){
-	var btnMoins = document.getElementById("moinsParticipant");
-	var btnPlus = document.getElementById("plusParticipant");
+function selectGroupe3(){
+	var list = document.getElementById('groupe2');
+	var selectionne = list.value;
 	
+	var xhr = new XMLHttpRequest();
 	
-	btnPlus = btnPlus.parentNode.removeChild(btnPlus);
-	btnMoins = btnMoins.parentNode.removeChild(btnMoins);
+	xhr.onreadystatechange = function (){
+	    if(xhr.readyState == 4){
+		    if(xhr.status == 200 || xhr.status == 0){
+			/*var response = xhr.responseXML;
+			alert(xhr.getAllResponseHeaders());
+			var options = response.getElementsByTagName('option');
+			var i;
+			var select = document.getElementById('groupe3');
+			for(i = 0; i < options.length; i++){
+				select.appendChild(options[i]);
+			}*/
+			document.getElementById('groupe3').innerHTML = "<option value=0></option>" + xhr.responseText;
+		    }
+	    }
+	}
 	
-	document.getElementById('destinataires').deleteRow(-1);
-	
-	var taille = document.getElementById('destinataires').rows.length;
-	
-	document.getElementById('destinataires').rows[taille - 1].appendChild(btnPlus);
-	if(taille > 1)
-	document.getElementById('destinataires').rows[taille - 1].appendChild(btnMoins);
+	xhr.open('POST','../../Fonctions_Php/XMLSelectEvent.php');
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhr.send('valeur='+selectionne);
 }
-	
-//LIEUX
-//Saisie dynamique lieux
+
+function reset(){
+    document.getElementById('groupe2').innerHTML = "<option value=0></option>";
+    document.getElementById('groupe3').innerHTML = "<option value=0></option>";   
+}
+
 (function(){
 
     var searchElement = document.getElementById('Eve_lieu');
@@ -453,7 +453,6 @@ function test2(){
     }
 })();
 
-//Saisie dynamique participants
 (function(){
 
     var searchElement = document.getElementById('addParticipant');
@@ -464,17 +463,15 @@ function test2(){
     var previousRequest;
     var previousValue = searchElement.value;
     
-    function getParticipant(value){
-
+    function getLieu(value){
 	var xhr = new XMLHttpRequest();
 
 	xhr.onreadystatechange = function() {
 	    if(xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)){
-                
-		afficheParticipant(xhr.responseText);
+		afficheLieu(xhr.responseText);
 	    }
 	}
-        
+	
 	xhr.open('POST', '../../Fonctions_Php/XMLgetPersonne.php');
 	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xhr.send('valeur='+value);
@@ -482,17 +479,17 @@ function test2(){
 	return xhr;
     }
 
-    function afficheParticipant(response){
+    function afficheLieu(response){
 	results.style.display = response.length ? 'block' : 'none';
 
 	if(response.length){
-	    var participants = response.split('|');
+	    var lieux = response.split('|');
 	    
 	    results.innerHTML = '';
 
-	    for(var i = 0, div; i < participants.length ; i++){
+	    for(var i = 0, div; i < lieux.length ; i++){
 		div = results.appendChild(document.createElement('div'));
-		div.innerHTML = participants[i];
+		div.innerHTML = lieux[i];
 
 		div.onclick = function(){
 		    chooseResult(this);
@@ -502,17 +499,14 @@ function test2(){
     }
 
     function chooseResult(result){
-	var div = document.createElement('div');
+	var div = document.createElement('option');
+	div.selected = "true";
+	div.value=result.innerHTML.split(" ")[2];
 	div.appendChild(document.createTextNode(result.innerHTML));
-	var img = document.createElement('img');
-	img.src="../../Images/boutonMoinsReduit.png";
-	img.onclick = function(){
-		img.parentNode.parentNode.removeChild(img.parentNode);
-	}
-	div.appendChild(img);
-	
+	div.onclick = function(){
+		div.parentNode.removeChild(div);
+	}	
 	selected.appendChild(div);
-    
 	searchElement.value = '';
 	results.style.display = 'none';
 	result.className = '';
@@ -549,8 +543,7 @@ function test2(){
 			previousRequest.abort();
 		}
 		
-		previousRequest = getParticipant(previousValue);
-
+		previousRequest = getLieu(previousValue);
 		selectedResult = -1;
 	}
     }
