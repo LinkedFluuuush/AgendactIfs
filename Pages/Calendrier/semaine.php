@@ -164,7 +164,7 @@
         $nomMois1 = $tabMois[$mois1 - 1];
         $nomMois2 = $tabMois[$mois2 - 1];
         
-        $idUtil = 1;
+        $idUtil = 1; //$_SESSION['id'];
         $idSession = 1; //$_SESSION['login'];
         
         ?>
@@ -205,6 +205,7 @@
                 $resultats = $conn->query($sql);
                 $resultats->setFetchMode(PDO::FETCH_ASSOC);
                 
+				
                 if ($resultats != null) {
                     $i=0;
                     while ($row = $resultats->fetch()) {
@@ -216,7 +217,7 @@
                     }
                 }
                 
-                
+				
                 for ($i = 0 ; $i <= 23 ; $i++) { //heures de 0 à 23
                     echo '<tr>';
                     echo '<td class="nomHeure">'.$i.':00</td>';
