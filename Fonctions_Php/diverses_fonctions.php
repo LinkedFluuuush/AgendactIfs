@@ -1,22 +1,5 @@
 <?php header( 'content-type: text/html; charset=utf-8' );
 
-function descGroupe($idGroupe, $conn, $i){
-	$req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe IN (SELECT idgroupe_1 FROM aci_contenir WHERE idgroupe = ".$idGroupe.")";
-	$resultats = $conn->query($req);
-	while($row = $resultats->fetch()){		
-		$option='<div class="'.$idGroupe.'" style="display:none;">';
-		for($j = 0; $j < $i; $j++){
-			$option.="&nbsp &nbsp &nbsp";
-		}
-		$option.='<img id="'.utf8_encode($row['idgroupe']).'" src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/>';
-		$option.='<label for="'.utf8_encode($row['idgroupe']).'">'.utf8_encode($row['libelle']).'</label>';
-		$option.='<input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
-		echo $option;
-		descGroupe($row['idgroupe'], $conn, $i+1);
-		echo "</div>";
-	}
-}
-
 function saisieFormString($chaine)
 {
 	if(!empty($_POST["$chaine"]))
@@ -144,10 +127,9 @@ function comparaisonDate($date, $date2)
 		{
 			if($date[0] < $date2[0])
 				return false;
-			else
-				return true;
 		}
 	}
+	return true;
 }
 
 /* cette fonction sert à verifier si une connection ldap est valide */
@@ -162,17 +144,20 @@ function sessionValide($utilisateur, $pass)
     return (oci_connect($utilisateur,$pass,"info"));
 }
 
-/* cette fonction permet de retourner le nombre de jours pour un mois et une annee donnee */
+/* cette fonction permet de retourner le nombre de jour pour un mois et une annee donnee */
 function retourneJour($annee, $mois)
 {
-    //on définit le nombre de jour du mois
-    if ($mois == 1 || $mois == 3 || $mois == 5 || $mois == 7 || $mois == 8 || $mois == 10 || $mois == 12) {
+    //on défini le nombre de jour du mois
+    if ($mois == 1 || $mois == 3 || $mois == 5 || $mois == 7 || $mois == 8 || $mois == 10 || $mois == 12) 
+    {
         $days = 31;
     } 
-    else if ($mois == 4 || $mois == 6 || $mois == 9 || $mois == 11) {
+    else if ($mois == 4 || $mois == 6 || $mois == 9 || $mois == 11) 
+    {
         $days = 30;
     } 
-    else {
+    else 
+    {
         $days = ($annee % 4 == 0) ? 29 : 28;
     }
     return $days;
@@ -198,7 +183,8 @@ function miseEnPageJour($timestamp)
 }
 
 function jourProchain ($mois, $jour, $annee) {
-    $jourSemaine = date('N', mktime(23, 59, 59, $mois, $jour, $annee)); // indique quel jour se trouve le timestamp (ex : 1 = lundi)
+    $timestamp = mktime(23, 59, 59, $mois, $jour, $annee);
+    $jourSemaine = date('N', $timestamp); // indique quel jour se trouve le timestamp (ex : 1 = lundi)
     
     // Permet de connaitre le 1er jour de la prochaine semaine
     if ($jour == 1) { // si c'est le premier jour du mois
@@ -217,11 +203,8 @@ function jourProchain ($mois, $jour, $annee) {
                 break;
             case 7: $jour += 1;
                 break;
-            default:
-                break;
         }
-    }
-    else {
+    } else {
         $jour += 7;
     }
     return $jour;

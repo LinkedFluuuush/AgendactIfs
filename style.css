@@ -182,7 +182,7 @@ ul.nav > li ul li:hover {
 #corpsCal td {
     /* propriétés des bordures */
     border-width: 1px;
-    border-color: #cfcfcf;
+    border-color: #d9d9d9;
     border-style: solid;
 
     /* couleur de fond du tableau */
@@ -190,12 +190,10 @@ ul.nav > li ul li:hover {
     
     /* affiche le curseur "main" */
     cursor: pointer;
-    
-    padding-left: 2px;
 }
 
 #corpsCal td:hover {
-    font-weight: bold;
+    background-color: #edeeef;
 }
 
 /* liens dans le calendrier */
@@ -224,14 +222,6 @@ ul.nav > li ul li:hover {
     text-decoration: none;
     color: #72777b;
     font-size: .9em;
-}
-
-#corpsCal.semestre td#weekend {
-    background-color: #e7e9eb;
-}
-
-#corpsCal.semestre td#weekend:hover {
-   font-weight: bold;
 }
 
 /* Infobulle */
@@ -455,11 +445,6 @@ ul.nav > li ul li:hover {
     text-align: left;
 }
 
-#corpsCal.jour h5 {
-    margin-left: 30px;
-    font-size: 0.9em;
-}
-
 #corpsCal.jour p {
     margin-left: 30px;
     font-size: 100%;
@@ -482,14 +467,14 @@ ul.nav > li ul li:hover {
 
 /* PARTIE CREER */
 
+#corpsCal.creer table {
+    
+}
+
 #corpsCal.creer td {
     cursor: default;
     border: none;
     background-color: #ececec;
-}
-
-#corpsCal.creer td:hover {
-    font-weight: normal;
 }
 
 /* FIN DE LA PARTIE CREER */

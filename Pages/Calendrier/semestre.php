@@ -1,12 +1,11 @@
-﻿<?php session_start();
- if (!empty($_POST['priorite']))
-     $_SESSION['priorite'] = $_POST['priorite'];
- 
- if (!empty($_SESSION['priorite']))
-     $priorite = $_SESSION['priorite'];
- else
-     $priorite = 3;
+﻿<?php session_start(); 
+if(!empty($_POST['priorite']))
+	$_SESSION['priorite'] = $_POST['priorite'];
 
+if(!empty($_SESSION['priorite']))
+	$priorite = $_SESSION['priorite'];
+else
+	$priorite = 3;
 ?>
 
 <!DOCTYPE html>
@@ -123,7 +122,7 @@
 			JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
 			where dateFin >= '$annee-$moisDebut-01 00:00:00'
 			and dateDebut <= '$annee-$moisFin-$days 23:59:59'
-                        and idpriorite <= $priorite
+			and idpriorite <= $priorite
 			and ((estPublic = 1)
 				or ($idUtil = aci_evenement.idUtilisateur))";
 
@@ -174,8 +173,6 @@
 				}
 			}
 			 
-                        $weekend = date('N', mktime(00, 00, 00, $mois, $jour, $annee));
-                        $numJour = date('N', mktime(00, 00, 00, $mois, $jour, $annee));
                         
 			// CAS 0 : le jour n'existe pas (31 fevrier)
 			if($jour > retourneJour($annee, $mois)) {
@@ -183,44 +180,12 @@
 			}
 			// Cas 1 : aucun événement
 			else if ($boucle == 0) {
-                            /*switch ($numJour) {
-                                case 1:
-                                    echo '<td onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.'L '.$jour.'</a></td>';
-                                    break;
-                                case 2: 
-                                    echo '<td onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.'M '.$jour.'</a></td>';
-                                    break;
-                                case 3:
-                                    echo '<td onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.'M '.$jour.'</a></td>';
-                                    break;
-                                case 4:
-                                    echo '<td onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.'J '.$jour.'</a></td>';
-                                    break;
-                                case 5:
-                                    echo '<td onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.'V '.$jour.'</a></td>';
-                                    break;
-                                case 6:
-                                    echo '<td id="weekend" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.'S '.$jour.'</a></td>';
-                                    break;
-                                case 7:
-                                    echo '<td id="weekend" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.'D '.$jour.'</a></td>';
-                                    break;
-                                default:
-                                    break;
-                            }*/
-                            
-                            if ($weekend == 6 or $weekend == 7) {
-                                echo '<td id="weekend" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.$jour.'</a></td>';
-                            }
-                            else {
-                                echo '<td onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.$jour.'</a></td>';
-                            }
+                            echo '<td onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">'.$jour.'</a></td>';
 			}
 			
 			// Cas 2 : plusieurs evenements
 			else if ($boucle > 1) {
-                            if ($weekend == 6 or $weekend == 7) {
-				echo '<td class="info" id="weekend" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
+				echo '<td class="info" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
 				echo $jour . /*'<img STYLE="vertical-align: -3px; margin-left: 5px; margin-right: 2px;" src="./Images/warning_exclamation.png" height="15" width="15">' . */' Evenements : ' . $boucle;
 
 				echo '<span>';
@@ -231,34 +196,13 @@
 				}
 				echo '</span>';
 				echo '</td>';
-                            }
-                            else {
-                                echo '<td class="info" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
-				echo $jour . /*'<img STYLE="vertical-align: -3px; margin-left: 5px; margin-right: 2px;" src="./Images/warning_exclamation.png" height="15" width="15">' . */' Evenements : ' . $boucle;
-
-				echo '<span>';
-				for ($i=0 ; $i<$boucle ; $i++) {
-					echo '<div>';
-					echo ($i + 1) . ': ' .$titreLong[$i]; 
-					echo '</div>';
-				}
-				echo '</span>';
-				echo '</td>';
-                            }
 			}
 			
 			// Cas 3 : 1 seul evenement
 			else {
-                            if ($weekend == 6 or $weekend == 7) {
-                                echo '<td class="info" id="weekend" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
-                                echo $jour . ' ' . $titreCourt[0] . '<span>' . $titreLong[0] . '</span>';
-                                echo'</td>';
-                            }
-                            else {
-                                echo '<td class="info" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
-                                echo $jour . ' ' . $titreCourt[0] . '<span>' . $titreLong[0] . '</span>';
-                                echo'</td>';
-                            }
+				echo '<td class="info" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
+				echo $jour . ' ' . $titreCourt[0] . '<span>' . $titreLong[0] . '</span>';
+				echo'</td>';
 			}
                     }
                     echo'</tr>';

@@ -24,6 +24,7 @@ $erreurLibelleLong = "";
 $erreurDescription = "";
 $erreurDateDebut = "";
 $erreurDateFin = "";
+$erreurDate ="";
 $erreurHeureDebut = "";
 $erreurHeureFin = "";
 
@@ -61,6 +62,7 @@ if(!empty($_POST['submit']))
 		$libelleCourt = $_POST['libelleCourt'];
 		$libelleLong = $_POST['libelleLong'];
 		$description = $_POST['description'];
+		$lieu = $_POST['lieu'];
 	
 		//Remise à zéro des variables pour tests par expressions régulières
 		$valide = true;
@@ -69,6 +71,7 @@ if(!empty($_POST['submit']))
 		$erreurDescription = "";
 		$erreurDateDebut = "";
 		$erreurDateFin = "";
+		$erreurDate = "";
 		$erreurHeureDebut = "";
 		$erreurHeureFin = "";
 		
@@ -86,10 +89,9 @@ if(!empty($_POST['submit']))
 		$description = accents($description);
 		
 		$description = htmlspecialchars($description);
-		echo $_POST['dateDebut'];
-                echo"<br>";
-		echo date("d/m/Y");
+
 		//Date
+
 		if(regexDate($_POST['dateDebut']) && comparaisonDate($_POST['dateDebut'], date("d/m/Y")))
 			$dateDebut = $_POST['dateDebut'];
 		else
@@ -98,7 +100,7 @@ if(!empty($_POST['submit']))
 			$erreurDateDebut = "La date saisie est invalide";
 		}
 		
-		/*if(regexDate($_POST['dateFin']) && comparaisonDate($_POST['dateFin'], date("d/m/Y")))
+		if(regexDate($_POST['dateFin']) && comparaisonDate($_POST['dateFin'], date("d/m/Y")))
 			$dateFin = $_POST['dateFin'];
 		else if (empty($_POST['dateFin']))
 		{
@@ -108,7 +110,14 @@ if(!empty($_POST['submit']))
 		{
 			$valide = false;
 			$erreurDateFin = "La date saisie est invalide";
-		}*/
+		}
+		
+		if(comparaisonDate($_POST['dateFin'], $_POST['dateDebut'])){}
+		else
+		{
+			$valide = false;
+			$erreurDate = "Un évènement ne peut pas se terminer avant de commencer";
+		}
 			
 		//Heure
 		if(regexHeure($_POST['heureDebut']))
@@ -138,22 +147,62 @@ if(!empty($_POST['submit']))
 		if($valide)
 		{
 			//Récupération du prochain numéro d'événement attribuable
-			$reqIdEv = "select max(idevenement)+1 from aci_evenement";
+
+			$reqIdEv = "select ifnull(max(idevenement),0)+1 from aci_evenement";
 			$temp = $conn->query($reqIdEv);
 			$idEv = $temp->fetch();
-			echo "$idEv[0], $idUtil, $priorite, 1, $libelleLong, $libelleCourt, $description, $dateDebut $heureDebut, $dateFin $heureFin, $public";
+			
+			//Récupération de l'idlieu du lieu à ajouter à l'événement
+			if(!empty($lieu))
+			{
+				$sqlRecupId = "SELECT idlieu FROM aci_lieu WHERE libelle = '$lieu'";
+
+				$temp = $conn->query($sqlRecupId);
+				$idLieu = $temp->fetch();
+				$idLieu =  $idLieu['idlieu'];
+			}
+			else
+				$idLieu = null;
+			
+			//Insertion de l'événement
+			//echo "$idEv[0], $idUtil, $priorite, 1, $libelleLong, $libelleCourt, $description, $dateDebut $heureDebut, $dateFin $heureFin, $public";
 			$sql = "INSERT INTO `aci_evenement` (`IDEVENEMENT`, `IDUTILISATEUR`, `IDPRIORITE`, `IDLIEU`, `LIBELLELONG`, `LIBELLECOURT`, `DESCRIPTION`, `DATEDEBUT`, `DATEFIN`, `ESTPUBLIC`, `DATEINSERT`) 
-			VALUES ($idEv[0], $idUtil, $priorite, 1, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, curdate());";
+			VALUES ($idEv[0], $idUtil, $priorite, $idLieu, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, curdate())";
 			
 			$resultats = $conn->query($sql);
 			
-			//TODO
-			$sqlDestUtilisateur = "INSERT INTO `aci_bdd`.`aci_destutilisateur` (`IDUTILISATEUR`, `IDEVENEMENT`, `DATEINSERT`) 
-			VALUES (, $idEv[0], curdate());";
+			if(!empty($_POST['addParticipant0']) && $public == 0)
+			{
+				$i = 0;
+
+				while(!empty($_POST["addParticipant$i"]))
+				{
+					$dest = $_POST["addParticipant$i"];
+
+					//Récupération de l'idutilisateur du participant à ajouter à l'événement
+					$sqlRecupId = "SELECT idutilisateur FROM aci_utilisateur WHERE concat(nom,' ',prenom) = '$dest'";
+
+					$temp = $conn->query($sqlRecupId);
+					$id = $temp->fetch();
+					$id =  $id['idutilisateur'];
+
+					$sqlDestUtilisateur = "INSERT INTO `aci_bdd`.`aci_destutilisateur` (`IDUTILISATEUR`, `IDEVENEMENT`, `DATEINSERT`) 
+					VALUES ($id, $idEv[0], curdate())";
+					
+					$insertionUtil = $conn->query($sqlDestUtilisateur);
+					
+					$i++;
+				}
+			}
 			
 			//TODO
-			$sqlDestGroupe = "INSERT INTO `aci_bdd`.`aci_destgroupe` (`IDEVENEMENT`, `IDGROUPE`, `DATEINSERT`) 
-			VALUES ($idEv[0], , curdate());";
+			/* for($i=0;$i<$destGroupe.length;$i++)
+			{
+				$sqlDestGroupe = "INSERT INTO `aci_bdd`.`aci_destgroupe` (`IDEVENEMENT`, `IDGROUPE`, `DATEINSERT`) 
+				VALUES ($idEv[0], $destGroupe[$i], curdate())";
+			
+				$insertionGroupe = $conn->query($sqlDestGroupe);
+			}*/
 			
 			if(!empty($resultats))
 				$insertion = true;
@@ -164,13 +213,9 @@ if(!empty($_POST['submit']))
 <div id="global">
             <?php include('../menu.php'); ?>
         <div id="corpsCal" class="creer">
-            <table class="titreCal">
-                <tr class="titreCal">
-                    <th>créer un évènement</th>
-                </tr>
-            </table>
+            <table class="titreCal"><tr class="titreCal"><th>Créer un évènement</th></tr></table>
 <form action="" name="FormCreaEvenement" method="post" enctype="multipart/form-data" id="formCreation">
-	<table cellpadding="4" align="center">
+	<table cellpadding="4" align="center" id="formulaire">
 		<tr>
 			<td class="descForm">Priorité : </td>
 			<td class="Form">
@@ -209,6 +254,7 @@ if(!empty($_POST['submit']))
 				<input type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateFin");?>"class="dateFin" maxlength=10 size=11/>
 				<input type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php saisieFormString("heureFin");?>" class="heureFin" maxlength=5 size=4/>
 				<?php echo "<br><b id=\"formErreur\"> $erreurDateFin $erreurHeureFin </b>"; ?>
+				<?php echo "<br><b id=\"formErreur\"> $erreurDate $erreurHeureFin </b>"; ?>
 			</td>
 		</tr>
 		<tr>
@@ -226,12 +272,14 @@ if(!empty($_POST['submit']))
 			</td>
 		</tr>
 		<tr>
+
 			<td class="descForm"> Ajouter un destinataire : </td>
 			<td class="Form"> 
 			<div id="dest" style="overflow:auto;height:250px;width:250px;border:1px solid;border-radius:5px;padding:5px;">
 			</div>
 			<input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/> <a id="plusParticipant" href=""> <img src="../../Images/boutonPlusReduit.png"> </a>
 			<div id="resultsParticipant"></div></td>
+
 		</tr>
 		<tr><td class="descForm"> Ajouter un groupe de participants : </td>
 		<td class="Form">
@@ -247,9 +295,11 @@ if(!empty($_POST['submit']))
 			</div>
 		</td></tr>
 		<tr><td>
+                
 			<input type="submit" name="submit" value="Valider" class="boutonForm"/>
-			<input type="reset" value="R&eacute;initialiser" class="boutonForm" onclick="reset()"/>
-		</td></tr>
+			<input type="reset" value="Réinitialiser" class="boutonForm" onclick="reset()"/>
+			</td>
+		</tr>
 	</table>
 </form>
 
@@ -257,67 +307,65 @@ if(!empty($_POST['submit']))
 </body>
 </html>
 
-<script>
-function selectGroupe2(){
-	var list = document.getElementById('groupe1');
-	var selectionne = list.value;
+<script id = "scripts">
+//PARTICIPANTS
+function test(){
+	var compteur = document.getElementsByName('moinsParticipant').length;
+	var btnMoins;
 	
-	var xhr = new XMLHttpRequest();
-	
-	xhr.onreadystatechange = function (){
-	    if(xhr.readyState == 4){
-		    if(xhr.status == 200 || xhr.status == 0){
-			/*var response = xhr.responseXML;
-			alert(xhr.getAllResponseHeaders());
-			var options = response.getElementsByTagName('option');
-			var i;
-			var select = document.getElementById('groupe2');
-			for(i = 0; i < options.length; i++){
-				select.appendChild(options[i]);
-			}*/
-			document.getElementById('groupe2').innerHTML = "<option value=0></option>" + xhr.responseText;
-			document.getElementById('groupe3').innerHTML = "<option value=0></option>";
-		    }
-	    }
+	if(compteur == 0){
+		btnMoins = document.createElement('a');
+		var imgMoins = document.createElement('img');
+		
+		imgMoins.src ="../../Images/boutonMoinsReduit.png";
+		btnMoins.id ="moinsParticipant";
+		btnMoins.name ="moinsParticipant";
+		btnMoins.href ="#nogo";
+		btnMoins.setAttribute("onClick", "test2()");
+		
+		btnMoins.appendChild(imgMoins);
 	}
-	
-	xhr.open('POST','../../Fonctions_Php/XMLSelectEvent.php');
-	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xhr.send('valeur='+selectionne);
-}
-
-function selectGroupe3(){
-	var list = document.getElementById('groupe2');
-	var selectionne = list.value;
-	
-	var xhr = new XMLHttpRequest();
-	
-	xhr.onreadystatechange = function (){
-	    if(xhr.readyState == 4){
-		    if(xhr.status == 200 || xhr.status == 0){
-			/*var response = xhr.responseXML;
-			alert(xhr.getAllResponseHeaders());
-			var options = response.getElementsByTagName('option');
-			var i;
-			var select = document.getElementById('groupe3');
-			for(i = 0; i < options.length; i++){
-				select.appendChild(options[i]);
-			}*/
-			document.getElementById('groupe3').innerHTML = "<option value=0></option>" + xhr.responseText;
-		    }
-	    }
+	else {
+		btnMoins = document.getElementById('moinsParticipant');
 	}
+	var btnPlus = document.getElementById('plusParticipant');
 	
-	xhr.open('POST','../../Fonctions_Php/XMLSelectEvent.php');
-	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xhr.send('valeur='+selectionne);
+	var newInput = document.createElement('input');
+	var newLigne = document.createElement('tr');
+	
+	newInput.type = 'text';												
+	newInput.name = 'addParticipant' + (compteur + 1);
+	newInput.id = 'addParticipant_' + (compteur + 1);
+	newInput.class = 'boutonForm';
+	newInput.autocomplete = 'off';
+	
+	btnPlus = btnPlus.parentNode.removeChild(btnPlus);
+	
+	newLigne.appendChild(newInput);
+	newLigne.appendChild(btnPlus);
+	newLigne.appendChild(btnMoins);
+	document.getElementById('destinataires').appendChild(newLigne);
 }
 
-function reset(){
-    document.getElementById('groupe2').innerHTML = "<option value=0></option>";
-    document.getElementById('groupe3').innerHTML = "<option value=0></option>";   
+function test2(){
+	var btnMoins = document.getElementById("moinsParticipant");
+	var btnPlus = document.getElementById("plusParticipant");
+	
+	
+	btnPlus = btnPlus.parentNode.removeChild(btnPlus);
+	btnMoins = btnMoins.parentNode.removeChild(btnMoins);
+	
+	document.getElementById('destinataires').deleteRow(-1);
+	
+	var taille = document.getElementById('destinataires').rows.length;
+	
+	document.getElementById('destinataires').rows[taille - 1].appendChild(btnPlus);
+	if(taille > 1)
+	document.getElementById('destinataires').rows[taille - 1].appendChild(btnMoins);
 }
-
+	
+//LIEUX
+//Saisie dynamique lieux
 (function(){
 
     var searchElement = document.getElementById('Eve_lieu');
@@ -405,6 +453,7 @@ function reset(){
     }
 })();
 
+//Saisie dynamique participants
 (function(){
 
     var searchElement = document.getElementById('addParticipant');
@@ -415,15 +464,17 @@ function reset(){
     var previousRequest;
     var previousValue = searchElement.value;
     
-    function getLieu(value){
+    function getParticipant(value){
+
 	var xhr = new XMLHttpRequest();
 
 	xhr.onreadystatechange = function() {
 	    if(xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)){
-		afficheLieu(xhr.responseText);
+                
+		afficheParticipant(xhr.responseText);
 	    }
 	}
-	
+        
 	xhr.open('POST', '../../Fonctions_Php/XMLgetPersonne.php');
 	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xhr.send('valeur='+value);
@@ -431,17 +482,17 @@ function reset(){
 	return xhr;
     }
 
-    function afficheLieu(response){
+    function afficheParticipant(response){
 	results.style.display = response.length ? 'block' : 'none';
 
 	if(response.length){
-	    var lieux = response.split('|');
+	    var participants = response.split('|');
 	    
 	    results.innerHTML = '';
 
-	    for(var i = 0, div; i < lieux.length ; i++){
+	    for(var i = 0, div; i < participants.length ; i++){
 		div = results.appendChild(document.createElement('div'));
-		div.innerHTML = lieux[i];
+		div.innerHTML = participants[i];
 
 		div.onclick = function(){
 		    chooseResult(this);
@@ -498,7 +549,8 @@ function reset(){
 			previousRequest.abort();
 		}
 		
-		previousRequest = getLieu(previousValue);
+		previousRequest = getParticipant(previousValue);
+
 		selectedResult = -1;
 	}
     }
