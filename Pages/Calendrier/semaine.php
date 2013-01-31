@@ -228,12 +228,15 @@
                         
                         if (!empty($donnees)) {
                             for ($k = 0 ; $k < count($donnees) ; $k++) {
-                                $heureTestee = date("Y-m-d H:i:s", mktime($time[0], 00, 00, $mois1, $jourDebut, $annee1));
-                                if($heureTestee == $donnees[$k]["dateDebut"]) {
-                                    $libelleCourt[$boucle] = $donnees[$k]["libelleCourt"];
-                                    $libelleLong[$boucle] = $donnees[$k]["libelleLong"];
-                                    $boucle++;
-                                }
+								for ($min = 0 ; $min < 60 ; $min++){
+									$heureTestee = date("Y-m-d H:i:s", mktime($time[0], $min, 00, $mois1, $jourDebut, $annee1));
+									//echo $heureTestee;
+									if($heureTestee == $donnees[$k]["dateDebut"]) {
+										$libelleCourt[$boucle] = $donnees[$k]["libelleCourt"];
+										$libelleLong[$boucle] = $donnees[$k]["libelleLong"];
+										$boucle++;
+									}
+								}
                             }
                         }
                         echo '<td onclick="document.location.href =\'jour.php?a='.$annee.'&m='.$mois.'&j='.($jour + $j-1).'&u=3\';">';
