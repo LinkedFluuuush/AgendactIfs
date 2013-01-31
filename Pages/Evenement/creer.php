@@ -271,6 +271,7 @@ if(!empty($_POST['submit']))
 			</td>
 		</tr>
 		<tr>
+<!-- <<<<<<< HEAD
 			<td class="descForm"> Ajouter un participant : </td>
 			<td class="Form">
 				<table id="destinataires">
@@ -289,11 +290,11 @@ if(!empty($_POST['submit']))
 					<option value="0"></option>
 					<?php
 					//Récupération groupe
-					$sql = "SELECT idgroupe, libelle FROM aci_groupe where length(idgroupe) = 1";
+					/*$sql = "SELECT idgroupe, libelle FROM aci_groupe where length(idgroupe) = 1";
 							
 					$resultats = $conn->query($sql);
 					while($row = $resultats->fetch())
-						echo '<option value="'.utf8_encode($row['idgroupe']).'"> '.utf8_encode($row['libelle']).'</option>';
+						echo '<option value="'.utf8_encode($row['idgroupe']).'"> '.utf8_encode($row['libelle']).'</option>';*/
 					?>
 				</select>
 				<select name="groupe2" id ="groupe2" onchange="selectGroupe3()">
@@ -306,6 +307,31 @@ if(!empty($_POST['submit']))
 		</tr>
 		<tr>
 			<td>
+======= -->
+			<td class="descForm"> Ajouter un destinataire : </td>
+			<td class="Form"> 
+			<div id="dest" style="overflow:auto;height:250px;width:250px;border:1px solid;border-radius:5px;padding:5px;">
+			</div>
+			<input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/> <a id="plusParticipant" href=""> <img src="../../Images/boutonPlusReduit.png"> </a>
+			<div id="resultsParticipant"></div></td>
+		</tr>
+		<tr><td class="descForm"> Ajouter un groupe de participants : </td>
+		<td class="Form">
+			<div id="groupe" style="overflow:auto;height:250px;width:250px;border:1px solid;border-radius:5px;padding:5px;">
+				<?php
+					$req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe NOT IN (SELECT idgroupe_1 FROM aci_contenir)";
+					$resultats = $conn -> query($req);
+					while($row = $resultats->fetch()){
+						echo '<img id="'.utf8_encode($row['idgroupe']).'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/> <label for="'.utf8_encode($row['idgroupe']).'">'.utf8_encode($row['libelle']).'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
+						descGroupe($row['idgroupe'], $conn, 1);
+					}
+				?>
+			</div>
+		</td></tr>
+		<tr><td>
+
+                <!-- >>>>>>> 1062d5b31d000fd1496700447b8c294604d89850 -->
+                
 			<input type="submit" name="submit" value="Valider" class="boutonForm"/>
 			<input type="reset" value="Réinitialiser" class="boutonForm" onclick="reset()"/>
 			</td>
@@ -315,7 +341,7 @@ if(!empty($_POST['submit']))
 
 <?php if($insertion) echo '<h3 align="center">Insertion réalisée avec succés</h3>'; ?>
 </body>
-</HTML>
+</html>
 
 <script id = "scripts">
 //PARTICIPANTS
@@ -465,37 +491,27 @@ function test2(){
 
 //Saisie dynamique participants
 (function(){
-	var inputElements = document.getElementsByTagName("input");
-	var searchElements = new Array();
-	var j = 0
-	
-	var regex = /addParticipant\d*/;
-	
-	for(i = 0; i < inputElements.length; i++){
-		if(regex.test(inputElements[i].name)){
-			searchElements[j] = inputElements[i];
-			j++;
-		}
-	}
-	
-    var searchElement = searchElements[searchElements.length-1];
-	//alert(searchElement);
+
+    var searchElement = document.getElementById('addParticipant');
     var results = document.getElementById('resultsParticipant');
+    var selected = document.getElementById('dest');
     var value = searchElement.value;
     var selectedResult = -1;
     var previousRequest;
     var previousValue = searchElement.value;
     
     function getParticipant(value){
+
 	var xhr = new XMLHttpRequest();
 
 	xhr.onreadystatechange = function() {
 	    if(xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)){
+                
 		afficheParticipant(xhr.responseText);
 	    }
 	}
-	
-	xhr.open('POST', '../../Fonctions_Php/XMLgetParticipant.php');
+        
+	xhr.open('POST', '../../Fonctions_Php/XMLgetPersonne.php');
 	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xhr.send('valeur='+value);
 	
@@ -522,7 +538,18 @@ function test2(){
     }
 
     function chooseResult(result){
-	searchElement.value = result.innerHTML;
+	var div = document.createElement('div');
+	div.appendChild(document.createTextNode(result.innerHTML));
+	var img = document.createElement('img');
+	img.src="../../Images/boutonMoinsReduit.png";
+	img.onclick = function(){
+		img.parentNode.parentNode.removeChild(img.parentNode);
+	}
+	div.appendChild(img);
+	
+	selected.appendChild(div);
+    
+	searchElement.value = '';
 	results.style.display = 'none';
 	result.className = '';
 	searchElement.focus();
@@ -559,8 +586,28 @@ function test2(){
 		}
 		
 		previousRequest = getParticipant(previousValue);
+
 		selectedResult = -1;
 	}
     }
 })();
+
+function developper(idGroupe, close){
+	var spans = document.getElementsByClassName(idGroupe);
+	var i;
+	var img = document.getElementById(idGroupe);
+	
+	if(img.src.lastIndexOf("arborescencePlus.png") !=-1 && close != 1){
+		img.src="../../Images/arborescenceMoins.png";
+		for(i=0; i < spans.length; i++){
+			spans[i].style.display="inline";
+		}
+	}
+	else{
+		img.src="../../Images/arborescencePlus.png";
+		for(i=0; i < spans.length; i++){
+			spans[i].style.display="none";
+		}
+	}			
+}
 </script>
