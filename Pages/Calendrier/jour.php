@@ -123,7 +123,7 @@
                 echo "Il n'y a aucun &eacute;v&eacute;nement à cette date.";
             }
                 if(!empty($nomSession))
-                    echo '<a href="javascript:getEveCrea(' . $annee . ', ' . $mois . ', ' . $jour .');">Ajouter</a>';
+                    echo '<a class="btn" href="javascript:getEveCrea(' . $annee . ', ' . $mois . ', ' . $jour .');">Ajouter</a>';
 
 
                 if(!empty($_GET['u'])){
@@ -132,14 +132,14 @@
                     }
 
                     if ($_GET['u'] == 2) {
-                        echo '<a href="mois.php?annee=' . $annee . '&mois=' . $mois . '">Retour</a>';
+                        echo '<a class="btn" href="mois.php?annee=' . $annee . '&mois=' . $mois . '">Retour</a>';
                     } 
 
                     if ($_GET['u'] == 3) {
                         //echo '<a href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. $jour .'">Retour</a>';
                         $ts = mktime(0,0,0,$mois,$jour,$annee);
                         $jourDebut = date('N', $ts);
-                        echo '<a href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. ($jour-$jourDebut+1) .'">Retour</a>';
+                        echo '<a class="btn" href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. ($jour-$jourDebut+1) .'">Retour</a>';
                     }
                 }
             ?>

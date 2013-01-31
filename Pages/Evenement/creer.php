@@ -6,6 +6,7 @@
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../style.css" rel="stylesheet" type="text/css">
         <link href="../../style-minicalendrier.css" rel="stylesheet" type="text/css">
+        <link href="../../bootstrap.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 
@@ -231,24 +232,24 @@ if(!empty($_POST['submit']))
 		<tr>
 			<td class="descForm">Titre long : </td>
 			<td class="Form"><input type="text" name="libelleLong" id="Eve_titreLong" value="<?php saisieFormString("libelleLong");?>" class="libelleLong" maxlength=32 />
-			<?php echo "<br><b id=\"formErreur\"> $erreurLibelleLong </b>"; ?></td>
+			<?php echo "<b id=\"formErreur\"> $erreurLibelleLong </b>"; ?></td>
 		</tr>
 		<tr>
 			<td class="descForm">Titre court : </td>
 			<td class="Form"><input type="text" name="libelleCourt" id="Eve_titreCourt" value="<?php saisieFormString("libelleCourt");?>" class="libelleCourt" maxlength=5 />
-			<?php echo "<br><b id=\"formErreur\"> $erreurLibelleCourt </b>"; ?></td>
+			<?php echo "<b id=\"formErreur\"> $erreurLibelleCourt </b>"; ?></td>
 		</tr>
 		<tr>
 			<td class="descForm">Description :</td>
 			<td class="Form"><textarea name="description" rows="5" cols="30" id="Eve_description" class="area"><?php saisieFormString("description");?></textarea>
-			<?php echo "<br><b id=\"formErreur\"> $erreurDescription </b>"; ?></td>
+			<?php echo "<b id=\"formErreur\"> $erreurDescription </b>"; ?></td>
 		</tr>
 		<tr>
 			<td class="descForm">Date de début :</td>
 			<td class="Form">
 				<input type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateDebut");?>" class="dateDebut" maxlength=10 size=11/>
 				<input type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="<?php saisieFormString("heureDebut");?>" class="heureDebut" maxlength=5 size=4/>
-				<?php echo "<br><b id=\"formErreur\"> $erreurDateDebut $erreurHeureDebut </b>"; ?>
+				<?php echo "<b id=\"formErreur\"> $erreurDateDebut $erreurHeureDebut </b>"; ?>
 			</td>
 		</tr>
 		<tr>
@@ -256,7 +257,7 @@ if(!empty($_POST['submit']))
 			<td class="Form">
 				<input type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateFin");?>"class="dateFin" maxlength=10 size=11/>
 				<input type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php saisieFormString("heureFin");?>" class="heureFin" maxlength=5 size=4/>
-				<?php echo "<br><b id=\"formErreur\"> $erreurDateFin $erreurHeureFin </b>"; ?>
+				<?php echo "<b id=\"formErreur\"> $erreurDateFin $erreurHeureFin </b>"; ?>
 			</td>
 		</tr>
 		<tr>
@@ -295,8 +296,8 @@ if(!empty($_POST['submit']))
 			</div>
 		</td></tr>
 		<tr><td>
-			<input type="submit" name="submit" value="Valider" class="boutonForm"/>
-			<input type="reset" value="R&eacute;initialiser" class="boutonForm" onclick="reset()"/>
+			<input class="btn" type="submit" name="submit" value="Valider" class="boutonForm"/>
+			<input class="btn" type="reset" value="R&eacute;initialiser" class="boutonForm" onclick="reset()"/>
 		</td></tr>
 	</table>
 </form>
