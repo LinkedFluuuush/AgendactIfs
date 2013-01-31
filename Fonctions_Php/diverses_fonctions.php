@@ -1,5 +1,22 @@
 <?php header( 'content-type: text/html; charset=utf-8' );
 
+function descGroupe($idGroupe, $conn, $i){
+	$req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe IN (SELECT idgroupe_1 FROM aci_contenir WHERE idgroupe = ".$idGroupe.")";
+	$resultats = $conn->query($req);
+	while($row = $resultats->fetch()){		
+		$option='<div class="'.$idGroupe.'" style="display:none;">';
+		for($j = 0; $j < $i; $j++){
+			$option.="&nbsp &nbsp &nbsp";
+		}
+		$option.='<img id="'.utf8_encode($row['idgroupe']).'" src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/>';
+		$option.='<label for="'.utf8_encode($row['idgroupe']).'">'.utf8_encode($row['libelle']).'</label>';
+		$option.='<input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
+		echo $option;
+		descGroupe($row['idgroupe'], $conn, $i+1);
+		echo "</div>";
+	}
+}
+
 function saisieFormString($chaine)
 {
 	if(!empty($_POST["$chaine"]))
