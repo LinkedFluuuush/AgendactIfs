@@ -270,8 +270,8 @@ if(!empty($_POST['submit']))
 		<tr>
 			<td class="descForm"> Type : </td>
 			<td class="Form">
-			<input type="radio" name="public" id="public" value="1" checked="checked"> <label for="public">public</label>
-			<input type="radio" name="public" id="prive" value="0"> <label for="prive">privé</label>
+			<input type="radio" name="public" id="public" value="1" checked="checked"> <label for="public">Public</label>
+			<input type="radio" name="public" id="prive" value="0"> <label for="prive">Privé</label>
 			</td>
 		</tr>
 		<tr>
