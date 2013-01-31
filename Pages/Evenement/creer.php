@@ -302,7 +302,10 @@ if(!empty($_POST['submit']))
 	</table>
 </form>
 
-<?php if($insertion) echo '<h3 align="center">Insertion réalisée avec succés</h3>'; ?>
+    <?php
+    if($insertion)
+        echo '<div class="alert alert-success"><b>Insertion réalisée avec succès.</b></div>';
+    ?>
 </body>
 </html>
 
