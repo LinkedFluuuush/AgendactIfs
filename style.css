@@ -54,7 +54,7 @@ input, textarea, select {
 /* titre des calendrier et sous-menus */
 .titreCal {
    height: 21px;
-   /*text-align: center;*/
+   width: 100%;
    
    background: #4d7fb8; /* Old browsers */
    background: -moz-linear-gradient(top, #4d7fb8 0%, #4572a5 100%); /* FF3.6+ */
@@ -186,6 +186,10 @@ table.titreCal a {
     text-decoration: none;
 }
 
+tr.titreCal {
+    width: 100%;
+}
+
 /* FIN PARTIE TITRE DU CALENDRIER */
 
 
@@ -266,10 +270,6 @@ table.titreCal a {
 
 #corpsCal.semestre td#weekend {
     background-color: #e7e9eb;
-}
-
-#corpsCal.semestre td#weekend:hover {
-   /*font-weight: bold;*/
 }
 
 /* Infobulle */

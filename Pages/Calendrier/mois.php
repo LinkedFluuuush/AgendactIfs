@@ -107,7 +107,7 @@
                 <tr class="titreCal">
                     <th><a href="mois.php?annee=<?php echo $annee; ?>&amp;mois=1">&#9668;&#9668; </a></th>
                     <th><a href="mois.php?annee=<?php echo $anneePrec; ?>&amp;mois=<?php echo $moisPrec; ?>"> &#9668; </a></th>
-                    <th colspan="3"><?php echo $nomMois . ' ' . $annee; ?></th>
+                    <th width="500px"><?php echo $nomMois . ' ' . $annee; ?></th>
                     <th><a href="mois.php?annee=<?php echo $anneeSuiv; ?>&amp;mois=<?php echo $moisSuiv; ?>"> &#9658; </a></th>
                     <th><a href="mois.php?annee=<?php echo $annee; ?>&amp;mois=12"> &#9658;&#9658; </a></th>
                 </tr>
