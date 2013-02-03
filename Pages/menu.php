@@ -1,4 +1,6 @@
 <script type="text/javascript" src="../../Fonctions_Javascript/miniCalendrier.js"></script>
+<link href="../../bootstrap.css" rel="stylesheet" type="text/css">
+
 <?php
 $temp = explode("/", $_SERVER['PHP_SELF']);
 $nomPage = $temp[sizeof($temp)-1];
@@ -9,7 +11,7 @@ $nomPage = $temp[sizeof($temp)-1];
         <li>
             <div class="header">Connexion</div>
             <ul class="menu">
-                <li>
+                <li class="connexion">
                     <?php if(empty($_SESSION['id'])){ 
                         if(isset($_GET['login']) && $_GET['login'] == 0){
                             echo "<span style=\"color:red\">Connexion echouée.</span>";
@@ -17,7 +19,7 @@ $nomPage = $temp[sizeof($temp)-1];
                     <form name="connexion" action="../../Fonctions_Php/connexionLDAP.php" method="POST">
                         <input type="text" name="login" placeholder="Identifiant"><br>
                         <input type="password" name="mdp" placeholder="Mot de passe">
-                        <input type="submit" name="valider_conn" value="Valider">
+                        <input class="btn" type="submit" name="valider_conn" value="Valider">
                     </form>
                     <?php }else{
                         echo "<li>".$_SESSION['prenom']." ".$_SESSION['nom']."</li>";

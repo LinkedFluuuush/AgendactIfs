@@ -120,6 +120,14 @@ ul.nav > li ul li.selected {
     background-color: #e7e7e7;
 }
 
+ul.nav > li ul li.connexion form {
+    text-align: center;
+}
+
+ul.nav > li ul li.connexion input {
+    margin-bottom: 4px;
+}
+
 ul.nav > li ul li.selected:hover {
     cursor: default;
 }
@@ -155,6 +163,11 @@ ul.nav > li ul li:hover {
 }
 
 ul.nav > li ul li.priorite:hover {
+    background-color: #ececec;
+    cursor: default;
+}
+
+ul.nav > li ul li.connexion:hover {
     background-color: #ececec;
     cursor: default;
 }
