@@ -210,14 +210,14 @@ if(!empty($_POST['submit']))
 	}
 }
 ?>
+    <?php include('../menu.php'); ?>
 <div id="global">
-            <?php include('../menu.php'); ?>
-        <div id="corpsCal" class="creer">
             <table class="titreCal">
                 <tr class="titreCal">
-                    <th>créer un évènement</th>
+                    <th>Créer un évènement</th>
                 </tr>
             </table>
+        <div id="corpsCal" class="creer">
 <form action="" name="FormCreaEvenement" method="post" enctype="multipart/form-data" id="formCreation">
 	<table cellpadding="4" align="center">
 		<tr>

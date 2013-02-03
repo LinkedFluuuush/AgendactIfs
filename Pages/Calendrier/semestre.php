@@ -84,9 +84,9 @@
         }
         ?>
         
+        <?php include('../menu.php'); ?>
+        
         <div id="global">
-            <?php include('../menu.php'); ?>
-        <div id="corpsCal" class="semestre">
             <table class="titreCal">
                 <tr class="titreCal">
                     <th><a href="semestre.php?a=<?php echo $anneePrec; ?>&s=<?php echo $semestrePrec; ?>"> &#9668; </a></th>
@@ -94,7 +94,7 @@
                     <th><a href="semestre.php?a=<?php echo $anneeSuiv; ?>&s=<?php echo $semestreSuiv; ?>"> &#9658; </a></th>
                 </tr>
             </table>
-            
+        <div id="corpsCal" class="semestre">            
             <table>                
      		<?php if ($semestre ==1) { ?>
      		<tr>

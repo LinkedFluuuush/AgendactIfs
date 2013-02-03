@@ -1,5 +1,5 @@
 /* PARTIE GENERALE */
-html {
+html, body {
     /* on retire toutes les marges */
     margin: 0;
     padding: 0;
@@ -7,46 +7,53 @@ html {
     /* police par défaut */
     font-family: Helvetica;
     font-size: 100%; /* correction d'un bug IE */
-    color: black;
+    color: #72777b;
     
     /* font */
-    /* #e1e1e1 */
     background: #e1e1e1;
+    
+    min-height: 768px;
+    min-width: 1024px;
 }
 
 body {
     /* taille police */
     font-size: .8em;
-    min-height: 768px;
-    min-width: 1024px;
+    
+    margin-top: 4px;
+    margin-left: 25px;
+    
+    width: 96%;
+    /*overflow: hidden;*/
 }
 
 /* contient la navigation et le corps */
 #global {
-    margin-left: 20px;
-    width: 96%;
-    overflow: hidden;
+    margin-left: 220px;
 }
 
 /* contient le calendrier et le titre */
 #corpsCal {
-    margin-left: 220px;
     
     /* hauteur et largeur */
     height: 100%;
-    min-height: 768px;
+    /*min-height: 768px;*/
+    height: 743px;
        
     /* couleur de fond */
     background-color: #ececec;
+    
+    overflow: auto;
 }
 
+/* supprimer le contour jaune de Chrome */
 input, textarea, select {
     outline : none;
 }
 
 /* titre des calendrier et sous-menus */
 .titreCal {
-   height: 25px;
+   height: 21px;
    /*text-align: center;*/
    
    background: #4d7fb8; /* Old browsers */
@@ -165,6 +172,25 @@ ul.nav > li ul li.priorite label:hover {
 
 
 
+/* PARTIE TITRE DU CALENDRIER */
+
+/* bandeau du titre du calendrier */
+table.titreCal {
+    width: 100%;
+}
+
+/* liens à l'intérieur du titre */
+table.titreCal a {
+    color: #203f61;
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+}
+
+/* FIN PARTIE TITRE DU CALENDRIER */
+
+
+
+
 /* PARTIE CORPS DU CALENDRIER */
 
 #corpsCal table:last-child {
@@ -190,18 +216,6 @@ ul.nav > li ul li.priorite label:hover {
     width:9%;
 }
 
-/* bandeau du titre du calendrier */
-#corpsCal table.titreCal {
-    width: 100%;
-    margin-bottom: 5px;
-}
-
-/* liens à l'intérieur du titre */
-#corpsCal table.titreCal a {
-    color: #203f61;
-    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);
-}
-
 /* cases des calendriers */
 #corpsCal td {
     /* propriétés des bordures */
@@ -218,13 +232,9 @@ ul.nav > li ul li.priorite label:hover {
     padding-left: 2px;
 }
 
-#corpsCal td:hover {
-    /*font-weight: bold;*/
-}
-
 /* liens dans le calendrier */
 #corpsCal a {
-    color: black;
+    color: #72777b;
     text-decoration: none;
 }
 

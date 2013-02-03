@@ -72,10 +72,11 @@
         $date = miseEnPageJour($dateTimestampDebutMEPJ);
 
         ?>
+        
+        <?php include('../menu.php'); ?>
         <div id="global">
-            <?php include('../menu.php'); ?>
-        <div id="corpsCal" class="jour">
             <table class="titreCal"><tr class="titreCal"><th><?php echo $date; ?></th></tr></table>
+        <div id="corpsCal" class="jour">
             <?php		
             if ($resultats != null) {
                 $i=1;
