@@ -109,6 +109,14 @@ ul.nav > li ul li {
     width: 180px;
 }
 
+ul.nav > li ul li.selected {
+    background-color: #e7e7e7;
+}
+
+ul.nav > li ul li.selected:hover {
+    cursor: default;
+}
+
 ul.nav > li ul li a {
     text-decoration: none;
     color: #727272;
@@ -140,7 +148,7 @@ ul.nav > li ul li:hover {
 }
 
 ul.nav > li ul li.priorite:hover {
-    background: #e7e7e7; /* Old browsers */
+    background-color: #ececec;
     cursor: default;
 }
 
@@ -211,7 +219,7 @@ ul.nav > li ul li.priorite label:hover {
 }
 
 #corpsCal td:hover {
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 
 /* liens dans le calendrier */
@@ -236,6 +244,10 @@ ul.nav > li ul li.priorite label:hover {
    vertical-align: middle;
 }
 
+#corpsCal.semestre td:hover {
+    background-color: #edeeef;
+}
+
 #corpsCal.semestre td a {
     text-decoration: none;
     color: #72777b;
@@ -247,7 +259,7 @@ ul.nav > li ul li.priorite label:hover {
 }
 
 #corpsCal.semestre td#weekend:hover {
-   font-weight: bold;
+   /*font-weight: bold;*/
 }
 
 /* Infobulle */
@@ -502,10 +514,6 @@ ul.nav > li ul li.priorite label:hover {
     cursor: default;
     border: none;
     background-color: #ececec;
-}
-
-#corpsCal.creer td:hover {
-    font-weight: normal;
 }
 
 /* FIN DE LA PARTIE CREER */
