@@ -28,20 +28,19 @@
                 <li onclick ="document.location.href ='../Evenement/creer.php'"><a href="../Evenement/creer.php">Créer</a></li>
                 <!--<li onclick ="document.location.href ='#'"><a href="#">Gérer</a></li>
                 <li onclick ="document.location.href ='#'"><a href="#">Rechercher</a></li>-->
+                
+                <?php 
+                $temp = explode("/", $_SERVER['PHP_SELF']);
+                $nomPage = $temp[sizeof($temp)-1];
+
+                if($nomPage == "semestre.php" or $nomPage == "mois.php" or $nomPage == "semaine.php" or $nomPage == "jour.php") {
+                    echo '<li class="priorite">';
+                    include("priorite.php");
+                    echo '</li>';
+
+                } ?>
             </ul>
         </li>
-    </ul>
-    
-    <?php 
-    $temp = explode("/", $_SERVER['PHP_SELF']);
-    $nomPage = $temp[sizeof($temp)-1];
-
-    if($nomPage == "semestre.php" or $nomPage == "mois.php" or $nomPage == "semaine.php" or $nomPage == "jour.php")
-        include("priorite.php"); ?>
-    
-    <br>
-    
-    <ul class="nav">
         <li>
             <div class="header">Vue</div>
             <ul class="menu">
@@ -51,7 +50,7 @@
                 <li onclick ="document.location.href ='../Calendrier/jour.php'"><a href="../Calendrier/jour.php">Jour</a></li>
             </ul>
         </li>
-     </ul>
+    </ul>
     
     <?php
     $temp = explode("/", $_SERVER['PHP_SELF']);
