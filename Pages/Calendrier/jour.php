@@ -99,22 +99,22 @@
                     <br><span class="titre"><?php echo $dateDebut[0]; ?></span>
                     <?php if(!empty($dateFin))
                               echo '<h5>jusqu\'à '.$dateFin[0].' le '.$dateFin[1].'</h5>'; ?>
-                    
-                    
-                    
-                    <?php if($nomSession == $auteur) { ?>
-                        <a href="javascript:getEveModif(<?php echo $numeroEve; ?>);">Modifier</a>
-                        <a href="javascript:cal_supprimerEve(<?php echo $numeroEve; ?>, <?php echo $annee; ?>, <?php echo $mois; ?>, <?php echo $jour; ?>, <?php echo $_GET['u']; ?>);">Supprimer</a>
-                    <?php } ?>
-                    
+
                     <p>
                     <?php
                         echo "<b>".trim($titre)."</b>";
                         echo '<br>'.$desc.'<br>';
                         if(!empty($lieu))
                             echo 'Lieu : ' . $lieu . '<br>'; 
-                        echo 'Post&eacute; par ' . $auteur . ' le ' . $dateInsert . '<br>'; ?>
+                        echo 'Post&eacute; par ' . $auteur . ' le ' . $dateInsert . ' '; ?>
+						
+						<form name="modifier" action="../Evenement/modifier.php" method="POST">
+							<input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" /><br>
+							<input type="submit" name="modifier_eve" value="modifier" />
+						</form>
+						
                     </p>
+					
                     <?php $i++;
                 }
             }
