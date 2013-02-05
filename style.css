@@ -38,7 +38,8 @@ body {
     /* hauteur et largeur */
     height: 100%;
     /*min-height: 768px;*/
-    height: 743px;
+    height: 740px;
+    min-height: 740px;
        
     /* couleur de fond */
     background-color: #ececec;
