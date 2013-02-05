@@ -169,17 +169,16 @@
         
         ?>
         
+        <?php include('../menu.php'); ?>
         <div id="global">
-            <?php include('../menu.php'); ?>
-        <div id="corpsCal" class="semaine">
             <table class="titreCal">                
                 <tr class="titreCal">
                     <th><?php echo '<a href=\'semaine.php?annee='.$anneePrec.'&mois='.$moisPrec.'&jour='.$jourPrec.'\'> &#9668; </a>'; ?></th>
-                    <th colspan="3"><?php echo "$jourDebut $nomMois1 $annee1 au $jourFin $nomMois2 $annee2"; ?></th>
+                    <th width="500px"><?php echo "$jourDebut $nomMois1 $annee1 au $jourFin $nomMois2 $annee2"; ?></th>
                     <th><?php echo '<a href=\'semaine.php?annee='.$anneeSuiv.'&mois='.$moisSuiv.'&jour='.$jourSuiv.'\'> &#9658; </a>'; ?></th>
                 </tr>
             </table>
-            
+        <div id="corpsCal" class="semaine">          
             <table>
                 <tr>
                     <th></th>
@@ -229,15 +228,15 @@
                         
                         if (!empty($donnees)) {
                             for ($k = 0 ; $k < count($donnees) ; $k++) {
-								for ($min = 0 ; $min < 60 ; $min++){
-									$heureTestee = date("Y-m-d H:i:s", mktime($time[0], $min, 00, $mois1, $jourDebut, $annee1));
-									//echo $heureTestee;
-									if($heureTestee == $donnees[$k]["dateDebut"]) {
-										$libelleCourt[$boucle] = $donnees[$k]["libelleCourt"];
-										$libelleLong[$boucle] = $donnees[$k]["libelleLong"];
-										$boucle++;
-									}
-								}
+                                for ($min = 0 ; $min < 60 ; $min++){
+                                    $heureTestee = date("Y-m-d H:i:s", mktime($time[0], $min, 00, $mois1, $jourDebut, $annee1));
+                                    //echo $heureTestee;
+                                    if($heureTestee == $donnees[$k]["dateDebut"]) {
+                                            $libelleCourt[$boucle] = $donnees[$k]["libelleCourt"];
+                                            $libelleLong[$boucle] = $donnees[$k]["libelleLong"];
+                                            $boucle++;
+                                    }
+                                }
                             }
                         }
                         echo '<td onclick="document.location.href =\'jour.php?a='.$annee.'&m='.$mois.'&j='.($jour + $j-1).'&u=3\';">';
