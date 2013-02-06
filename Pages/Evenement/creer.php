@@ -220,8 +220,8 @@ if(!empty($_POST['submit']))
 			}*/
 			
 			if(!empty($_POST['groupe'])){
-				$dest[] = $_POST['groupe'];
-				foreach($dest as $cle => $contenu){
+				$groupe[] = $_POST['groupe'];
+				foreach($groupe as $cle => $contenu){
 					foreach($contenu as $cle2 => $contenu2){
 						//~ $sql = "INSERT INTO aci_destutilisateur VALUES ((SELECT idutilisateur FROM aci_utilisateur WHERE adresse_mail='".$contenu2."')";
 						//~ $sql.=", ".$idEv[0].", curdate())";
@@ -230,7 +230,7 @@ if(!empty($_POST['submit']))
 					
 						//~ $insert = $conn->query($sql);
 						
-						echo contenu2;
+						echo $contenu2."<br/>";
 					}
 				}
 			}
