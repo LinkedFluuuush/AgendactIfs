@@ -1,5 +1,5 @@
 /* PARTIE GENERALE */
-html {
+html, body {
     /* on retire toutes les marges */
     margin: 0;
     padding: 0;
@@ -7,47 +7,55 @@ html {
     /* police par défaut */
     font-family: Helvetica;
     font-size: 100%; /* correction d'un bug IE */
-    color: black;
+    color: #72777b;
     
     /* font */
-    /* #e1e1e1 */
     background: #e1e1e1;
+    
+    min-height: 768px;
+    min-width: 1024px;
 }
 
 body {
     /* taille police */
     font-size: .8em;
-    min-height: 768px;
-    min-width: 1024px;
+    
+    margin-top: 4px;
+    margin-left: 25px;
+    
+    width: 96%;
+    /*overflow: hidden;*/
 }
 
 /* contient la navigation et le corps */
 #global {
-    margin-left: 20px;
-    width: 96%;
-    overflow: hidden;
+    margin-left: 220px;
 }
 
 /* contient le calendrier et le titre */
 #corpsCal {
-    margin-left: 220px;
     
     /* hauteur et largeur */
     height: 100%;
-    min-height: 768px;
+    /*min-height: 768px;*/
+    height: 740px;
+    min-height: 740px;
        
     /* couleur de fond */
     background-color: #ececec;
+    
+    overflow: auto;
 }
 
+/* supprimer le contour jaune de Chrome */
 input, textarea, select {
     outline : none;
 }
 
 /* titre des calendrier et sous-menus */
 .titreCal {
-   height: 25px;
-   /*text-align: center;*/
+   height: 21px;
+   width: 100%;
    
    background: #4d7fb8; /* Old browsers */
    background: -moz-linear-gradient(top, #4d7fb8 0%, #4572a5 100%); /* FF3.6+ */
@@ -84,7 +92,7 @@ ul.nav * {
     margin: 0;
     padding: 0;
     list-style: none;
-    width: 180px;
+    /*width: 180px;*/
 }
 
 ul.nav > li {
@@ -96,6 +104,7 @@ ul.nav > li > div.header {
     text-transform: uppercase;
     padding: 12px;
     border-bottom: 1px #396e9f solid;
+    width: 180px;
 }
 
 ul.nav > li ul li {
@@ -105,6 +114,23 @@ ul.nav > li ul li {
     border-top: 1px solid #fff;
     color: #727272; 
     text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8);
+    width: 180px;
+}
+
+ul.nav > li ul li.selected {
+    background-color: #e7e7e7;
+}
+
+ul.nav > li ul li.connexion form {
+    text-align: center;
+}
+
+ul.nav > li ul li.connexion input {
+    margin-bottom: 4px;
+}
+
+ul.nav > li ul li.selected:hover {
+    cursor: default;
 }
 
 ul.nav > li ul li a {
@@ -137,7 +163,48 @@ ul.nav > li ul li:hover {
     cursor: pointer;
 }
 
+ul.nav > li ul li.priorite:hover {
+    background-color: #ececec;
+    cursor: default;
+}
+
+ul.nav > li ul li.connexion:hover {
+    background-color: #ececec;
+    cursor: default;
+}
+
+ul.nav > li ul li.priorite input:hover {
+    cursor: pointer;
+}
+
+ul.nav > li ul li.priorite label:hover {
+    cursor: pointer;
+}
+
 /* FIN PARTIE SOUS-MENU */
+
+
+
+
+/* PARTIE TITRE DU CALENDRIER */
+
+/* bandeau du titre du calendrier */
+table.titreCal {
+    width: 100%;
+}
+
+/* liens à l'intérieur du titre */
+table.titreCal a {
+    color: #203f61;
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+}
+
+tr.titreCal {
+    width: 100%;
+}
+
+/* FIN PARTIE TITRE DU CALENDRIER */
 
 
 
@@ -167,17 +234,6 @@ ul.nav > li ul li:hover {
     width:9%;
 }
 
-/* bandeau du titre du calendrier */
-#corpsCal table.titreCal {
-    width: 100%;
-}
-
-/* liens à l'intérieur du titre */
-#corpsCal table.titreCal a {
-    color: #203f61;
-    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);
-}
-
 /* cases des calendriers */
 #corpsCal td {
     /* propriétés des bordures */
@@ -194,13 +250,9 @@ ul.nav > li ul li:hover {
     padding-left: 2px;
 }
 
-#corpsCal td:hover {
-    font-weight: bold;
-}
-
 /* liens dans le calendrier */
 #corpsCal a {
-    color: black;
+    color: #72777b;
     text-decoration: none;
 }
 
@@ -220,6 +272,10 @@ ul.nav > li ul li:hover {
    vertical-align: middle;
 }
 
+#corpsCal.semestre td:hover {
+    background-color: #edeeef;
+}
+
 #corpsCal.semestre td a {
     text-decoration: none;
     color: #72777b;
@@ -228,10 +284,6 @@ ul.nav > li ul li:hover {
 
 #corpsCal.semestre td#weekend {
     background-color: #e7e9eb;
-}
-
-#corpsCal.semestre td#weekend:hover {
-   font-weight: bold;
 }
 
 /* Infobulle */
@@ -486,10 +538,6 @@ ul.nav > li ul li:hover {
     cursor: default;
     border: none;
     background-color: #ececec;
-}
-
-#corpsCal.creer td:hover {
-    font-weight: normal;
 }
 
 /* FIN DE LA PARTIE CREER */

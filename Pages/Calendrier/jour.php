@@ -15,6 +15,7 @@
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../style.css" rel="stylesheet" type="text/css">
         <link href="../../style-minicalendrier.css" rel="stylesheet" type="text/css">
+        <link href="../../bootstrap.css" rel="stylesheet" type="text/css">
 	</head>
     <body>
         <?php
@@ -71,10 +72,11 @@
         $date = miseEnPageJour($dateTimestampDebutMEPJ);
 
         ?>
+        
+        <?php include('../menu.php'); ?>
         <div id="global">
-            <?php include('../menu.php'); ?>
-        <div id="corpsCal" class="jour">
             <table class="titreCal"><tr class="titreCal"><th><?php echo $date; ?></th></tr></table>
+        <div id="corpsCal" class="jour">
             <?php		
             if ($resultats != null) {
                 $i=1;
@@ -122,23 +124,23 @@
                 echo "Il n'y a aucun &eacute;v&eacute;nement à cette date.";
             }
                 if(!empty($nomSession))
-                    echo '<a href="javascript:getEveCrea(' . $annee . ', ' . $mois . ', ' . $jour .');">Ajouter</a>';
+                    echo '<a class="btn" href="javascript:getEveCrea(' . $annee . ', ' . $mois . ', ' . $jour .');">Ajouter</a>';
 
 
                 if(!empty($_GET['u'])){
                     if ($_GET['u'] == 1) {
-                        echo '<a href="semestre.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
+                        echo '<a class="btn" href="semestre.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
                     }
 
                     if ($_GET['u'] == 2) {
-                        echo '<a href="mois.php?annee=' . $annee . '&mois=' . $mois . '">Retour</a>';
+                        echo '<a class="btn" href="mois.php?annee=' . $annee . '&mois=' . $mois . '">Retour</a>';
                     } 
 
                     if ($_GET['u'] == 3) {
                         //echo '<a href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. $jour .'">Retour</a>';
                         $ts = mktime(0,0,0,$mois,$jour,$annee);
                         $jourDebut = date('N', $ts);
-                        echo '<a href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. ($jour-$jourDebut+1) .'">Retour</a>';
+                        echo '<a class="btn" href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. ($jour-$jourDebut+1) .'">Retour</a>';
                     }
                 }
             ?>
