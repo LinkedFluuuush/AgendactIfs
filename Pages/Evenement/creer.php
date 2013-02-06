@@ -308,7 +308,7 @@ if(!empty($_POST['submit']))
 		<tr>
 			<td class="descForm">Ajouter un destinataire</td>
 			<td class="Form"> 
-			<select id="dest" name="dest[]" multiple style="width:250px;">
+			<select id="dest" name="dest[]" multiple style="height:200px;width:250px;">
 			</select><br/>
 			<input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
 			<div id="resultsParticipant"></div></td>
