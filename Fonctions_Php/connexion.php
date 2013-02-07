@@ -7,6 +7,7 @@
 	try
 	{
 		$conn = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+		$conn->query("SET NAMES 'utf8'");
 	}
 	catch(Exception $e)
 	{
