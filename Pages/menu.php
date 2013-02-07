@@ -1,4 +1,4 @@
-<script type="text/javascript" src="../../Fonctions_Javascript/miniCalendrier.js"></script>
+<script type="text/javascript" src="/AgendactIfs/Fonctions_Javascript/miniCalendrier.js"></script>
 <link href="../../bootstrap.css" rel="stylesheet" type="text/css">
 
 <?php
@@ -30,10 +30,10 @@ $nomPage = $temp[sizeof($temp)-1];
             </ul>
         </li>
         <li>
-            <?php if(!empty($_SESSION['id'])) { ?>
                 <div class="header">Evénement</div>
                 <ul class="menu">
                     <?php
+                     if(!empty($_SESSION['id'])) {
                      if ($nomPage == "creer.php") {
                          echo '<li class="selected">Créer</li>';
                      }
@@ -44,6 +44,7 @@ $nomPage = $temp[sizeof($temp)-1];
                     <!--<li onclick ="document.location.href ='#'"><a href="#">Gérer</a></li>
                     <li onclick ="document.location.href ='#'"><a href="#">Rechercher</a></li>-->
 
+                    <?php } ?>
                     <?php
                     if($nomPage == "semestre.php" or $nomPage == "mois.php" or $nomPage == "semaine.php" or $nomPage == "jour.php") {
                         echo '<li class="priorite">';
@@ -52,7 +53,6 @@ $nomPage = $temp[sizeof($temp)-1];
 
                     } ?>
                 </ul>
-           <?php } ?>
         </li>
         <li>
             <div class="header">Vue</div>
