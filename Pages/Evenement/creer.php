@@ -1,4 +1,5 @@
-<?php header( 'content-type: text/html; charset=utf-8' ); ?>
+<?php session_start();
+header( 'content-type: text/html; charset=utf-8' ); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -171,27 +172,41 @@ if(!empty($_POST['submit']))
 			
 			$resultats = $conn->query($sql);
 			
-			if(!empty($_POST['addParticipant0']) && $public == 0)
-			{
-				$i = 0;
+			//~ if(!empty($_POST['addParticipant0']) && $public == 0)
+			//~ {
+				//~ $i = 0;
 
-				while(!empty($_POST["addParticipant$i"]))
-				{
-					$dest = $_POST["addParticipant$i"];
+				//~ while(!empty($_POST["addParticipant$i"]))
+				//~ {
+					//~ $dest = $_POST["addParticipant$i"];
 
-					//Récupération de l'idutilisateur du participant à ajouter à l'événement
-					$sqlRecupId = "SELECT idutilisateur FROM aci_utilisateur WHERE adresse_mail = '$dest'";
+					//~ //Récupération de l'idutilisateur du participant à ajouter à l'événement
+					//~ $sqlRecupId = "SELECT idutilisateur FROM aci_utilisateur WHERE adresse_mail = '$dest'";
 
-					$temp = $conn->query($sqlRecupId);
-					$id = $temp->fetch();
-					$id =  $id['idutilisateur'];
+					//~ $temp = $conn->query($sqlRecupId);
+					//~ $id = $temp->fetch();
+					//~ $id =  $id['idutilisateur'];
 
-					$sqlDestUtilisateur = "INSERT INTO `aci_bdd`.`aci_destutilisateur` (`IDUTILISATEUR`, `IDEVENEMENT`, `DATEINSERT`) 
-					VALUES ($id, $idEv[0], curdate())";
+					//~ $sqlDestUtilisateur = "INSERT INTO `aci_bdd`.`aci_destutilisateur` (`IDUTILISATEUR`, `IDEVENEMENT`, `DATEINSERT`) 
+					//~ VALUES ($id, $idEv[0], curdate())";
 					
-					$insertionUtil = $conn->query($sqlDestUtilisateur);
+					//~ $insertionUtil = $conn->query($sqlDestUtilisateur);
 					
-					$i++;
+					//~ $i++;
+				//~ }
+			//~ }
+			
+			if(!empty($_POST['dest'])){
+				$dest[] = $_POST['dest'];
+				foreach($dest as $cle => $contenu){
+					foreach($contenu as $cle2 => $contenu2){
+						$sql = "INSERT INTO aci_destutilisateur VALUES ((SELECT idutilisateur FROM aci_utilisateur WHERE adresse_mail='".$contenu2."')";
+						$sql.=", ".$idEv[0].", curdate())";
+						
+						echo $sql;
+					
+						$insert = $conn->query($sql);
+					}
 				}
 			}
 			
@@ -203,6 +218,22 @@ if(!empty($_POST['submit']))
 			
 				$insertionGroupe = $conn->query($sqlDestGroupe);
 			}*/
+			
+			if(!empty($_POST['groupe'])){
+				$dest[] = $_POST['groupe'];
+				foreach($dest as $cle => $contenu){
+					foreach($contenu as $cle2 => $contenu2){
+						//~ $sql = "INSERT INTO aci_destutilisateur VALUES ((SELECT idutilisateur FROM aci_utilisateur WHERE adresse_mail='".$contenu2."')";
+						//~ $sql.=", ".$idEv[0].", curdate())";
+						
+						//~ echo $sql;
+					
+						//~ $insert = $conn->query($sql);
+						
+						echo contenu2;
+					}
+				}
+			}
 			
 			if(!empty($resultats))
 				$insertion = true;
@@ -277,7 +308,7 @@ if(!empty($_POST['submit']))
 		<tr>
 			<td class="descForm">Ajouter un destinataire</td>
 			<td class="Form"> 
-			<select id="dest" multiple style="width:300px;height:150px;">
+			<select id="dest" name="dest[]" multiple style="height:200px;width:250px;">
 			</select><br/>
 			<input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
 			<div id="resultsParticipant"></div></td>
@@ -310,66 +341,6 @@ if(!empty($_POST['submit']))
 </html>
 
 <script>
-function selectGroupe2(){
-	var list = document.getElementById('groupe1');
-	var selectionne = list.value;
-	
-	var xhr = new XMLHttpRequest();
-	
-	xhr.onreadystatechange = function (){
-	    if(xhr.readyState == 4){
-		    if(xhr.status == 200 || xhr.status == 0){
-			/*var response = xhr.responseXML;
-			alert(xhr.getAllResponseHeaders());
-			var options = response.getElementsByTagName('option');
-			var i;
-			var select = document.getElementById('groupe2');
-			for(i = 0; i < options.length; i++){
-				select.appendChild(options[i]);
-			}*/
-			document.getElementById('groupe2').innerHTML = "<option value=0></option>" + xhr.responseText;
-			document.getElementById('groupe3').innerHTML = "<option value=0></option>";
-		    }
-	    }
-	}
-	
-	xhr.open('POST','../../Fonctions_Php/XMLSelectEvent.php');
-	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xhr.send('valeur='+selectionne);
-}
-
-function selectGroupe3(){
-	var list = document.getElementById('groupe2');
-	var selectionne = list.value;
-	
-	var xhr = new XMLHttpRequest();
-	
-	xhr.onreadystatechange = function (){
-	    if(xhr.readyState == 4){
-		    if(xhr.status == 200 || xhr.status == 0){
-			/*var response = xhr.responseXML;
-			alert(xhr.getAllResponseHeaders());
-			var options = response.getElementsByTagName('option');
-			var i;
-			var select = document.getElementById('groupe3');
-			for(i = 0; i < options.length; i++){
-				select.appendChild(options[i]);
-			}*/
-			document.getElementById('groupe3').innerHTML = "<option value=0></option>" + xhr.responseText;
-		    }
-	    }
-	}
-	
-	xhr.open('POST','../../Fonctions_Php/XMLSelectEvent.php');
-	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xhr.send('valeur='+selectionne);
-}
-
-function reset(){
-    document.getElementById('groupe2').innerHTML = "<option value=0></option>";
-    document.getElementById('groupe3').innerHTML = "<option value=0></option>";   
-}
-
 (function(){
 
     var searchElement = document.getElementById('Eve_lieu');

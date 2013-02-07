@@ -11,45 +11,48 @@ $nomPage = $temp[sizeof($temp)-1];
         <li>
             <div class="header">Connexion</div>
             <ul class="menu">
-                <li class="connexion">
                     <?php if(empty($_SESSION['id'])){ 
                         if(isset($_GET['login']) && $_GET['login'] == 0){
                             echo "<span style=\"color:red\">Connexion echouée.</span>";
                         } ?>
-                    <form name="connexion" action="../../Fonctions_Php/connexionLDAP.php" method="POST">
-                        <input type="text" name="login" placeholder="Identifiant"><br>
-                        <input type="password" name="mdp" placeholder="Mot de passe">
-                        <input class="btn" type="submit" name="valider_conn" value="Valider">
-                    </form>
-                    <?php }else{
-                        echo "<li>".$_SESSION['prenom']." ".$_SESSION['nom']."</li>";
-                        echo "<li onclick =\"document.location.href ='../../Fonctions_Php/deconnexion.php'\"><a href=\"../../Fonctions_Php/deconnexion.php\">Déconnexion</a></li>";
+                        <li class="connexion">
+                            <form name="connexion" action="../../Fonctions_Php/connexionLDAP.php" method="POST">
+                                <input type="text" name="login" placeholder="Identifiant"><br>
+                                <input type="password" name="mdp" placeholder="Mot de passe">
+                                <input class="btn" type="submit" name="valider_conn" value="Valider">
+                            </form>
+                        </li>
+                    <?php }
+                    else {
+                        echo "<li onclick =\"document.location.href ='../../Fonctions_Php/deconnexion.php'\"><a href=\"../../Fonctions_Php/deconnexion.php\">".$_SESSION['prenom']." ".$_SESSION['nom']." - Déconnexion</a></li>";
+                        //echo "<li onclick =\"document.location.href ='../../Fonctions_Php/deconnexion.php'\"><a href=\"../../Fonctions_Php/deconnexion.php\">Déconnexion</a></li>";
                     } ?>
-                </li>
             </ul>
         </li>
         <li>
-            <div class="header">Evénement</div>
-            <ul class="menu">
-                <?php
-                 if ($nomPage == "creer.php") {
-                     echo '<li class="selected">Créer</li>';
-                 }
-                 else {
-                     echo '<li onclick ="document.location.href =\'../Evenement/creer.php\'"><a href="../Evenement/creer.php">Créer</a></li>';
-                 }
-                ?>
-                <!--<li onclick ="document.location.href ='#'"><a href="#">Gérer</a></li>
-                <li onclick ="document.location.href ='#'"><a href="#">Rechercher</a></li>-->
-                
-                <?php
-                if($nomPage == "semestre.php" or $nomPage == "mois.php" or $nomPage == "semaine.php" or $nomPage == "jour.php") {
-                    echo '<li class="priorite">';
-                    include("priorite.php");
-                    echo '</li>';
+            <?php if(!empty($_SESSION['id'])) { ?>
+                <div class="header">Evénement</div>
+                <ul class="menu">
+                    <?php
+                     if ($nomPage == "creer.php") {
+                         echo '<li class="selected">Créer</li>';
+                     }
+                     else {
+                         echo '<li onclick ="document.location.href =\'../Evenement/creer.php\'"><a href="../Evenement/creer.php">Créer</a></li>';
+                     }
+                    ?>
+                    <!--<li onclick ="document.location.href ='#'"><a href="#">Gérer</a></li>
+                    <li onclick ="document.location.href ='#'"><a href="#">Rechercher</a></li>-->
 
-                } ?>
-            </ul>
+                    <?php
+                    if($nomPage == "semestre.php" or $nomPage == "mois.php" or $nomPage == "semaine.php" or $nomPage == "jour.php") {
+                        echo '<li class="priorite">';
+                        include("priorite.php");
+                        echo '</li>';
+
+                    } ?>
+                </ul>
+           <?php } ?>
         </li>
         <li>
             <div class="header">Vue</div>
