@@ -18,7 +18,6 @@ $insertion = false;
 //--------REGEX---------//
 include_once("../../Fonctions_Php/diverses_fonctions.php");
 
-
 if(!empty($_POST['idEve']))
 {
 
@@ -27,7 +26,10 @@ if(!empty($_POST['idEve']))
 	$sql = "SELECT aci_evenement.* from aci_evenement where aci_evenement.idevenement = $idEve";
         
     $resultats = $conn->query($sql);
-
+	$resultats = $resultats->fetch();
+	
+	$libelleCourt = $resultats['libellecourt'];
+	echo $libelleCourt;
 	//traiter les résultats et le remplissage de la page avec les données récupérées dans la base.
 	
 	
@@ -164,7 +166,6 @@ if(!empty($_POST['idEve']))
 				$insertion = true;
 		}
 	}
-}
 ?>
 <div id="global">
             <?php include('../menu.php'); ?>

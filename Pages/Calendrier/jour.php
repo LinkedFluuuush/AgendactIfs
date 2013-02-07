@@ -125,7 +125,7 @@
             }
                 if(!empty($nomSession))
                     echo '<a class="btn" href="javascript:getEveCrea(' . $annee . ', ' . $mois . ', ' . $jour .');">Ajouter</a>';
-
+			
 
                 if(!empty($_GET['u'])){
                     if ($_GET['u'] == 1) {
