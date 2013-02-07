@@ -21,23 +21,24 @@ body {
     font-size: .8em;
     
     margin-top: 4px;
-    margin-left: 25px;
+    /*margin-left: 25px;*/
     
-    width: 96%;
+    width: 100%;
 }
 
 /* contient la navigation et le corps */
 #global {
-    margin-left: 220px;
+    /*margin-left: 220px;*/
 }
 
 /* contient le calendrier et le titre */
 #corpsCal {
-    
     /* hauteur et largeur */
-    height: 100%;
-    /*height: 740px;*/
-    min-height: 740px;
+    width: 84%;
+    height: 98.5%;
+    position: absolute;
+    margin-left: 15%;
+    float: left;
        
     /* couleur de fond */
     background-color: #ececec;
@@ -78,7 +79,9 @@ input, textarea, select {
 
 #nav {
     float: left;
-    width: 180px;
+    /*width: 180px;*/
+    width: 12%;
+    margin-left: 1%;
 }
 
 ul.nav {
