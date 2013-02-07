@@ -35,13 +35,14 @@
             // TEST
             //echo "GET : $jour $mois $annee<br>";
         }
-        else if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty($_SESSION['jour']))) {
-            $jour = $_SESSION['jour'];
-            $mois = $_SESSION['mois'];
-            $annee = $_SESSION['annee'];
+        else if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty($_SESSION['jour']))) {    
+            $timestamp = mktime(00, 00, 00, $_SESSION['mois'], $_SESSION['jour'], $_SESSION['annee']);
+            $jour = date("d", $timestamp);
+            $mois = date("m", $timestamp);
+            $annee = date("Y", $timestamp);
             
             // TEST
-            //echo "SESSION : $jour $mois $annee<br>";
+            echo "SESSION : $jour $mois $annee<br>";
         }
         else {
             $annee = date('Y');
