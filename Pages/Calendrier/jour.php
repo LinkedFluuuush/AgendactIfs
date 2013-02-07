@@ -33,8 +33,6 @@
             $mois = $_GET['m'];
             $jour = $_GET['j'];
             
-            echo "$annee $mois $jour";
-
             $_SESSION['annee'] = $_GET['a'];
             $_SESSION['mois'] = $_GET['m'];
             $_SESSION['jour'] = $_GET['j'];
@@ -71,9 +69,7 @@
         //$resultats->setFetchMode(PDO::FETCH_OBJ);
         
         $dateTimestampDebutMEPJ = mktime(00, 00, 00, $mois, $jour, $annee);
-        echo "$annee $mois $jour";
         $date = miseEnPageJour($dateTimestampDebutMEPJ);
-        echo $date;
 
         ?>
         

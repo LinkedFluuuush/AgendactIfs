@@ -28,9 +28,10 @@
         // INITIALISATION DES VARIABLES $jour, $mois, $annee --------------------------------------------------
         
         if ((!empty($_GET['jour'])) && (!empty($_GET['mois'])) && (!empty($_GET['annee']))) {
-            $jour = $_GET['jour'];
-            $mois = $_GET['mois'];
-            $annee = $_GET['annee'];
+            $timestamp = mktime(00, 00, 00, $_GET['mois'], $_GET['jour'], $_GET['annee']);
+            $jour = date("d", $timestamp);
+            $mois = date("m", $timestamp);
+            $annee = date("Y", $timestamp);
             
             // TEST
             //echo "GET : $jour $mois $annee<br>";
@@ -42,7 +43,7 @@
             $annee = date("Y", $timestamp);
             
             // TEST
-            echo "SESSION : $jour $mois $annee<br>";
+            //echo "SESSION : $jour $mois $annee<br>";
         }
         else {
             $annee = date('Y');
