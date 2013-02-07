@@ -129,7 +129,7 @@
                 echo "Il n'y a aucun &eacute;v&eacute;nement à cette date.";
             }
                 if(!empty($nomSession))
-                    echo '<a class="btn" href="javascript:getEveCrea(' . $annee . ', ' . $mois . ', ' . $jour .');">Ajouter</a>';
+                    echo '<a class="btn" href="../Evenement/creer.php?a='.$annee.'&m='.$mois.'&j='.$jour.'">Ajouter</a>';
 			
 
                 if(!empty($_GET['u'])){
