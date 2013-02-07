@@ -328,7 +328,6 @@ if(!empty($_POST['submit']))
 		</td></tr>
 		<tr><td>
 			<input class="btn" type="submit" name="submit" value="Valider" class="boutonForm"/>
-			<input class="btn" type="reset" value="R&eacute;initialiser" class="boutonForm" onclick="reset()"/>
 		</td></tr>
 	</table>
 </form>

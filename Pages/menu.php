@@ -24,8 +24,7 @@ $nomPage = $temp[sizeof($temp)-1];
                         </li>
                     <?php }
                     else {
-                        echo "<li onclick =\"document.location.href ='../../Fonctions_Php/deconnexion.php'\"><a href=\"../../Fonctions_Php/deconnexion.php\">".$_SESSION['prenom']." ".$_SESSION['nom']." - Déconnexion</a></li>";
-                        //echo "<li onclick =\"document.location.href ='../../Fonctions_Php/deconnexion.php'\"><a href=\"../../Fonctions_Php/deconnexion.php\">Déconnexion</a></li>";
+                        echo "<li onclick =\"document.location.href ='../../Fonctions_Php/deconnexion.php'\"><a href=\"../../Fonctions_Php/deconnexion.php\">".$_SESSION['prenom']." ".ucfirst(strtolower($_SESSION['nom']))." - Déconnexion</a></li>";
                     } ?>
             </ul>
         </li>

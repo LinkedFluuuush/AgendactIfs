@@ -101,22 +101,27 @@
                     <br><span class="titre"><?php echo $dateDebut[0]; ?></span>
                     <?php if(!empty($dateFin))
                               echo '<h5>jusqu\'à '.$dateFin[0].' le '.$dateFin[1].'</h5>'; ?>
-                    
-                    
-                    
-                    <?php if($nomSession == $auteur) { ?>
-                        <a href="javascript:getEveModif(<?php echo $numeroEve; ?>);">Modifier</a>
-                        <a href="javascript:cal_supprimerEve(<?php echo $numeroEve; ?>, <?php echo $annee; ?>, <?php echo $mois; ?>, <?php echo $jour; ?>, <?php echo $_GET['u']; ?>);">Supprimer</a>
-                    <?php } ?>
-                    
+
                     <p>
                     <?php
                         echo "<b>".trim($titre)."</b>";
                         echo '<br>'.$desc.'<br>';
                         if(!empty($lieu))
                             echo 'Lieu : ' . $lieu . '<br>'; 
-                        echo 'Post&eacute; par ' . $auteur . ' le ' . $dateInsert . '<br>'; ?>
+                        echo 'Post&eacute; par ' . $auteur . ' le ' . $dateInsert . ' '; ?>
+						
+						<form name="modifier" action="../Evenement/modifier.php" method="POST">
+							<input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" /><br>
+							<input class="btn" type="submit" name="modifier_eve" value="Modifier" />
+						</form>
+						<form name="modifier" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+							<input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" /><br>
+							<input class="btn" type="submit" name="supprimer_eve" value="Supprimer" onclick="confirm('Voulez-vous vraiment supprimer cet &eacute;v&egrave;nement ?');"/>
+						</form>
+						
+						
                     </p>
+					
                     <?php $i++;
                 }
             }
@@ -124,8 +129,8 @@
                 echo "Il n'y a aucun &eacute;v&eacute;nement à cette date.";
             }
                 if(!empty($nomSession))
-                    echo '<a class="btn" href="javascript:getEveCrea(' . $annee . ', ' . $mois . ', ' . $jour .');">Ajouter</a>';
-
+                    echo '<a class="btn" href="../Evenement/creer.php?a='.$annee.'&m='.$mois.'&j='.$jour.'">Ajouter</a>';
+			
 
                 if(!empty($_GET['u'])){
                     if ($_GET['u'] == 1) {
