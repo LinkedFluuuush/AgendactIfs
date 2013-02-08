@@ -32,6 +32,8 @@
             $annee = $_GET['a'];
             $mois = $_GET['m'];
             $jour = $_GET['j'];
+            
+            echo "$annee $mois $jour";
 
             $_SESSION['annee'] = $_GET['a'];
             $_SESSION['mois'] = $_GET['m'];
@@ -61,15 +63,17 @@
 		JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
 		where dateFin >= '$annee-$mois-$jour 00:00:00'
 		and dateDebut <= '$annee-$mois-$jour 23:59:59'
-        and idpriorite <= $priorite
+                and idpriorite <= $priorite
 		and ((estPublic = 1)
-			or ($idUtil = aci_evenement.idUtilisateur))";
+		or ($idUtil = aci_evenement.idUtilisateur))";
         
         $resultats = $conn->query($sql);
         //$resultats->setFetchMode(PDO::FETCH_OBJ);
         
         $dateTimestampDebutMEPJ = mktime(00, 00, 00, $mois, $jour, $annee);
+        echo "$annee $mois $jour";
         $date = miseEnPageJour($dateTimestampDebutMEPJ);
+        echo $date;
 
         ?>
         
@@ -101,22 +105,27 @@
                     <br><span class="titre"><?php echo $dateDebut[0]; ?></span>
                     <?php if(!empty($dateFin))
                               echo '<h5>jusqu\'à '.$dateFin[0].' le '.$dateFin[1].'</h5>'; ?>
-                    
-                    
-                    
-                    <?php if($nomSession == $auteur) { ?>
-                        <a href="javascript:getEveModif(<?php echo $numeroEve; ?>);">Modifier</a>
-                        <a href="javascript:cal_supprimerEve(<?php echo $numeroEve; ?>, <?php echo $annee; ?>, <?php echo $mois; ?>, <?php echo $jour; ?>, <?php echo $_GET['u']; ?>);">Supprimer</a>
-                    <?php } ?>
-                    
+
                     <p>
                     <?php
                         echo "<b>".trim($titre)."</b>";
                         echo '<br>'.$desc.'<br>';
                         if(!empty($lieu))
                             echo 'Lieu : ' . $lieu . '<br>'; 
-                        echo 'Post&eacute; par ' . $auteur . ' le ' . $dateInsert . '<br>'; ?>
+                        echo 'Post&eacute; par ' . $auteur . ' le ' . $dateInsert . ' '; ?>
+						
+                        <form name="modifier" action="../Evenement/modifier.php" method="POST">
+                                <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" /><br>
+                                <input class="btn" type="submit" name="modifier_eve" value="Modifier" />
+                        </form>
+                        <form name="modifier" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+                                <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" /><br>
+                                <input class="btn" type="submit" name="supprimer_eve" value="Supprimer" onclick="confirm('Voulez-vous vraiment supprimer cet &eacute;v&egrave;nement ?');"/>
+                        </form>
+						
+						
                     </p>
+					
                     <?php $i++;
                 }
             }
@@ -124,8 +133,8 @@
                 echo "Il n'y a aucun &eacute;v&eacute;nement à cette date.";
             }
                 if(!empty($nomSession))
-                    echo '<a class="btn" href="javascript:getEveCrea(' . $annee . ', ' . $mois . ', ' . $jour .');">Ajouter</a>';
-
+                    echo '<a class="btn" href="../Evenement/creer.php?a='.date("Y", $dateTimestampDebutMEPJ).'&m='.date("m", $dateTimestampDebutMEPJ).'&j='.date("d", $dateTimestampDebutMEPJ).'">Ajouter</a>';
+			
 
                 if(!empty($_GET['u'])){
                     if ($_GET['u'] == 1) {

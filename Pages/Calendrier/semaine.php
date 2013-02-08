@@ -35,13 +35,14 @@
             // TEST
             //echo "GET : $jour $mois $annee<br>";
         }
-        else if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty($_SESSION['jour']))) {
-            $jour = $_SESSION['jour'];
-            $mois = $_SESSION['mois'];
-            $annee = $_SESSION['annee'];
+        else if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty($_SESSION['jour']))) {    
+            $timestamp = mktime(00, 00, 00, $_SESSION['mois'], $_SESSION['jour'], $_SESSION['annee']);
+            $jour = date("d", $timestamp);
+            $mois = date("m", $timestamp);
+            $annee = date("Y", $timestamp);
             
             // TEST
-            //echo "SESSION : $jour $mois $annee<br>";
+            echo "SESSION : $jour $mois $annee<br>";
         }
         else {
             $annee = date('Y');
@@ -164,7 +165,7 @@
         $nomMois1 = $tabMois[$mois1 - 1];
         $nomMois2 = $tabMois[$mois2 - 1];
         
-        $idUtil = 1;
+        $idUtil = 1; //$_SESSION['id'];
         $idSession = 1; //$_SESSION['login'];
         
         ?>
@@ -204,6 +205,7 @@
                 $resultats = $conn->query($sql);
                 $resultats->setFetchMode(PDO::FETCH_ASSOC);
                 
+				
                 if ($resultats != null) {
                     $i=0;
                     while ($row = $resultats->fetch()) {
@@ -215,7 +217,7 @@
                     }
                 }
                 
-                
+				
                 for ($i = 0 ; $i <= 23 ; $i++) { //heures de 0 à 23
                     echo '<tr>';
                     echo '<td class="nomHeure">'.$i.':00</td>';

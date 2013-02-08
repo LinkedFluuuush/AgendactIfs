@@ -169,7 +169,7 @@ if(!empty($_POST['submit']))
 			//echo "$idEv[0], $idUtil, $priorite, 1, $libelleLong, $libelleCourt, $description, $dateDebut $heureDebut, $dateFin $heureFin, $public";
 			$sql = "INSERT INTO `aci_evenement` (`IDEVENEMENT`, `IDUTILISATEUR`, `IDPRIORITE`, `IDLIEU`, `LIBELLELONG`, `LIBELLECOURT`, `DESCRIPTION`, `DATEDEBUT`, `DATEFIN`, `ESTPUBLIC`, `DATEINSERT`) 
 			VALUES ($idEv[0], $idUtil, $priorite, $idLieu, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, curdate())";
-			
+
 			$resultats = $conn->query($sql);
 			
 			//~ if(!empty($_POST['addParticipant0']) && $public == 0)
@@ -275,10 +275,15 @@ if(!empty($_POST['submit']))
 			<td class="Form"><textarea name="description" rows="5" cols="30" id="Eve_description" class="area"><?php saisieFormString("description");?></textarea>
 			<?php echo "<b id=\"formErreur\"> $erreurDescription </b>"; ?></td>
 		</tr>
+                
 		<tr>
 			<td class="descForm">Date de début</td>
 			<td class="Form">
-				<input type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateDebut");?>" class="dateDebut" maxlength=10 size=11/>
+                            <?php if (!empty($_GET['a']) and !empty($_GET['m']) and !empty($_GET['j'])) { ?>
+				<input type="text" name="dateDebut" id="Eve_dateDebut" value="<?php echo $_GET['j'].'/'.$_GET['m'].'/'.$_GET['a']; ?>" class="dateDebut" maxlength=10 size=11/>
+                            <?php } else { ?>
+                                <input type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateDebut");?>" class="dateDebut" maxlength=10 size=11/>
+                            <?php } ?>
 				<input type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="<?php saisieFormString("heureDebut");?>" class="heureDebut" maxlength=5 size=4/>
 				<?php echo "<b id=\"formErreur\"> $erreurDateDebut $erreurHeureDebut </b>"; ?>
 			</td>
@@ -320,7 +325,7 @@ if(!empty($_POST['submit']))
                         $req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe NOT IN (SELECT idgroupe_1 FROM aci_contenir)";
                         $resultats = $conn -> query($req);
                         while($row = $resultats->fetch()){
-                            echo '<img id="'.utf8_encode($row['idgroupe']).'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/> <label for="'.utf8_encode($row['idgroupe']).'">'.utf8_encode($row['libelle']).'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
+                            echo '<img id="'.utf8_encode($row['idgroupe']).'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/> <label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')">'.utf8_encode($row['libelle']).'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
                             descGroupe($row['idgroupe'], $conn, 1);
                         }
                         ?>
@@ -328,7 +333,6 @@ if(!empty($_POST['submit']))
 		</td></tr>
 		<tr><td>
 			<input class="btn" type="submit" name="submit" value="Valider" class="boutonForm"/>
-			<input class="btn" type="reset" value="R&eacute;initialiser" class="boutonForm" onclick="reset()"/>
 		</td></tr>
 	</table>
 </form>
@@ -337,11 +341,10 @@ if(!empty($_POST['submit']))
     if($insertion)
         echo '<div class="alert alert-success"><b>Insertion réalisée avec succès.</b></div>';
     ?>
-</body>
-</html>
-
-<script>
-(function(){
+            
+            
+<script type="text/javascript">
+    (function(){
 
     var searchElement = document.getElementById('Eve_lieu');
     var results = document.getElementById('resultsLieu');
@@ -475,11 +478,17 @@ if(!empty($_POST['submit']))
 
     function chooseResult(result){
 	var div = document.createElement('option');
+        var other;
 	div.selected = "true";
 	div.value=result.innerHTML.split(" ")[2];
 	div.appendChild(document.createTextNode(result.innerHTML));
 	div.onclick = function(){
-		div.parentNode.removeChild(div);
+		removeChildSafe(div);
+                other = div.ParentNode.childNodes;
+                alert(other+" fin");
+                for(i = 0; i <other.length; i++){
+                    other[i].selected="true";
+                }
 	}	
 	selected.appendChild(div);
 	searchElement.value = '';
@@ -487,6 +496,14 @@ if(!empty($_POST['submit']))
 	result.className = '';
 	searchElement.focus();
     }
+    
+    function removeChildSafe(el) {
+    //before deleting el, recursively delete all of its children.
+    while(el.childNodes.length > 0) {
+        removeChildSafe(el.childNodes[el.childNodes.length-1]);
+    }
+    el.parentNode.removeChild(el);
+}
     
     searchElement.onkeyup = function(e){
 	e = e || window.event;
@@ -524,15 +541,16 @@ if(!empty($_POST['submit']))
     }
 })();
 
-function developper(idGroupe, close){
+function developper(idGroupe){
 	var spans = document.getElementsByClassName(idGroupe);
 	var i;
 	var img = document.getElementById(idGroupe);
-	
-	if(img.src.lastIndexOf("arborescencePlus.png") !=-1 && close != 1){
+        var src = img.src.split('/');
+        	
+	if(src[src.length-1] == "arborescencePlus.png"){
 		img.src="../../Images/arborescenceMoins.png";
 		for(i=0; i < spans.length; i++){
-			spans[i].style.display="inline";
+			spans[i].style.display="block";
 		}
 	}
 	else{
@@ -543,3 +561,5 @@ function developper(idGroupe, close){
 	}			
 }
 </script>
+</body>
+</html>
