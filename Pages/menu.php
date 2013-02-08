@@ -1,4 +1,4 @@
-<script type="text/javascript" src="/AgendactIfs/Fonctions_Javascript/miniCalendrier.js"></script>
+<script type="text/javascript" src="../../Fonctions_Javascript/miniCalendrier.js"></script>
 <link href="../../bootstrap.css" rel="stylesheet" type="text/css">
 
 <?php
