@@ -132,10 +132,10 @@
                     $cons = 0;
                     while ($row = $resultats->fetch()) {
                         //on recupère un tableau contenant les dates et les titres longs
-                        $donnees[$cons]["dateDebut"] = htmlentities($row["DATEDEBUT"], ENT_QUOTES);
-                        $donnees[$cons]["dateFin"] = htmlentities($row["DATEFIN"], ENT_QUOTES);
-                        $donnees[$cons]["titreCourt"] = stripslashes(htmlentities($row["LIBELLECOURT"], ENT_QUOTES));
-                        $donnees[$cons]["titreLong"] = stripslashes(htmlentities($row["LIBELLELONG"], ENT_QUOTES));
+                        $donnees[$cons]["dateDebut"] = $row["DATEDEBUT"];
+                        $donnees[$cons]["dateFin"] = $row["DATEFIN"];
+                        $donnees[$cons]["titreCourt"] = stripslashes($row["LIBELLECOURT"]);
+                        $donnees[$cons]["titreLong"] = stripslashes($row["LIBELLELONG"]);
 
                         $cons ++;
                     }

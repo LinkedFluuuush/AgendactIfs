@@ -81,14 +81,14 @@
             if ($resultats != null) {
                 $i=1;
                 while ($row = $resultats->fetch() and $i != 0) {
-                    $numeroEve = htmlentities($row['IDEVENEMENT'], ENT_QUOTES);	
-                    $dateDebut = htmlentities($row["DATEDEBUT"], ENT_QUOTES);
-                    $dateFin = htmlentities($row["DATEFIN"], ENT_QUOTES);
-                    $titre = stripcslashes(htmlentities($row["LIBELLELONG"], ENT_QUOTES));
-                    $desc = stripcslashes(htmlentities($row["DESCRIPTION"], ENT_QUOTES));
-                    $auteur = stripcslashes(htmlentities($row["prenom"], ENT_QUOTES)).' '.stripcslashes(htmlentities($row["nom"], ENT_QUOTES));
-                    $idAuteur = stripcslashes(htmlentities($row["idUtilisateur"], ENT_QUOTES));
-                    $lieu = stripcslashes(htmlentities($row["lieu"], ENT_QUOTES));
+                    $numeroEve = $row['IDEVENEMENT'];	
+                    $dateDebut = $row["DATEDEBUT"];
+                    $dateFin = $row["DATEFIN"];
+                    $titre = stripcslashes($row["LIBELLELONG"]);
+                    $desc = stripcslashes($row["DESCRIPTION"]);
+                    $auteur = stripcslashes($row["prenom"]).' '.stripcslashes($row["nom"]);
+                    $idAuteur = stripcslashes($row["idUtilisateur"]);
+                    $lieu = stripcslashes($row["lieu"]);
 
                     $dateInsert = substr($row["DATEINSERT"],0,10);
                     $tabDateInsert = explode('-', $dateInsert);
