@@ -211,9 +211,9 @@
                     $i=0;
                     while ($row = $resultats->fetch()) {
                         //on recupère un tableau contenant les dates et les titres longs)
-                        $donnees[$i]["dateDebut"] = htmlentities($row["DATEDEBUT"], ENT_QUOTES);
-                        $donnees[$i]["libelleCourt"] = stripslashes(htmlentities($row["LIBELLECOURT"], ENT_QUOTES));
-                        $donnees[$i]["libelleLong"] = stripslashes(htmlentities($row["LIBELLELONG"], ENT_QUOTES));
+                        $donnees[$i]["dateDebut"] = $row["DATEDEBUT"];
+                        $donnees[$i]["libelleCourt"] = stripslashes($row["LIBELLECOURT"]);
+                        $donnees[$i]["libelleLong"] = stripslashes($row["LIBELLELONG"]);
                         $i++;
                     }
                 }

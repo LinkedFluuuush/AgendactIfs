@@ -122,7 +122,7 @@
 			JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
 			where dateFin >= '$annee-$moisDebut-01 00:00:00'
 			and dateDebut <= '$annee-$moisFin-$days 23:59:59'
-            and idpriorite <= $priorite
+                        and idpriorite <= $priorite
 			and ((estPublic = 1)
 				or ($idUtil = aci_evenement.idUtilisateur))";
 
@@ -132,10 +132,10 @@
                     $cons = 0;
                     while ($row = $resultats->fetch()) {
                         //on recupère un tableau contenant les dates et les titres longs
-                        $donnees[$cons]["dateDebut"] = htmlentities($row["DATEDEBUT"], ENT_QUOTES);
-                        $donnees[$cons]["dateFin"] = htmlentities($row["DATEFIN"], ENT_QUOTES);
-                        $donnees[$cons]["titreCourt"] = stripslashes(htmlentities($row["LIBELLECOURT"], ENT_QUOTES));
-                        $donnees[$cons]["titreLong"] = stripslashes(htmlentities($row["LIBELLELONG"], ENT_QUOTES));
+                        $donnees[$cons]["dateDebut"] = $row["DATEDEBUT"];
+                        $donnees[$cons]["dateFin"] = $row["DATEFIN"];
+                        $donnees[$cons]["titreCourt"] = stripslashes($row["LIBELLECOURT"]);
+                        $donnees[$cons]["titreLong"] = stripslashes($row["LIBELLELONG"]);
 
                         $cons ++;
                     }
