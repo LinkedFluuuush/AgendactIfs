@@ -1,5 +1,4 @@
-<?php session_start();
-header('content-type: text/html; charset=utf-8'); ?>
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -327,14 +326,14 @@ if(!empty($_POST['submit']))
                         $req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe NOT IN (SELECT idgroupe_1 FROM aci_contenir)";
                         $resultats = $conn -> query($req);
                         while($row = $resultats->fetch()){
-                            echo '<img id="'.$row['idgroupe'].'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/> <label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')">'.utf8_encode($row['libelle']).'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
+                            echo '<img id="'.utf8_encode($row['idgroupe']).'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/><label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')"> '.$row['libelle'].'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
                             descGroupe($row['idgroupe'], $conn, 1);
                         }
                         ?>
                     </div>
 		</td></tr>
 		<tr><td>
-			<input class="btn" type="submit" name="submit" value="Valider" class="boutonForm"/>
+			<input class="btn" type="submit" name="submit" value="Valider"/>
 		</td></tr>
 	</table>
 </form>
