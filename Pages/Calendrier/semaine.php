@@ -171,8 +171,9 @@
         
         ?>
         
-        <?php include('../menu.php'); ?>
         <div id="global">
+            <?php include('../menu.php'); ?>
+        <div id="corpsCal" class="semaine">
             <table class="titreCal">                
                 <tr class="titreCal">
                     <th><?php echo '<a href=\'semaine.php?annee='.$anneePrec.'&mois='.$moisPrec.'&jour='.$jourPrec.'\'> &#9668; </a>'; ?></th>
@@ -180,7 +181,6 @@
                     <th><?php echo '<a href=\'semaine.php?annee='.$anneeSuiv.'&mois='.$moisSuiv.'&jour='.$jourSuiv.'\'> &#9658; </a>'; ?></th>
                 </tr>
             </table>
-        <div id="corpsCal" class="semaine">          
             <table>
                 <tr>
                     <th></th>

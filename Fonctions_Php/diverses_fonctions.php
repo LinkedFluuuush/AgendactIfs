@@ -9,7 +9,7 @@ function descGroupe($idGroupe, $conn, $i){
 			$option.="&nbsp &nbsp &nbsp";
 		}
 		$option.='<img id="'.utf8_encode($row['idgroupe']).'" src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/>';
-		$option.='<label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')">'.utf8_encode($row['libelle']).'</label>';
+		$option.='<label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')"> '.$row['libelle'].'</label>';
 		$option.='<input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
 		echo $option;
 		descGroupe($row['idgroupe'], $conn, $i+1);
@@ -124,7 +124,7 @@ function explodeDate($date)
 function formattageDate($dateI)
 {
 	$date[0] = $dateI[3];
-	$date[1] = $dateI[2].'-'.$dateI[1].'-'.$dateI[0];
+	$date[1] = $dateI[2].'/'.$dateI[1].'/'.$dateI[0];
 	
 	return $date;
 }

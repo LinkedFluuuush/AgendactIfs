@@ -73,64 +73,17 @@
 
         ?>
         
-        <?php include('../menu.php'); ?>
         <div id="global">
-            <table class="titreCal"><tr class="titreCal"><th><?php echo $date; ?></th></tr></table>
-        <div id="corpsCal" class="jour">
-            <?php		
-            if ($resultats != null) {
-                $i=1;
-                while ($row = $resultats->fetch() and $i != 0) {
-                    $numeroEve = $row['IDEVENEMENT'];	
-                    $dateDebut = $row["DATEDEBUT"];
-                    $dateFin = $row["DATEFIN"];
-                    $titre = stripcslashes($row["LIBELLELONG"]);
-                    $desc = stripcslashes($row["DESCRIPTION"]);
-                    $auteur = stripcslashes($row["prenom"]).' '.stripcslashes($row["nom"]);
-                    $idAuteur = stripcslashes($row["idUtilisateur"]);
-                    $lieu = stripcslashes($row["lieu"]);
-
-                    $dateInsert = substr($row["DATEINSERT"],0,10);
-                    $tabDateInsert = explode('-', $dateInsert);
-                    $dateInsert = $tabDateInsert[2].'/'.$tabDateInsert[1].'/'.$tabDateInsert[0];
-					
-                    $dateDebut = formattageDate(explodeDate($dateDebut));
-                    $dateFin = formattageDate(explodeDate($dateFin));
-                    ?>
-            
-                    <br><span class="titre"><?php echo $dateDebut[0]; ?></span>
-                    <?php if(!empty($dateFin))
-                              echo '<h5>jusqu\'à '.$dateFin[0].' le '.$dateFin[1].'</h5>'; ?>
-
-                    <p>
-                    <?php
-                        echo "<b>".trim($titre)."</b>";
-                        echo '<br>'.$desc.'<br>';
-                        if(!empty($lieu))
-                            echo 'Lieu : ' . $lieu . '<br>'; 
-                        echo 'Post&eacute; par ' . $auteur . ' le ' . $dateInsert . ' '; ?>
-						
-                        <form name="modifier" action="../Evenement/modifier.php" method="POST">
-                                <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" /><br>
-                                <input class="btn" type="submit" name="modifier_eve" value="Modifier" />
-                        </form>
-                        <form name="modifier" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-                                <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" /><br>
-                                <input class="btn" type="submit" name="supprimer_eve" value="Supprimer" onclick="confirm('Voulez-vous vraiment supprimer cet &eacute;v&egrave;nement ?');"/>
-                        </form>
-						
-						
-                    </p>
-					
-                    <?php $i++;
-                }
-            }
-            else {
-                echo "Il n'y a aucun &eacute;v&eacute;nement à cette date.";
-            }
+            <?php include('../menu.php'); ?>
+            <div id="corpsCal" class="jour">
+                <table class="titreCal"><tr class="titreCal"><th><?php echo $date; ?></th></tr></table>
+                
+                <p class="ajouter_retour">
+                <?php
                 if(!empty($nomSession))
-                    echo '<a class="btn" href="../Evenement/creer.php?a='.date("Y", $dateTimestampDebutMEPJ).'&m='.date("m", $dateTimestampDebutMEPJ).'&j='.date("d", $dateTimestampDebutMEPJ).'">Ajouter</a>';
-			
+                    echo '<a class="btn" href="../Evenement/creer.php?a='.date("Y", $dateTimestampDebutMEPJ).'&m='.
+                        date("m", $dateTimestampDebutMEPJ).'&j='.date("d", $dateTimestampDebutMEPJ).'">Ajouter</a>';
+
 
                 if(!empty($_GET['u'])){
                     if ($_GET['u'] == 1) {
@@ -148,8 +101,67 @@
                         echo '<a class="btn" href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. ($jour-$jourDebut+1) .'">Retour</a>';
                     }
                 }
-            ?>
-        </div>
+                ?>
+                </p>
+                
+                <?php
+                if ($resultats != null) {
+                    $i=1;
+                    while ($row = $resultats->fetch() and $i != 0) {
+                        $numeroEve = $row['IDEVENEMENT'];	
+                        $dateDebut = $row["DATEDEBUT"];
+                        $dateFin = $row["DATEFIN"];
+                        $titre = stripcslashes($row["LIBELLELONG"]);
+                        $desc = stripcslashes($row["DESCRIPTION"]);
+                        $auteur = stripcslashes($row["prenom"]).' '.stripcslashes(ucfirst(strtolower($row["nom"])));
+                        $idAuteur = stripcslashes($row["idUtilisateur"]);
+                        $lieu = stripcslashes($row["lieu"]);
+
+                        $dateInsert = substr($row["DATEINSERT"],0,10);
+                        $tabDateInsert = explode('-', $dateInsert);
+                        $dateInsert = $tabDateInsert[2].'/'.$tabDateInsert[1].'/'.$tabDateInsert[0];
+
+                        $dateDebut = formattageDate(explodeDate($dateDebut));
+                        $dateFin = formattageDate(explodeDate($dateFin));
+                        ?>
+
+                        <p class="affichage_details">
+                            <span style="font-size: 1.5em"><b><?php echo $dateDebut[0]; ?></b></span>
+                            <?php
+                            if(!empty($dateFin))
+                                echo '<span style="font-size: 0.88em"><b>jusqu\'à '.$dateFin[0].' le '.$dateFin[1].'</b></span>';
+                            ?>
+                        </p>
+
+                        <p class="affichage_details">
+                            <?php
+                            echo '<span style="font-size:1.1em"><b>'.trim($titre).'</b></span>';
+                            echo '<br>'.$desc.'<br>';
+                            if(!empty($lieu))
+                                echo 'Lieu : ' . $lieu . '<br>'; 
+                            echo 'Post&eacute; par <b>' . $auteur . '</b> le <b>' . $dateInsert . '</b>';
+                            ?>
+                            
+                            <div class="modifier_suppr">
+                                <form name="modifier" action="../Evenement/modifier.php" method="POST">
+                                    <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" />
+                                    <input class="btn" type="submit" name="modifier_eve" value="Modifier" />
+                                </form>
+                                <form name="modifier" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+                                    <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" />
+                                    <input class="btn" type="submit" name="supprimer_eve" value="Supprimer" onclick="confirm('Voulez-vous vraiment supprimer cet &eacute;v&egrave;nement ?');"/>
+                                </form>
+                            </div>
+                        </p>
+
+                        <?php $i++;
+                    }
+                }
+                else {
+                    echo "<p>Il n'y a aucun &eacute;v&eacute;nement à cette date.</p>";
+                }
+                ?>
+            </div>
         </div>
     </body>
 </html>

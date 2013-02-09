@@ -11,9 +11,6 @@ html, body {
     
     /* font */
     background: #e1e1e1;
-    
-    min-height: 768px;
-    min-width: 1024px;
 }
 
 body {
@@ -21,23 +18,24 @@ body {
     font-size: .8em;
     
     margin-top: 4px;
-    margin-left: 25px;
+    /*margin-left: 25px;*/
     
-    width: 96%;
+    width: 100%;
 }
 
 /* contient la navigation et le corps */
 #global {
-    margin-left: 220px;
+    /*margin-left: 220px;*/
 }
 
 /* contient le calendrier et le titre */
 #corpsCal {
-    
     /* hauteur et largeur */
-    height: 100%;
-    /*height: 740px;*/
-    min-height: 740px;
+    width: 84%;
+    height: 98.5%;
+    position: absolute;
+    margin-left: 15%;
+    float: left;
        
     /* couleur de fond */
     background-color: #ececec;
@@ -65,7 +63,7 @@ input, textarea, select {
    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d7fb8', endColorstr='#4572a5',GradientType=0 ); /* IE6-9 */
 
    color: white;
-   text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);
+   /*text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);*/
    text-transform: uppercase;
 }
 
@@ -78,7 +76,10 @@ input, textarea, select {
 
 #nav {
     float: left;
-    width: 180px;
+    /*width: 180px;*/
+    width: 13%;
+    
+    margin-left: 1%;
 }
 
 ul.nav {
@@ -102,7 +103,8 @@ ul.nav > li > div.header {
     text-transform: uppercase;
     padding: 12px;
     border-bottom: 1px #396e9f solid;
-    width: 180px;
+    /*width: 180px;*/
+    /*min-width: 100px;*/
 }
 
 ul.nav > li ul li {
@@ -112,7 +114,7 @@ ul.nav > li ul li {
     border-top: 1px solid #fff;
     color: #727272; 
     text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8);
-    width: 180px;
+    /*width: 180px;*/
 }
 
 ul.nav > li ul li.selected {
@@ -144,7 +146,7 @@ ul.nav > li ul li:last-child {
 ul.nav div.header {
     color: white;
     /*color: #e1e1e1;*/
-    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);
+    /*text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);*/
     
     background: #4d7fb8; /* Old browsers */
     background: -moz-linear-gradient(top, #4d7fb8 0%, #4572a5 100%); /* FF3.6+ */
@@ -187,18 +189,18 @@ ul.nav > li ul li.priorite label:hover {
 /* PARTIE TITRE DU CALENDRIER */
 
 /* bandeau du titre du calendrier */
-table.titreCal {
+#corpsCal table.titreCal {
     width: 100%;
 }
 
 /* liens à l'intérieur du titre */
-table.titreCal a {
-    color: #203f61;
-    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);
+#corpsCal table.titreCal a {
+    color: #ffffff;
+    /*text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);*/
     text-decoration: none;
 }
 
-tr.titreCal {
+#corpsCal tr.titreCal {
     width: 100%;
 }
 
@@ -491,33 +493,45 @@ tr.titreCal {
 
 /* PARTIE JOUR */
 
+#corpsCal.jour table.titreCal {
+    margin-bottom: 1%;
+}
+
 #corpsCal.jour {
     color: #727272;
+}
+
+#corpsCal.jour span.titre, p.affichage_details, p.ajouter_retour, div.modifier_suppr {
     text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8);
 }
 
-#corpsCal.jour span.titre{
-    margin-left: 30px;
-    margin-right: 2%;
-
-    font-size: 140%;
-    font-weight: bold;
-    text-align: left;
+#corpsCal.jour span.titre, p, p.ajouter_retour, div.modifier_suppr {
+    margin-left: 1.5%;
 }
 
-#corpsCal.jour h5 {
-    margin-left: 30px;
-    font-size: 0.9em;
+/* marge en les boutons ajouter et retour */
+#corpsCal.jour a.btn {
+    margin-right: 8px;
+}
+
+#corpsCal.jour .modifier_suppr {
+    margin-bottom: 3%;
+}
+
+/* boutons modifier et supprimer l'un à côté de l'autre */
+#corpsCal.jour form {
+    display: inline;
+}
+
+#corpsCal.jour form input {
+    color: #72777b;
 }
 
 #corpsCal.jour p {
-    margin-left: 30px;
-    font-size: 100%;
     text-align: justify ;
 }
 
 #corpsCal.jour a {
-    margin-left: 30px;
     text-decoration: none;
     color: #72777b;
 }
@@ -532,10 +546,18 @@ tr.titreCal {
 
 /* PARTIE CREER */
 
+#corpsCal.creer form table {
+    margin-left: 1.5%;
+}
+
 #corpsCal.creer td {
     cursor: default;
     border: none;
     background-color: #ececec;
+}
+
+#corpsCal.creer table.titreCal {
+    margin-bottom: 0.8%;
 }
 
 /* FIN DE LA PARTIE CREER */

@@ -84,9 +84,9 @@
         }
         ?>
         
-        <?php include('../menu.php'); ?>
-        
         <div id="global">
+            <?php include('../menu.php'); ?>
+        <div id="corpsCal" class="semestre">
             <table class="titreCal">
                 <tr class="titreCal">
                     <th><a href="semestre.php?a=<?php echo $anneePrec; ?>&s=<?php echo $semestrePrec; ?>"> &#9668; </a></th>
@@ -94,7 +94,6 @@
                     <th><a href="semestre.php?a=<?php echo $anneeSuiv; ?>&s=<?php echo $semestreSuiv; ?>"> &#9658; </a></th>
                 </tr>
             </table>
-        <div id="corpsCal" class="semestre">            
             <table>                
      		<?php if ($semestre ==1) { ?>
      		<tr>
@@ -122,7 +121,7 @@
 			JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
 			where dateFin >= '$annee-$moisDebut-01 00:00:00'
 			and dateDebut <= '$annee-$moisFin-$days 23:59:59'
-            and idpriorite <= $priorite
+                        and idpriorite <= $priorite
 			and ((estPublic = 1)
 				or ($idUtil = aci_evenement.idUtilisateur))";
 
