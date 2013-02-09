@@ -16,12 +16,18 @@
         <link href="../../style.css" rel="stylesheet" type="text/css">
         <link href="../../style-minicalendrier.css" rel="stylesheet" type="text/css">
         <link href="../../bootstrap.css" rel="stylesheet" type="text/css">
-	</head>
+    </head>
     <body>
         <?php
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
 
+        //Suppression d'un événement
+        if(isset($_POST['idEve'])){
+            if(supprimer($conn, $_POST['idEve']))
+                echo 'Suppression effectuée';
+        }
+        
         //on définit des valeurs par defaut aux variable année, mois et jour (par défaut : aujourd'hui)
         $annee = date('Y');
         $mois = date('m');
@@ -52,21 +58,25 @@
         }
 	
 
-        $idUtil = 1;
+        if(!empty($_SESSION['id']))
+            $idUtil = $_SESSION['id'];
+        else
+            $idUtil = 0;
         
         $nomSession = 'Test'; //$_SESSION['login'];
 
         $sql = "SELECT aci_evenement.*, aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert FROM aci_evenement
-		JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
-		JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
-		where dateFin >= '$annee-$mois-$jour 00:00:00'
-		and dateDebut <= '$annee-$mois-$jour 23:59:59'
-                and idpriorite <= $priorite
-		and ((estPublic = 1)
-		or ($idUtil = aci_evenement.idUtilisateur))";
+        JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
+        JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
+        WHERE (dateFin >= '$annee-$mois-$jour 00:00:00' or dateFin is null)
+        and dateDebut <= '$annee-$mois-$jour 23:59:59'
+        and idpriorite <= $priorite
+        and ((estPublic = 1)
+            or ($idUtil = aci_evenement.idUtilisateur)
+            or $idUtil in (SELECT idutilisateur FROM aci_destutilisateur WHERE aci_destutilisateur.idevenement = aci_evenement.idevenement)
+            or $idUtil in (SELECT idutilisateur FROM aci_composer JOIN aci_destgroupe USING (idgroupe) WHERE aci_destgroupe.idevenement = aci_evenement.idevenement))";
         
         $resultats = $conn->query($sql);
-        //$resultats->setFetchMode(PDO::FETCH_OBJ);
         
         $dateTimestampDebutMEPJ = mktime(00, 00, 00, $mois, $jour, $annee);
         $date = miseEnPageJour($dateTimestampDebutMEPJ);
@@ -79,29 +89,29 @@
                 <table class="titreCal"><tr class="titreCal"><th><?php echo $date; ?></th></tr></table>
                 
                 <p class="ajouter_retour">
-                <?php
-                if(!empty($nomSession))
-                    echo '<a class="btn" href="../Evenement/creer.php?a='.date("Y", $dateTimestampDebutMEPJ).'&m='.
-                        date("m", $dateTimestampDebutMEPJ).'&j='.date("d", $dateTimestampDebutMEPJ).'">Ajouter</a>';
+                    <?php
+                    if(!empty($nomSession))
+                        echo '<a class="btn" href="../Evenement/creer.php?a='.date("Y", $dateTimestampDebutMEPJ).'&m='.
+                            date("m", $dateTimestampDebutMEPJ).'&j='.date("d", $dateTimestampDebutMEPJ).'">Ajouter</a>';
 
 
-                if(!empty($_GET['u'])){
-                    if ($_GET['u'] == 1) {
-                        echo '<a class="btn" href="semestre.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
+                    if(!empty($_GET['u'])){
+                        if ($_GET['u'] == 1) {
+                            echo '<a class="btn" href="semestre.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
+                        }
+
+                        if ($_GET['u'] == 2) {
+                            echo '<a class="btn" href="mois.php?annee=' . $annee . '&mois=' . $mois . '">Retour</a>';
+                        } 
+
+                        if ($_GET['u'] == 3) {
+                            //echo '<a href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. $jour .'">Retour</a>';
+                            $ts = mktime(0,0,0,$mois,$jour,$annee);
+                            $jourDebut = date('N', $ts);
+                            echo '<a class="btn" href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. ($jour-$jourDebut+1) .'">Retour</a>';
+                        }
                     }
-
-                    if ($_GET['u'] == 2) {
-                        echo '<a class="btn" href="mois.php?annee=' . $annee . '&mois=' . $mois . '">Retour</a>';
-                    } 
-
-                    if ($_GET['u'] == 3) {
-                        //echo '<a href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. $jour .'">Retour</a>';
-                        $ts = mktime(0,0,0,$mois,$jour,$annee);
-                        $jourDebut = date('N', $ts);
-                        echo '<a class="btn" href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. ($jour-$jourDebut+1) .'">Retour</a>';
-                    }
-                }
-                ?>
+                    ?>
                 </p>
                 
                 <?php
@@ -122,7 +132,8 @@
                         $dateInsert = $tabDateInsert[2].'/'.$tabDateInsert[1].'/'.$tabDateInsert[0];
 
                         $dateDebut = formattageDate(explodeDate($dateDebut));
-                        $dateFin = formattageDate(explodeDate($dateFin));
+                        if(!empty($dateFin))
+                            $dateFin = formattageDate(explodeDate($dateFin));
                         ?>
 
                         <p class="affichage_details">
@@ -158,7 +169,7 @@
                     }
                 }
                 else {
-                    echo "<p>Il n'y a aucun &eacute;v&eacute;nement à cette date.</p>";
+                    echo "<p>Il n'y a aucun &eacute;v&egrave;nement à cette date.</p>";
                 }
                 ?>
             </div>
