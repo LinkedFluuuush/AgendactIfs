@@ -101,8 +101,10 @@
         }
         ?>
         
-        <?php include('../menu.php'); ?>
+        
         <div id="global">
+            <?php include('../menu.php'); ?>
+        <div id="corpsCal" class="mois">
             <table class="titreCal">
                 <tr class="titreCal">
                     <th><a href="mois.php?annee=<?php echo $annee; ?>&amp;mois=1">|&#9668; </a></th>
@@ -112,7 +114,7 @@
                     <th><a href="mois.php?annee=<?php echo $annee; ?>&amp;mois=12"> &#9658;| </a></th>
                 </tr>
             </table>
-        <div id="corpsCal" class="mois">
+            
             <!-- Affichage du nom du mois + année et des liens du mois précédent/suivant -->
             <table>
                 <tr>

@@ -77,16 +77,43 @@
             <?php include('../menu.php'); ?>
             <div id="corpsCal" class="jour">
                 <table class="titreCal"><tr class="titreCal"><th><?php echo $date; ?></th></tr></table>
-                <?php		
+                
+                <p class="ajouter_retour">
+                <?php
+                if(!empty($nomSession))
+                    echo '<a class="btn" href="../Evenement/creer.php?a='.date("Y", $dateTimestampDebutMEPJ).'&m='.
+                        date("m", $dateTimestampDebutMEPJ).'&j='.date("d", $dateTimestampDebutMEPJ).'">Ajouter</a>';
+
+
+                if(!empty($_GET['u'])){
+                    if ($_GET['u'] == 1) {
+                        echo '<a class="btn" href="semestre.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
+                    }
+
+                    if ($_GET['u'] == 2) {
+                        echo '<a class="btn" href="mois.php?annee=' . $annee . '&mois=' . $mois . '">Retour</a>';
+                    } 
+
+                    if ($_GET['u'] == 3) {
+                        //echo '<a href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. $jour .'">Retour</a>';
+                        $ts = mktime(0,0,0,$mois,$jour,$annee);
+                        $jourDebut = date('N', $ts);
+                        echo '<a class="btn" href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. ($jour-$jourDebut+1) .'">Retour</a>';
+                    }
+                }
+                ?>
+                </p>
+                
+                <?php
                 if ($resultats != null) {
                     $i=1;
                     while ($row = $resultats->fetch() and $i != 0) {
-                        $numeroEve = htmlentities($row['IDEVENEMENT'], ENT_QUOTES);	
-                        $dateDebut = htmlentities($row["DATEDEBUT"], ENT_QUOTES);
-                        $dateFin = htmlentities($row["DATEFIN"], ENT_QUOTES);
+                        $numeroEve = $row['IDEVENEMENT'];	
+                        $dateDebut = $row["DATEDEBUT"];
+                        $dateFin = $row["DATEFIN"];
                         $titre = stripcslashes($row["LIBELLELONG"]);
                         $desc = stripcslashes($row["DESCRIPTION"]);
-                        $auteur = stripcslashes($row["prenom"]).' '.stripcslashes($row["nom"]);
+                        $auteur = stripcslashes($row["prenom"]).' '.stripcslashes(ucfirst(strtolower($row["nom"])));
                         $idAuteur = stripcslashes($row["idUtilisateur"]);
                         $lieu = stripcslashes($row["lieu"]);
 
@@ -98,56 +125,41 @@
                         $dateFin = formattageDate(explodeDate($dateFin));
                         ?>
 
-                        <br><span class="titre"><?php echo $dateDebut[0]; ?></span>
-                        <?php if(!empty($dateFin))
-                                  echo '<h5>jusqu\'à '.$dateFin[0].' le '.$dateFin[1].'</h5>'; ?>
+                        <p>
+                            <span style="font-size: 1.5em"><b><?php echo $dateDebut[0]; ?></b></span>
+                            <?php
+                            if(!empty($dateFin))
+                                echo '<span style="font-size: 0.88em"><b>jusqu\'à '.$dateFin[0].' le '.$dateFin[1].'</b></span>';
+                            ?>
+                        </p>
 
                         <p>
-                        <?php
-                            echo "<b>".trim($titre)."</b>";
+                            <?php
+                            echo '<span style="font-size:1.1em"><b>'.trim($titre).'</b></span>';
                             echo '<br>'.$desc.'<br>';
                             if(!empty($lieu))
                                 echo 'Lieu : ' . $lieu . '<br>'; 
-                            echo 'Post&eacute; par ' . $auteur . ' le ' . $dateInsert . ' '; ?>
-
-                            <form name="modifier" action="../Evenement/modifier.php" method="POST">
-                                    <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" /><br>
+                            echo 'Post&eacute; par <b>' . $auteur . '</b> le <b>' . $dateInsert . '</b>';
+                            ?>
+                            
+                            <div class="modifier_suppr">
+                                <form name="modifier" action="../Evenement/modifier.php" method="POST">
+                                    <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" />
                                     <input class="btn" type="submit" name="modifier_eve" value="Modifier" />
-                            </form>
-                            <form name="modifier" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-                                    <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" /><br>
+                                </form>
+                                <form name="modifier" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+                                    <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" />
                                     <input class="btn" type="submit" name="supprimer_eve" value="Supprimer" onclick="confirm('Voulez-vous vraiment supprimer cet &eacute;v&egrave;nement ?');"/>
-                            </form>
-
-
+                                </form>
+                            </div>
                         </p>
 
                         <?php $i++;
                     }
                 }
                 else {
-                    echo "Il n'y a aucun &eacute;v&eacute;nement à cette date.";
+                    echo "<p>Il n'y a aucun &eacute;v&eacute;nement à cette date.</p>";
                 }
-                    if(!empty($nomSession))
-                        echo '<a class="btn" href="../Evenement/creer.php?a='.date("Y", $dateTimestampDebutMEPJ).'&m='.date("m", $dateTimestampDebutMEPJ).'&j='.date("d", $dateTimestampDebutMEPJ).'">Ajouter</a>';
-
-
-                    if(!empty($_GET['u'])){
-                        if ($_GET['u'] == 1) {
-                            echo '<a class="btn" href="semestre.php?a=' . $annee . '&m=' . $mois . '">Retour</a>';
-                        }
-
-                        if ($_GET['u'] == 2) {
-                            echo '<a class="btn" href="mois.php?annee=' . $annee . '&mois=' . $mois . '">Retour</a>';
-                        } 
-
-                        if ($_GET['u'] == 3) {
-                            //echo '<a href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. $jour .'">Retour</a>';
-                            $ts = mktime(0,0,0,$mois,$jour,$annee);
-                            $jourDebut = date('N', $ts);
-                            echo '<a class="btn" href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. ($jour-$jourDebut+1) .'">Retour</a>';
-                        }
-                    }
                 ?>
             </div>
         </div>

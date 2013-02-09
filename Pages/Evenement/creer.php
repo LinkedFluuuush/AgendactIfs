@@ -1,5 +1,5 @@
 <?php session_start();
-header( 'content-type: text/html; charset=utf-8' ); ?>
+header('content-type: text/html; charset=utf-8'); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -241,14 +241,16 @@ if(!empty($_POST['submit']))
 	}
 }
 ?>
-    <?php include('../menu.php'); ?>
+    
 <div id="global">
+    <?php include('../menu.php'); ?>
+            
+        <div id="corpsCal" class="creer">
             <table class="titreCal">
                 <tr class="titreCal">
                     <th>Créer un évènement</th>
                 </tr>
             </table>
-        <div id="corpsCal" class="creer">
     <form action="" name="FormCreaEvenement" method="post" enctype="multipart/form-data" id="formCreation">
             <table cellpadding="4">
 		<tr>
@@ -325,7 +327,7 @@ if(!empty($_POST['submit']))
                         $req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe NOT IN (SELECT idgroupe_1 FROM aci_contenir)";
                         $resultats = $conn -> query($req);
                         while($row = $resultats->fetch()){
-                            echo '<img id="'.utf8_encode($row['idgroupe']).'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/> <label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')">'.utf8_encode($row['libelle']).'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
+                            echo '<img id="'.$row['idgroupe'].'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/> <label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')">'.utf8_encode($row['libelle']).'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
                             descGroupe($row['idgroupe'], $conn, 1);
                         }
                         ?>

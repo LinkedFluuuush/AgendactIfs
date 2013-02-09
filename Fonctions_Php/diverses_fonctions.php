@@ -124,7 +124,7 @@ function explodeDate($date)
 function formattageDate($dateI)
 {
 	$date[0] = $dateI[3];
-	$date[1] = $dateI[2].'-'.$dateI[1].'-'.$dateI[0];
+	$date[1] = $dateI[2].'/'.$dateI[1].'/'.$dateI[0];
 	
 	return $date;
 }

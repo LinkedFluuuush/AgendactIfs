@@ -66,7 +66,7 @@ input, textarea, select {
    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d7fb8', endColorstr='#4572a5',GradientType=0 ); /* IE6-9 */
 
    color: white;
-   text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);
+   /*text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);*/
    text-transform: uppercase;
 }
 
@@ -147,7 +147,7 @@ ul.nav > li ul li:last-child {
 ul.nav div.header {
     color: white;
     /*color: #e1e1e1;*/
-    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);
+    /*text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);*/
     
     background: #4d7fb8; /* Old browsers */
     background: -moz-linear-gradient(top, #4d7fb8 0%, #4572a5 100%); /* FF3.6+ */
@@ -494,33 +494,41 @@ tr.titreCal {
 
 /* PARTIE JOUR */
 
+#corpsCal.jour table.titreCal {
+    margin-bottom: 1%;
+}
+
 #corpsCal.jour {
     color: #727272;
     text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8);
 }
 
-#corpsCal.jour span.titre{
-    margin-left: 30px;
-    margin-right: 2%;
-
-    font-size: 140%;
-    font-weight: bold;
-    text-align: left;
+#corpsCal.jour span.titre, p, p.ajouter_retour, div.modifier_suppr {
+    margin-left: 1.5%;
 }
 
-#corpsCal.jour h5 {
-    margin-left: 30px;
-    font-size: 0.9em;
+#corpsCal.jour a.btn {
+    margin-right: 8px;
+}
+
+#corpsCal.jour .modifier_suppr {
+    margin-bottom: 3%;
+}
+
+/* boutons modifier et supprimer l'un à côté de l'autre */
+#corpsCal.jour form {
+    display: inline;
+}
+
+#corpsCal.jour form input {
+    color: #72777b;
 }
 
 #corpsCal.jour p {
-    margin-left: 30px;
-    font-size: 100%;
     text-align: justify ;
 }
 
 #corpsCal.jour a {
-    margin-left: 30px;
     text-decoration: none;
     color: #72777b;
 }
