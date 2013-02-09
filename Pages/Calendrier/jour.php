@@ -125,7 +125,7 @@
                         $dateFin = formattageDate(explodeDate($dateFin));
                         ?>
 
-                        <p>
+                        <p class="affichage_details">
                             <span style="font-size: 1.5em"><b><?php echo $dateDebut[0]; ?></b></span>
                             <?php
                             if(!empty($dateFin))
@@ -133,7 +133,7 @@
                             ?>
                         </p>
 
-                        <p>
+                        <p class="affichage_details">
                             <?php
                             echo '<span style="font-size:1.1em"><b>'.trim($titre).'</b></span>';
                             echo '<br>'.$desc.'<br>';

@@ -77,7 +77,8 @@ input, textarea, select {
 #nav {
     float: left;
     /*width: 180px;*/
-    width: 12%;
+    width: 13%;
+    
     margin-left: 1%;
 }
 
@@ -102,7 +103,8 @@ ul.nav > li > div.header {
     text-transform: uppercase;
     padding: 12px;
     border-bottom: 1px #396e9f solid;
-    width: 180px;
+    /*width: 180px;*/
+    /*min-width: 100px;*/
 }
 
 ul.nav > li ul li {
@@ -112,7 +114,7 @@ ul.nav > li ul li {
     border-top: 1px solid #fff;
     color: #727272; 
     text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8);
-    width: 180px;
+    /*width: 180px;*/
 }
 
 ul.nav > li ul li.selected {
@@ -187,18 +189,18 @@ ul.nav > li ul li.priorite label:hover {
 /* PARTIE TITRE DU CALENDRIER */
 
 /* bandeau du titre du calendrier */
-table.titreCal {
+#corpsCal table.titreCal {
     width: 100%;
 }
 
 /* liens à l'intérieur du titre */
-table.titreCal a {
-    color: #203f61;
-    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);
+#corpsCal table.titreCal a {
+    color: #ffffff;
+    /*text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);*/
     text-decoration: none;
 }
 
-tr.titreCal {
+#corpsCal tr.titreCal {
     width: 100%;
 }
 
@@ -497,6 +499,9 @@ tr.titreCal {
 
 #corpsCal.jour {
     color: #727272;
+}
+
+#corpsCal.jour span.titre, p.affichage_details, p.ajouter_retour, div.modifier_suppr {
     text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8);
 }
 

@@ -1,5 +1,5 @@
 #miniCalendrier table {
-    width: 203px;
+    width: 100%;
     text-align: center;
     background-color: #ececec;
     border-collapse: collapse;
@@ -9,8 +9,8 @@
 #miniCalendrier th {
     cursor: pointer;    
     font-weight: bold;
-    color: #203f61;
-    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    /*text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);*/
 
     background: #4d7fb8; /* Old browsers */
     background: -moz-linear-gradient(top, #4d7fb8 0%, #4572a5 100%); /* FF3.6+ */
@@ -25,7 +25,7 @@
 #miniCalendrier table th a {
     text-transform: uppercase;
     text-decoration: none;
-    color: #203f61;
+    color: white;
 }
 
 /* FIN ENTETE */
@@ -39,6 +39,7 @@
     text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8);
     border-top: 1px solid white;
     padding: 5px 10px 5px 10px;
+    padding: 2.5% 4% 2.5% 4%;
 }
 
 
@@ -48,7 +49,8 @@
     padding: 2px;
     font-size: .9em;
     border-collapse: collapse;
-    padding: 5px 0 5px 0;
+    /*padding: 5px 0 5px 0;*/
+    padding: 2.5% 0 2.5% 0;
 }
 
 #miniCalendrier tr#jourMois td a {
