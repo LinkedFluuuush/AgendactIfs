@@ -243,105 +243,124 @@ if(!empty($_POST['submit']))
     
 <div id="global">
     <?php include('../menu.php'); ?>
-            
-        <div id="corpsCal" class="creer">
-            <table class="titreCal">
-                <tr class="titreCal">
-                    <th>Créer un évènement</th>
+    <div id="corpsCal" class="creer">
+        <table class="titreCal">
+            <tr class="titreCal">
+                <th>Créer un évènement</th>
+            </tr>
+        </table>
+        <form action="" name="FormCreaEvenement" method="post" enctype="multipart/form-data" id="formCreation">
+            <table cellpadding="4">
+                <tr>
+                    <td>
+                        <b>Priorité</b> <br>
+                        <select name="priorite" id="priorite">
+                            <option value="1">Haute</option>';
+                            <option value="2" selected>Moyenne</option>';
+                            <option value="3">Basse</option>';
+                        </select>
+                    </td>
+                    <td rowspan="4">
+                        <label for="addParticipant"><b>Ajouter un destinataire</b></label><br>
+                        <select id="dest" name="dest[]" multiple style="height:200px;width:250px;">
+                        </select><br/>
+                        <input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
+                        <div id="resultsParticipant"></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="Eve_titreLong"><b>Titre long</b></label> <br>
+                        <input type="text" name="libelleLong" id="Eve_titreLong" value="<?php saisieFormString("libelleLong");?>" class="libelleLong" maxlength=32 />
+                        <?php echo "<b id=\"formErreur\"> $erreurLibelleLong </b>"; ?>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="Eve_titreCourt"><b>Titre court</b></label> <br>
+                        <input type="text" name="libelleCourt" id="Eve_titreCourt" value="<?php saisieFormString("libelleCourt");?>" class="libelleCourt" maxlength=5 />
+                        <?php echo "<b id=\"formErreur\"> $erreurLibelleCourt </b>"; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="Eve_description"><b>Description</b></label> <br>
+                        <textarea name="description" rows="5" cols="30" id="Eve_description" class="area"><?php saisieFormString("description");?></textarea>
+                        <?php echo "<b id=\"formErreur\"> $erreurDescription </b>"; ?>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="Eve_dateDebut"><b>Date de début</b></label><br>
+                        <?php if (!empty($_GET['a']) and !empty($_GET['m']) and !empty($_GET['j'])) { ?>
+                            <input type="text" name="dateDebut" id="Eve_dateDebut" value="<?php echo $_GET['j'].'/'.$_GET['m'].'/'.$_GET['a']; ?>" class="dateDebut" maxlength=10 size=11/>
+                        <?php } else { ?>
+                            <input type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateDebut");?>" class="dateDebut" maxlength=10 size=11/>
+                        <?php } ?>
+                            <input type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="<?php saisieFormString("heureDebut");?>" class="heureDebut" maxlength=5 size=4/>
+                            <?php echo "<b id=\"formErreur\"> $erreurDateDebut $erreurHeureDebut </b>"; ?>
+                    </td>
+                    <td rowspan="4">
+                        <label for="groupe"><b>Ajouter un groupe de participants</b></label><br>
+                        <div id="groupe" style="overflow:auto;height:250px;width:250px;border:1px solid #abadb3;padding:5px;background-color:white;">
+                            <?php
+                            $req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe NOT IN (SELECT idgroupe_1 FROM aci_contenir)";
+                            $resultats = $conn -> query($req);
+                            while($row = $resultats->fetch()){
+                                echo '<img id="'.utf8_encode($row['idgroupe']).'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/><label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')"> '.$row['libelle'].'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
+                                descGroupe($row['idgroupe'], $conn, 1);
+                            }
+                            ?>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>                    
+                    <td>
+                        <label for="Eve_dateFin"><b>Date de fin</b></label><br>
+                        <input type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateFin");?>"class="dateFin" maxlength=10 size=11/>
+                        <input type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php saisieFormString("heureFin");?>" class="heureFin" maxlength=5 size=4/>
+                        <?php echo "<b id=\"formErreur\"> $erreurDateFin $erreurHeureFin </b>"; ?>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="Eve_lieu"><b>Lieu</b></label> <br>
+                        <input type="text" name="lieu" value="<?php saisieFormString("lieu");?>" id="Eve_lieu" autocomplete="off" />
+                        <div id="resultsLieu"></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <b>Type</b> <br>
+                        <input type="radio" name="public" id="public" value="1" checked="checked"> <label for="public">Public</label>
+                        <input type="radio" name="public" id="prive" value="0"> <label for="prive">Privé</label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td cellspan="2">
+                        <input class="btn" type="submit" name="submit" value="Valider"/>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td cellspan="2">
+                        <?php
+                        if($insertion)
+                            echo '<div class="alert alert-success"><b>Insertion réalisée avec succès.</b></div>';
+                        ?>
+                    </td>
                 </tr>
             </table>
-    <form action="" name="FormCreaEvenement" method="post" enctype="multipart/form-data" id="formCreation">
-            <table cellpadding="4">
-		<tr>
-			<td class="descForm">Priorité</td>
-			<td class="Form">
-			<select name="priorite" id="priorite">
-				<option value="1">Haute</option>';
-				<option value="2" selected>Moyenne</option>';
-				<option value="3">Basse</option>';
-			</select>
-			</td>
-		<tr>
-			<td class="descForm">Titre long</td>
-			<td class="Form"><input type="text" name="libelleLong" id="Eve_titreLong" value="<?php saisieFormString("libelleLong");?>" class="libelleLong" maxlength=32 />
-			<?php echo "<b id=\"formErreur\"> $erreurLibelleLong </b>"; ?></td>
-		</tr>
-		<tr>
-			<td class="descForm">Titre court</td>
-			<td class="Form"><input type="text" name="libelleCourt" id="Eve_titreCourt" value="<?php saisieFormString("libelleCourt");?>" class="libelleCourt" maxlength=5 />
-			<?php echo "<b id=\"formErreur\"> $erreurLibelleCourt </b>"; ?></td>
-		</tr>
-		<tr>
-			<td class="descForm">Description</td>
-			<td class="Form"><textarea name="description" rows="5" cols="30" id="Eve_description" class="area"><?php saisieFormString("description");?></textarea>
-			<?php echo "<b id=\"formErreur\"> $erreurDescription </b>"; ?></td>
-		</tr>
-                
-		<tr>
-			<td class="descForm">Date de début</td>
-			<td class="Form">
-                            <?php if (!empty($_GET['a']) and !empty($_GET['m']) and !empty($_GET['j'])) { ?>
-				<input type="text" name="dateDebut" id="Eve_dateDebut" value="<?php echo $_GET['j'].'/'.$_GET['m'].'/'.$_GET['a']; ?>" class="dateDebut" maxlength=10 size=11/>
-                            <?php } else { ?>
-                                <input type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateDebut");?>" class="dateDebut" maxlength=10 size=11/>
-                            <?php } ?>
-				<input type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="<?php saisieFormString("heureDebut");?>" class="heureDebut" maxlength=5 size=4/>
-				<?php echo "<b id=\"formErreur\"> $erreurDateDebut $erreurHeureDebut </b>"; ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="descForm">Date de fin</td>
-			<td class="Form">
-				<input type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateFin");?>"class="dateFin" maxlength=10 size=11/>
-				<input type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php saisieFormString("heureFin");?>" class="heureFin" maxlength=5 size=4/>
-				<?php echo "<b id=\"formErreur\"> $erreurDateFin $erreurHeureFin </b>"; ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="descForm">Lieu</td>
-			<td class="Form">
-				<input type="text" name="lieu" value="<?php saisieFormString("lieu");?>" id="Eve_lieu" autocomplete="off" />
-				<div id="resultsLieu"></div>
-			</td>
-		</tr>
-		<tr>
-			<td class="descForm">Type </td>
-			<td class="Form">
-			<input type="radio" name="public" id="public" value="1" checked="checked"> <label for="public">Public</label>
-			<input type="radio" name="public" id="prive" value="0"> <label for="prive">Privé</label>
-			</td>
-		</tr>
-		<tr>
-			<td class="descForm">Ajouter un destinataire</td>
-			<td class="Form"> 
-			<select id="dest" name="dest[]" multiple style="height:200px;width:250px;">
-			</select><br/>
-			<input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
-			<div id="resultsParticipant"></div></td>
-		</tr>
-		<tr><td class="descForm">Ajouter un groupe de participants</td>
-		<td class="Form">
-                    <div id="groupe" style="overflow:auto;height:250px;width:250px;border:1px solid #abadb3;padding:5px;background-color:white;">
-                        <?php
-                        $req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe NOT IN (SELECT idgroupe_1 FROM aci_contenir)";
-                        $resultats = $conn -> query($req);
-                        while($row = $resultats->fetch()){
-                            echo '<img id="'.utf8_encode($row['idgroupe']).'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/><label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')"> '.$row['libelle'].'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
-                            descGroupe($row['idgroupe'], $conn, 1);
-                        }
-                        ?>
-                    </div>
-		</td></tr>
-		<tr><td>
-			<input class="btn" type="submit" name="submit" value="Valider"/>
-		</td></tr>
-	</table>
-</form>
-
-    <?php
-    if($insertion)
-        echo '<div class="alert alert-success"><b>Insertion réalisée avec succès.</b></div>';
-    ?>
+        </form>
+    </div>
+</div>
             
             
 <script type="text/javascript">

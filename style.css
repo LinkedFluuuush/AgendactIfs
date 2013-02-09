@@ -11,9 +11,6 @@ html, body {
     
     /* font */
     background: #e1e1e1;
-    
-    min-height: 768px;
-    min-width: 1024px;
 }
 
 body {
@@ -507,6 +504,7 @@ tr.titreCal {
     margin-left: 1.5%;
 }
 
+/* marge en les boutons ajouter et retour */
 #corpsCal.jour a.btn {
     margin-right: 8px;
 }
@@ -543,10 +541,18 @@ tr.titreCal {
 
 /* PARTIE CREER */
 
+#corpsCal.creer form table {
+    margin-left: 1.5%;
+}
+
 #corpsCal.creer td {
     cursor: default;
     border: none;
     background-color: #ececec;
+}
+
+#corpsCal.creer table.titreCal {
+    margin-bottom: 0.8%;
 }
 
 /* FIN DE LA PARTIE CREER */
