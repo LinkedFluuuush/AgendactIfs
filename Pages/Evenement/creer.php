@@ -14,7 +14,12 @@
     <?php
     //Connexion a la bdd
     include("../../Fonctions_Php/connexion.php");
-    $idUtil = 1;
+    
+    if(!empty($_SESSION['id']))
+        $idUtil = $_SESSION['id'];
+    else
+        $idUtil = 0;
+    
     $insertion = false;
 
     //--------REGEX---------//
