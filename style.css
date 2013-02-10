@@ -505,8 +505,12 @@ ul.nav > li ul li.priorite label:hover {
     text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8);
 }
 
-#corpsCal.jour span.titre, p, p.ajouter_retour, div.modifier_suppr {
+#corpsCal.jour span.titre, p, p.ajouter_retour, div.modifier_suppr, .alert-success {
     margin-left: 1.5%;
+}
+
+#corpsCal.jour .alert-success {
+    margin-right: 1.5%;
 }
 
 /* marge en les boutons ajouter et retour */

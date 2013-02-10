@@ -21,12 +21,6 @@
         <?php
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
-
-        //Suppression d'un événement
-        if(isset($_POST['idEve'])){
-            if(supprimer($conn, $_POST['idEve']))
-                echo 'Suppression effectuée';
-        }
         
         //on définit des valeurs par defaut aux variable année, mois et jour (par défaut : aujourd'hui)
         $annee = date('Y');
@@ -117,6 +111,13 @@
                 <?php
                 if ($resultats != null) {
                     $i=1;
+                    
+                    //Suppression d'un événement
+                    if(isset($_POST['idEve'])){
+                        if(supprimer($conn, $_POST['idEve']))
+                            echo '<div class="alert alert-success"><b>Suppression réalisée avec succès.</b></div>';
+                    }
+                    
                     while ($row = $resultats->fetch() and $i != 0) {
                         $numeroEve = $row['IDEVENEMENT'];	
                         $dateDebut = $row["DATEDEBUT"];

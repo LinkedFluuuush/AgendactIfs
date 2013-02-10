@@ -229,7 +229,8 @@ function jourProchain ($mois, $jour, $annee) {
 function supprimer($conn, $idEv) {
     //L'utilisateur est bien connecté
     if(!empty($_SESSION['id'])) {
-        echo $idEv;
+        /*echo $idEv;*/
+        
         //Vérification : l'utilisateur qui veut supprimer l'événement en est bien l'auteur
         $sqlVerif = "SELECT idutilisateur FROM aci_evenement WHERE idevenement = ".$idEv;
 
