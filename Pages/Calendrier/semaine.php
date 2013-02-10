@@ -166,7 +166,11 @@
         $nomMois1 = $tabMois[$mois1 - 1];
         $nomMois2 = $tabMois[$mois2 - 1];
         
-        $idUtil = 1; //$_SESSION['id'];
+        if(!empty($_SESSION['id']))
+            $idUtil = $_SESSION['id'];
+        else
+            $idUtil = 0;
+        
         $idSession = 1; //$_SESSION['login'];
         
         ?>
@@ -198,11 +202,14 @@
                         FROM aci_evenement
                         JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
                         JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
-                        WHERE dateFin >=  '$annee1-$mois1-$jourDebut 00:00:00'
+                        WHERE (dateFin >=  '$annee1-$mois1-$jourDebut 00:00:00' or dateFin is null)
                         AND dateDebut <=  '$annee2-$mois2-$jourFin 23:59:59'
                         and idpriorite <= $priorite
-                        AND ((estPublic =1) OR ( 1 = aci_evenement.idUtilisateur ))";
-                
+                       	and ((estPublic = 1)
+                            or ($idUtil = aci_evenement.idUtilisateur)
+                            or $idUtil in (SELECT idutilisateur FROM aci_destutilisateur WHERE aci_destutilisateur.idevenement = aci_evenement.idevenement)
+                            or $idUtil in (SELECT idutilisateur FROM aci_composer JOIN aci_destgroupe USING (idgroupe) WHERE aci_destgroupe.idevenement = aci_evenement.idevenement))";
+
                 $resultats = $conn->query($sql);
                 $resultats->setFetchMode(PDO::FETCH_ASSOC);
                 

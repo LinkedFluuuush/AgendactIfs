@@ -62,7 +62,11 @@
         
         $days = retourneJour($annee, $moisFin);
 
-        $idUtil = 1;
+        if(!empty($_SESSION['id']))
+            $idUtil = $_SESSION['id'];
+        else
+            $idUtil = 0;
+                
         $idSession = 1 ;//$_SESSION['login'];
         
         //Le lien : prcdent
@@ -95,7 +99,7 @@
                 </tr>
             </table>
             <table>                
-     		<?php if ($semestre ==1) { ?>
+     		<?php if ($semestre == 1) { ?>
      		<tr>
                     <th><a href="mois.php?annee=<?php echo($annee);?>&mois=1" style="cursor: pointer;"> Janvier </a></th>
                     <th><a href="mois.php?annee=<?php echo($annee);?>&mois=2" style="cursor: pointer;"> F&eacute;vrier </a></th>
@@ -119,11 +123,13 @@
                 $sql = "SELECT aci_evenement.*, aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert FROM aci_evenement
 			JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
 			JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
-			where dateFin >= '$annee-$moisDebut-01 00:00:00'
+			where (dateFin >= '$annee-$moisDebut-01 00:00:00' or dateFin is null)
 			and dateDebut <= '$annee-$moisFin-$days 23:59:59'
                         and idpriorite <= $priorite
 			and ((estPublic = 1)
-				or ($idUtil = aci_evenement.idUtilisateur))";
+                            or ($idUtil = aci_evenement.idUtilisateur)
+                            or $idUtil in (SELECT idutilisateur FROM aci_destutilisateur WHERE aci_destutilisateur.idevenement = aci_evenement.idevenement)
+                            or $idUtil in (SELECT idutilisateur FROM aci_composer JOIN aci_destgroupe USING (idgroupe) WHERE aci_destgroupe.idevenement = aci_evenement.idevenement))";
 
                 $resultats = $conn->query($sql);
 	
@@ -144,7 +150,7 @@
 
                 $evenement ='';
 	
-                for($jour=1; $jour<32; $jour++)	{
+                for($jour = 1; $jour < 32; $jour++)	{
                     echo'<tr>';
 		
                     for($mois = $debutSemestre; $mois < ($debutSemestre + 6) ; $mois++) {			
@@ -159,9 +165,13 @@
 					$temp = explode('-',$dateDebut[0]);
 					$dateDebut = mktime(00,00,00, $temp[1],$temp[2],$temp[0]);
 
-					$dateFin = explode(' ',$donnees[$k]["dateFin"]);
-					$temp = explode('-',$dateFin[0]);
-					$dateFin = mktime(00,00,00, $temp[1],$temp[2],$temp[0]);
+					if(!empty($donnees[$k]["dateFin"])) {
+                                            $dateFin = explode(' ',$donnees[$k]["dateFin"]);
+                                            $temp = explode('-',$dateFin[0]);
+                                            $dateFin = mktime(00,00,00, $temp[1],$temp[2],$temp[0]);
+                                        }
+					else
+                                            $dateFin = null;
 
 					//On affiche les évènements qui se déroulent dans la journée
 					if($dateCourante >= $dateDebut && $dateCourante <= $dateFin) {
