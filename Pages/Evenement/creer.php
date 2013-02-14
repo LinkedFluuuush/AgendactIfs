@@ -501,6 +501,7 @@
                 hidden.value=result.innerHTML.split(" ")[2];
 		
                 div.appendChild(document.createTextNode(result.innerHTML));
+		div.appendChild(document.createTextNode("  "));
 		div.appendChild(img);
 		div.appendChild(hidden);
                 div.onclick = function(){
