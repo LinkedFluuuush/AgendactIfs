@@ -490,11 +490,18 @@
             function chooseResult(result){
                 var div = document.createElement('div');
 		var hidden = document.createElement('input');
+		var img = document.createElement('img');
                 var other;
+		
+		img.src='../../Images/boutonMoinsReduit2.png';
+		img.style.cursor='pointer';
+		
 		hidden.type='hidden';
 		hidden.name='dest[]';
                 hidden.value=result.innerHTML.split(" ")[2];
+		
                 div.appendChild(document.createTextNode(result.innerHTML));
+		div.appendChild(img);
 		div.appendChild(hidden);
                 div.onclick = function(){
                         removeChildSafe(div);
