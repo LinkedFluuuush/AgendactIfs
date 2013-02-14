@@ -244,10 +244,18 @@
                                     <option value="3">Basse</option>';
                                 </select>
                             </td>
-                            <td rowspan="4">
+                           <!--  <td rowspan="4">
                                 <label for="addParticipant"><b>Ajouter un destinataire</b></label><br>
                                 <select id="dest" name="dest[]" multiple style="height:200px;width:250px;">
                                 </select><br/>
+                                <input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
+                                <div id="resultsParticipant"></div>
+                            </td> -->
+			    
+			    <td rowspan="4">
+                                <label for="addParticipant"><b>Ajouter un destinataire</b></label><br>
+                                <div id="dest" style="overflow:auto;height:250px;width:250px;border:1px solid #abadb3;padding:5px;background-color:white;">
+                                </div><br/>
                                 <input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
                                 <div id="resultsParticipant"></div>
                             </td>
@@ -480,11 +488,14 @@
             }
 
             function chooseResult(result){
-                var div = document.createElement('option');
+                var div = document.createElement('div');
+		var hidden = document.createElement('input');
                 var other;
-                div.selected = "true";
-                div.value=result.innerHTML.split(" ")[2];
+		hidden.type='hidden';
+		hidden.name='dest[]';
+                hidden.value=result.innerHTML.split(" ")[2];
                 div.appendChild(document.createTextNode(result.innerHTML));
+		div.appendChild(hidden);
                 div.onclick = function(){
                         removeChildSafe(div);
                         other = div.ParentNode.childNodes;

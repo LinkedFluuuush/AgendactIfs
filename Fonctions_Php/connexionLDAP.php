@@ -62,7 +62,7 @@ if($row = $resultats->fetch()){
 			    $_SESSION['prenom'] = $info[0]["givenname"][0];
 			    $_SESSION['mail'] = $info[0]["mail"][0];
 			    
-			    $req = "INSERT INTO aci_utilisateur VALUES (".$idUser.", '".$info[0]["sn"][0]."', '".$info[0]["givenname"][0]."', '".$info[0]["mail"][0]."', '".$login."', '".md5($mdp)."', curdate())";
+			    $req = "INSERT INTO aci_utilisateur VALUES (".$idUser.", '".$info[0]["sn"][0]."', '".$info[0]["givenname"][0]."', '".$info[0]["mail"][0]."', '".$login."', '".md5($mdp)."', 1, 1, curdate())";
 
 			    $resultats = $conn->query($req);
 			    			    
