@@ -82,13 +82,14 @@ function regexHeure($heure)
 	}
 }
 
-//Elimine tous les accents non français
+//Elimine tous les accents non français et echappe les quotes
 function accents($texte)
 {
 	$texte = utf8_decode($texte);
 	$texte = strtr($texte,
 	utf8_decode("ÀÁÂÃÄÅáâãåÒÓÔÕÖØòóõøÈÉÊËÇÌÍÎÏìíÙÚÛÜúÑñ"),
 	utf8_decode("AAAAAAAAAAOOOOOOOOOOEEEEçIIIIIIUUUUUNN"));
+	$texte = str_replace("'", "''", $texte);
 	$texte = utf8_encode($texte);
 	
 	return $texte;
