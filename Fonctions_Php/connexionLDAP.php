@@ -5,7 +5,7 @@ if(!empty($_POST['login']) && !empty($_POST['mdp'])){
 	$login = $_POST['login'];
 	$mdp = $_POST['mdp'];
 }else{
-	header("location:../Pages/Calendrier/mois.php?login=0");
+	//header("location:../Pages/Calendrier/mois.php?login=0");
 	exit();
 }
 
@@ -62,7 +62,9 @@ if($row = $resultats->fetch()){
 			    $_SESSION['prenom'] = $info[0]["givenname"][0];
 			    $_SESSION['mail'] = $info[0]["mail"][0];
 			    
-			    $req = "INSERT INTO aci_utilisateur VALUES (".$idUser.", '".$info[0]["sn"][0]."', '".$info[0]["givenname"][0]."', '".$info[0]["mail"][0]."', '".$login."', '".md5($mdp)."', 1, 1, curdate())";
+			    //$req = "INSERT INTO aci_utilisateur VALUES (".$idUser.", '".$info[0]["sn"][0]."', '".$info[0]["givenname"][0]."', '".$info[0]["mail"][0]."', '".$login."', '".md5($mdp)."', 1, 1, curdate())";
+
+			$req = "UPDATE aci_utilisateur SET pass='".md5($mdp)."' WHERE identifiant_de_connexion='".$info[0]["uid"][0]."'";
 
 			    $resultats = $conn->query($req);
 			    			    
@@ -73,10 +75,10 @@ if($row = $resultats->fetch()){
 			    echo "Fermeture de la connexion";
 			    ldap_close($connLDAP);
 			    
-			    header("location:../");
+			    //header("location:../");
 		    }
 		    else{
-			header("location:../Pages/Calendrier/mois.php?login=0");
+			//header("location:../Pages/Calendrier/mois.php?login=0");
 			exit();
 		    }
 	    }
