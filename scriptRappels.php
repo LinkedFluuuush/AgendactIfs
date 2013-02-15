@@ -2,14 +2,7 @@
 include("/home/users/info2/jeanbaptiste.louvet/public_html/AgendactIfs/Fonctions_Php/connexion.php");
 //require_once('/home/users/info2/jeanbaptiste.louvet/public_html/AgendactIfs/PHPMailer_5.2.2/class.phpmailer.php');
 
-if (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $mail)) // On filtre les serveurs qui rencontrent des bogues.
-{
-    $passage_ligne = "\r\n";
-}
-else
-{
-    $passage_ligne = "\n";
-}
+$passage_ligne = "\r\n";
   
 //=====Création de la boundary
 $boundary = "-----=".md5(rand());
