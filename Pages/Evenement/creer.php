@@ -281,7 +281,7 @@ if(!empty($_POST['submit']))
                                 <div id="resultsParticipant"></div>
                             </td> -->
 			    
-			    <td rowspan="4">
+			    <td rowspan="4" id="tddest">
                                 <label for="addParticipant"><b>Ajouter un destinataire</b></label><br>
                                 <div id="dest" style="overflow:auto;height:250px;width:250px;border:1px solid #abadb3;padding:5px;background-color:white;">
                                 </div><br/>
@@ -324,7 +324,7 @@ if(!empty($_POST['submit']))
                                     <input type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="<?php saisieFormString("heureDebut");?>" class="heureDebut" maxlength=5 size=4/>
                                     <?php echo "<b id=\"formErreur\"> $erreurDateDebut $erreurHeureDebut </b>"; ?>
                             </td>
-                            <td rowspan="4">
+                            <td rowspan="4" id="tdgroupe">
                                 <label for="groupe"><b>Ajouter un groupe de participants</b></label><br>
                                 <div id="groupe" style="overflow:auto;height:250px;width:250px;border:1px solid #abadb3;padding:5px;background-color:white;">
                                     <?php
@@ -359,8 +359,8 @@ if(!empty($_POST['submit']))
                         <tr>
                             <td>
                                 <b>Type</b> <br>
-                                <input type="radio" name="public" id="public" value="1" checked="checked"> <label for="public">Public</label>
-                                <input type="radio" name="public" id="prive" value="0"> <label for="prive">Privé</label>
+                                <input type="radio" name="public" id="public" value="1" checked="checked" onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
+                                <input type="radio" name="public" id="prive" value="0" onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
                             </td>
                         </tr>
 
@@ -611,6 +611,19 @@ if(!empty($_POST['submit']))
                         }
                 }			
         }
+	
+/*	function cacher(){
+		var radio = document.getElementById("public");
+		var dest = document.getElementById("tddest");
+		var groupe = document.getElementById("tdgroupe");
+		if(radio.checked==true){
+			dest.rowspan=1;
+			groupe.rowspan=1;
+		}else{
+			dest.rowspan=4;
+			groupe.rowspan=4;
+		}
+	}*/
         </script>
     </body>
 </html>
