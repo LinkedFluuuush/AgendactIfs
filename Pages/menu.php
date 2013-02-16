@@ -17,8 +17,8 @@ $nomPage = $temp[sizeof($temp)-1];
                         } ?>
                         <li class="connexion">
                             <form name="connexion" action="../../Fonctions_Php/connexionLDAP.php" method="POST">
-                                <input type="text" name="login" placeholder="Identifiant"><br>
-                                <input type="password" name="mdp" placeholder="Mot de passe">
+                                <input class="zoneDeSaisie" type="text" name="login" placeholder="Identifiant"><br>
+                                <input class="zoneDeSaisie" type="password" name="mdp" placeholder="Mot de passe">
                                 <input class="btn" type="submit" name="valider_conn" value="Valider">
                             </form>
                         </li>
