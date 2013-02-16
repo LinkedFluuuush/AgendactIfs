@@ -63,7 +63,6 @@
         else
             $idUtil = 0;
         
-        $nomSession = 'Test'; //$_SESSION['login'];
 
         $sql = "SELECT aci_evenement.*, aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert FROM aci_evenement
         JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
@@ -90,7 +89,7 @@
                 
                 <p class="ajouter_retour">
                     <?php
-                    if(!empty($nomSession))
+                    if(!empty($idUtil))
                         echo '<a class="btn" href="../Evenement/creer.php?a='.date("Y", $dateTimestampDebutMEPJ).'&m='.
                             date("m", $dateTimestampDebutMEPJ).'&j='.date("d", $dateTimestampDebutMEPJ).'">Ajouter</a>';
 
@@ -151,18 +150,20 @@
                             if(!empty($lieu))
                                 echo 'Lieu : ' . $lieu . '<br>'; 
                             echo 'Post&eacute; par <b>' . $auteur . '</b> le <b>' . $dateInsert . '</b>';
-                            ?>
                             
-                            <div class="modifier_suppr">
-                                <form name="modifier" action="../Evenement/modifier.php" method="POST">
-                                    <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" />
-                                    <input class="btn" type="submit" name="modifier_eve" value="Modifier" />
-                                </form>
-                                <form name="modifier" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-                                    <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" />
-                                    <input class="btn" type="submit" name="supprimer_eve" value="Supprimer" onclick="confirm('Voulez-vous vraiment supprimer cet &eacute;v&egrave;nement ?');"/>
-                                </form>
-                            </div>
+                            
+                            if(!empty($idUtil)) { ?>
+                                <div class="modifier_suppr">
+                                    <form name="modifier" action="../Evenement/modifier.php" method="POST">
+                                        <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" />
+                                        <input class="btn" type="submit" name="modifier_eve" value="Modifier" />
+                                    </form>
+                                    <form name="modifier" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+                                        <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" />
+                                        <input class="btn" type="submit" name="supprimer_eve" value="Supprimer" onclick="confirm('Voulez-vous vraiment supprimer cet &eacute;v&egrave;nement ?');"/>
+                                    </form>
+                                </div>
+                            <?php } ?>
                         </p>
 
                         <?php $i++;
