@@ -1,5 +1,5 @@
-<?php session_start(); ?>
-
+<?php session_start(); 
+header( 'content-type: text/html; charset=utf-8' ); ?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -11,219 +11,248 @@
     </head>
     <body>
 
-    <?php
-    //Connexion a la bdd
-    include("../../Fonctions_Php/connexion.php");
-    
-    if(!empty($_SESSION['id']))
-        $idUtil = $_SESSION['id'];
-    else
-        $idUtil = 0;
-    
-    $insertion = false;
+<?php
+//Connexion a la bdd
+include("../../Fonctions_Php/connexion.php");
+include_once("../../Fonctions_Php/diverses_fonctions.php");
+$idUtil = $_SESSION['id'];
+$insertion = false;
 
-    //--------REGEX---------//
-    include_once("../../Fonctions_Php/diverses_fonctions.php");
+//--------REGEX---------//
 
-    $valide = true; //Permet de savoir si au moins un élément saisi dans le formulaire est invalide
-    $erreurLibelleCourt = "";
-    $erreurLibelleLong = "";
-    $erreurDescription = "";
-    $erreurDateDebut = "";
-    $erreurDateFin = "";
-    $erreurDate ="";
-    $erreurHeureDebut = "";
-    $erreurHeureFin = "";
+$valide = true; //Permet de savoir si au moins un élément saisi dans le formulaire est invalide
+$erreurLibelleCourt = "";
+$erreurLibelleLong = "";
+$erreurDescription = "";
+$erreurDateDebut = "";
+$erreurDateFin = "";
+$erreurDate ="";
+$erreurHeureDebut = "";
+$erreurHeureFin = "";
 
-    if(!empty($_POST['submit'])) {
+if(!empty($_POST['submit']))
+{
 	//Vérification de la saisie des champs nécessaires
-	if(empty($_POST['libelleCourt'])) {
-            $valide = false;
-            $erreurLibelleCourt = "Obligatoire";
+	if(empty($_POST['libelleCourt']))
+	{
+		$valide = false;
+		$erreurLibelleCourt = "Obligatoire";
 	}
 	
-	if(empty($_POST['libelleLong'])) {
-            $valide = false;
-            $erreurLibelleLong = "Obligatoire";
+	if(empty($_POST['libelleLong']))
+	{
+		$valide = false;
+		$erreurLibelleLong = "Obligatoire";
 	}
 	
-	if(empty($_POST['description'])) {
-            $valide = false;
-            $erreurDescription = "Obligatoire";
+	if(empty($_POST['description']))
+	{
+		$valide = false;
+		$erreurDescription = "Obligatoire";
 	}
 	
-	if(empty($_POST['dateDebut'])) {
-            $valide = false;
-            $erreurDateDebut = "Obligatoire";
+	if(empty($_POST['dateDebut']))
+	{
+		$valide = false;
+		$erreurDateDebut = "Obligatoire";
 	}
 	
-	if($valide) {
-            $priorite = $_POST['priorite'];
-            $public = $_POST['public'];
-            $libelleCourt = $_POST['libelleCourt'];
-            $libelleLong = $_POST['libelleLong'];
-            $description = $_POST['description'];
-            $lieu = $_POST['lieu'];
-
-            //Remise à zéro des variables pour tests par expressions régulières
-            $valide = true;
-            $erreurLibelleCourt = "";
-            $erreurLibelleLong = "";
-            $erreurDescription = "";
-            $erreurDateDebut = "";
-            $erreurDateFin = "";
-            $erreurDate = "";
-            $erreurHeureDebut = "";
-            $erreurHeureFin = "";
-
-            //Libelle court
-            $libelleCourt = accents($libelleCourt);
-            $libelleCourt = htmlspecialchars($libelleCourt);
-
-            //Libelle long
-            $libelleLong = accents($libelleLong);
-            $libelleLong = htmlspecialchars($libelleLong);
-
-            //Description
-            $description = accents($description);
-            $description = htmlspecialchars($description);
-
-            //Date
-            if(regexDate($_POST['dateDebut']) && comparaisonDate($_POST['dateDebut'], date("d/m/Y")))
-                $dateDebut = $_POST['dateDebut'];
-            else {
-                $valide = false;
-                $erreurDateDebut = "La date saisie est invalide.";
-            }
-
-            if(regexDate($_POST['dateFin']) && comparaisonDate($_POST['dateFin'], date("d/m/Y")))
-                $dateFin = $_POST['dateFin'];
-            else if (empty($_POST['dateFin'])) {
-                $dateFin = null;
-            }
-            else {
-                $valide = false;
-                $erreurDateFin = "La date saisie est invalide.";
-            }
-
-            if(comparaisonDate($_POST['dateFin'], $_POST['dateDebut'])){
-                // A remplir
-            }
-            else {
-                $valide = false;
-                $erreurDate = "Un évènement ne peut pas se terminer avant de commencer.";
-            }
-			
-            //Heure
-            if(regexHeure($_POST['heureDebut']))
-                $heureDebut = $_POST['heureDebut'];
-            else if (empty($_POST['heureDebut'])) {
-                $heureDebut = "00:00";
-            }
-            else {
-                $valide = false;
-                $erreurHeureDebut = "L'heure saisie est invalide.";
-            }
-
-            if(regexHeure($_POST['heureFin']))
-                $heureFin = $_POST['heureFin'];
-            else if (empty($_POST['heureFin'])) {
-                $heureFin = "00:00";
-            }
-            else {
-                $valide = false;
-                $erreurHeureFin = "L'heure saisie est invalide.";
-            }
+	if($valide)
+	{
+		$priorite = $_POST['priorite'];
+		$public = $_POST['public'];
+		$libelleCourt = $_POST['libelleCourt'];
+		$libelleLong = $_POST['libelleLong'];
+		$description = $_POST['description'];
+		$lieu = $_POST['lieu'];
 	
-            if($valide) {
-                //Récupération du prochain numéro d'événement attribuable
-                $reqIdEv = "select ifnull(max(idevenement),0)+1 from aci_evenement";
-                $temp = $conn->query($reqIdEv);
-                $idEv = $temp->fetch();
+		//Remise à zéro des variables pour tests par expressions régulières
+		$valide = true;
+		$erreurLibelleCourt = "";
+		$erreurLibelleLong = "";
+		$erreurDescription = "";
+		$erreurDateDebut = "";
+		$erreurDateFin = "";
+		$erreurDate = "";
+		$erreurHeureDebut = "";
+		$erreurHeureFin = "";
+		
+		//Libelle court
+		$libelleCourt = accents($libelleCourt);
+		
+		$libelleCourt = htmlspecialchars($libelleCourt);
 
-                //Récupération de l'idlieu du lieu à ajouter à l'événement
-                if(!empty($lieu)) {
-                    $sqlRecupId = "SELECT idlieu FROM aci_lieu WHERE libelle = '$lieu'";
+		//Libelle long
+		$libelleLong = accents($libelleLong);
+		
+		$libelleLong = htmlspecialchars($libelleLong);
+		
+		//Description
+		$description = accents($description);
+		
+		$description = htmlspecialchars($description);
 
-                    $temp = $conn->query($sqlRecupId);
-                    $idLieu = $temp->fetch();
-                    $idLieu =  $idLieu['idlieu'];
-                }
-                else
-                    $idLieu = null;
-			
-                    //Insertion de l'événement
-                    //echo "$idEv[0], $idUtil, $priorite, 1, $libelleLong, $libelleCourt, $description, $dateDebut $heureDebut, $dateFin $heureFin, $public";
-                    $sql = "INSERT INTO `aci_evenement` (`IDEVENEMENT`, `IDUTILISATEUR`, `IDPRIORITE`, `IDLIEU`, `LIBELLELONG`, `LIBELLECOURT`, `DESCRIPTION`, `DATEDEBUT`, `DATEFIN`, `ESTPUBLIC`, `DATEINSERT`) 
-                    VALUES ($idEv[0], $idUtil, $priorite, $idLieu, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, curdate())";
+		//Date
 
-                    $resultats = $conn->query($sql);
-			
-                    /* if(!empty($_POST['addParticipant0']) && $public == 0) {
-                        $i = 0;
-                        while(!empty($_POST["addParticipant$i"])) {
-                            $dest = $_POST["addParticipant$i"];
-
-                            //Récupération de l'idutilisateur du participant à ajouter à l'événement
-                            $sqlRecupId = "SELECT idutilisateur FROM aci_utilisateur WHERE adresse_mail = '$dest'";
-
-                            $temp = $conn->query($sqlRecupId);
-                            $id = $temp->fetch();
-                            $id =  $id['idutilisateur'];
-
-                            $sqlDestUtilisateur = "INSERT INTO `aci_bdd`.`aci_destutilisateur` (`IDUTILISATEUR`, `IDEVENEMENT`, `DATEINSERT`) 
-                            VALUES ($id, $idEv[0], curdate())";
-
-                            $insertionUtil = $conn->query($sqlDestUtilisateur);
-
-                            $i++;
-                        }
-                    }*/
-			
-                    if(!empty($_POST['dest'])){
-                        $dest[] = $_POST['dest'];
-                        foreach($dest as $cle => $contenu){
-                            foreach($contenu as $cle2 => $contenu2){
-                                $sql = "INSERT INTO aci_destutilisateur VALUES ((SELECT idutilisateur FROM aci_utilisateur WHERE adresse_mail='".$contenu2."')";
-                                $sql.=", ".$idEv[0].", curdate())";
-
-                                echo $sql;
-
-                                $insert = $conn->query($sql);
-                            }
-                        }
-                    }
-			
-                    //TODO
-                    /* for($i=0;$i<$destGroupe.length;$i++)
-                    {
-                            $sqlDestGroupe = "INSERT INTO `aci_bdd`.`aci_destgroupe` (`IDEVENEMENT`, `IDGROUPE`, `DATEINSERT`) 
-                            VALUES ($idEv[0], $destGroupe[$i], curdate())";
-
-                            $insertionGroupe = $conn->query($sqlDestGroupe);
-                    }*/
-			
-                    if(!empty($_POST['groupe'])){
-                        $groupe[] = $_POST['groupe'];
-                        foreach($groupe as $cle => $contenu){
-                            foreach($contenu as $cle2 => $contenu2){
-                                /*$sql = "INSERT INTO aci_destutilisateur VALUES ((SELECT idutilisateur FROM aci_utilisateur WHERE adresse_mail='".$contenu2."')";
-                                $sql.=", ".$idEv[0].", curdate())";
-                                echo $sql;
-                                $insert = $conn->query($sql);*/
-
-                                echo $contenu2."<br/>";
-                            }
-                        }
-                    }
-			
-                    if(!empty($resultats))
-                        $insertion = true;
+		if(regexDate($_POST['dateDebut']) && comparaisonDate($_POST['dateDebut'], date("d/m/Y")))
+			$dateDebut = $_POST['dateDebut'];
+		else
+		{
+			$valide = false;
+			$erreurDateDebut = "La date saisie est invalide";
 		}
-            }
-        }
-        ?>
-    
+		
+		//Vérifications nécessaires seulement si une date de fin est définie
+		if(!empty($_POST['dateFin']))
+		{
+			if(regexDate($_POST['dateFin']) && comparaisonDate($_POST['dateFin'], date("d/m/Y")))
+				$dateFin = $_POST['dateFin'];
+			else
+			{
+				$valide = false;
+				$erreurDateFin = "La date saisie est invalide";
+			}
+			
+			if(comparaisonDate($_POST['dateFin'], $_POST['dateDebut'])){}
+			else
+			{
+				$valide = false;
+				$erreurDate = "Un évènement ne peut pas se terminer avant de commencer";
+			}
+		}
+		else
+			$dateFin = null;
+		
+		//Heure
+		if(regexHeure($_POST['heureDebut']))
+			$heureDebut = $_POST['heureDebut'];
+		else if (empty($_POST['heureDebut']))
+		{
+			$heureDebut = "00:00";
+		}
+		else
+		{
+			$valide = false;
+			$erreurHeureDebut = "L'heure saisie est invalide";
+		}
+		
+		if(regexHeure($_POST['heureFin']))
+			$heureFin = $_POST['heureFin'];
+		else if (empty($_POST['heureFin']))
+		{
+			$heureFin = "00:00";
+		}
+		else
+		{
+			$valide = false;
+			$erreurHeureFin = "L'heure saisie est invalide";
+		}
+	
+		if($valide)
+		{
+			//Récupération du prochain numéro d'événement attribuable
+			$reqIdEv = "select ifnull(max(idevenement),0)+1 from aci_evenement";
+			$temp = $conn->query($reqIdEv);
+			$idEv = $temp->fetch();
+			
+			//Récupération de l'idlieu du lieu à ajouter à l'événement
+			if(!empty($lieu))
+			{
+				$sqlRecupId = "SELECT idlieu FROM aci_lieu WHERE libelle = '$lieu'";
+
+				$temp = $conn->query($sqlRecupId);
+				$idLieu = $temp->fetch();
+				$idLieu =  $idLieu['idlieu'];
+			}
+			else
+				$idLieu = null;
+			
+			//Insertion de l'événement
+			//echo "$idEv[0], $idUtil, $priorite, 1, $libelleLong, $libelleCourt, $description, $dateDebut $heureDebut, $dateFin $heureFin, $public";
+			$sql = "INSERT INTO `aci_evenement` (`IDEVENEMENT`, `IDUTILISATEUR`, `IDPRIORITE`, `IDLIEU`, `LIBELLELONG`, `LIBELLECOURT`, `DESCRIPTION`, `DATEDEBUT`, `DATEFIN`, `ESTPUBLIC`, `DATEINSERT`) 
+			VALUES ($idEv[0], $idUtil, $priorite, $idLieu, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, curdate())";
+
+			$resultats = $conn->query($sql);
+			
+			//Préparation de la création des rappels - récupération du premier idrappel utilisable
+			$sqlIdRappel= "select max(idrappel)+1 from aci_rappel";
+			$temp2 = $conn->query($sqlIdRappel);
+			$idRappel = $temp2->fetch();
+			
+			//Création du rappel à l'auteur de l'événement
+			$sqlRappel = "INSERT INTO aci_rappel VALUES($idRappel[0], $idEv[0], $idUtil, str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i') - INTERVAL 1 DAY)";
+			$idRappel[0]++;
+			$exec = $conn->query($sqlRappel);
+
+			if(!empty($_POST['dest']) && $public == 0)
+			{
+				$dest[] = $_POST['dest'];
+				
+				foreach($dest as $cle => $contenu){
+					foreach($contenu as $cle2 => $contenu2){
+					
+						$sqlId = "SELECT idutilisateur FROM aci_utilisateur WHERE adresse_mail='".$contenu2."'";
+						
+						$temp = $conn->query($sqlId);
+						$idDestUtil = $temp->fetch();
+						
+						//Insertion des utilisateurs destinataires
+						$sql = "INSERT INTO aci_destutilisateur VALUES (".$idDestUtil[0];
+						$sql.=", ".$idEv[0].", curdate())";
+
+						$insert = $conn->query($sql);
+
+						//Envoi de notifications
+						notifications($conn, $idDestUtil[0], $_SESSION['nom'], $_SESSION['prenom'], $dateDebut.' '.$heureDebut, $dateFin.' '.$heureFin, $libelleLong, 'creer');
+						
+						//Création de rappels
+						$sqlRappel = "INSERT INTO aci_rappel VALUES($idRappel[0], $idEv[0], $idDestUtil[0], str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i') - INTERVAL 1 DAY)";
+						$idRappel[0]++;
+						$exec = $conn->query($sqlRappel);
+					}
+				}
+			}
+			
+			if(!empty($_POST['groupe']) && $public == 0)
+			{
+				$groupe[] = $_POST['groupe'];
+				
+				foreach($groupe as $cle => $contenu){
+					foreach($contenu as $cle2 => $contenu2){
+					
+						//Insertion des utilisateurs destinataires
+						$sql = "INSERT INTO aci_destgroupe VALUES (".$idEv[0].", $contenu2";
+						$sql.=", curdate())";
+
+						$insert = $conn->query($sql);
+						
+						$sqlMail = "SELECT idutilisateur FROM aci_composer JOIN aci_groupe USING ( idgroupe ) WHERE idgroupe LIKE '".$contenu2."%'";
+						
+						$temp = $conn->query($sqlMail);
+						
+						while($mailGroupe = $temp->fetch())
+						{
+							//Envoi de notifications
+							notifications($conn, $mailGroupe[0], $_SESSION['nom'], $_SESSION['prenom'], $dateDebut.' '.$heureDebut, $dateFin.' '.$heureFin, $libelleLong, 'creer');
+							
+							$sqlRappel = "INSERT INTO aci_rappel VALUES($idRappel[0], $idEv[0], $mailGroupe[0], str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i') - INTERVAL 1 DAY)";
+							
+							//Création de rappels
+							$idRappel[0]++;
+							$exec = $conn->query($sqlRappel);
+						}
+						
+						$temp->closeCursor();
+					}
+				}
+			}
+						
+			if(!empty($resultats))
+				$insertion = true;
+		}
+	}
+}
+?>
         <div id="global">
             <?php include('../menu.php'); ?>
             <div id="corpsCal" class="creer">
@@ -252,7 +281,7 @@
                                 <div id="resultsParticipant"></div>
                             </td> -->
 			    
-			    <td rowspan="4">
+			    <td rowspan="4" id="tddest">
                                 <label for="addParticipant"><b>Ajouter un destinataire</b></label><br>
                                 <div id="dest" style="overflow:auto;height:250px;width:250px;border:1px solid #abadb3;padding:5px;background-color:white;">
                                 </div><br/>
@@ -295,7 +324,7 @@
                                     <input type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="<?php saisieFormString("heureDebut");?>" class="heureDebut" maxlength=5 size=4/>
                                     <?php echo "<b id=\"formErreur\"> $erreurDateDebut $erreurHeureDebut </b>"; ?>
                             </td>
-                            <td rowspan="4">
+                            <td rowspan="4" id="tdgroupe">
                                 <label for="groupe"><b>Ajouter un groupe de participants</b></label><br>
                                 <div id="groupe" style="overflow:auto;height:250px;width:250px;border:1px solid #abadb3;padding:5px;background-color:white;">
                                     <?php
@@ -330,8 +359,8 @@
                         <tr>
                             <td>
                                 <b>Type</b> <br>
-                                <input type="radio" name="public" id="public" value="1" checked="checked"> <label for="public">Public</label>
-                                <input type="radio" name="public" id="prive" value="0"> <label for="prive">Privé</label>
+                                <input type="radio" name="public" id="public" value="1" checked="checked" onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
+                                <input type="radio" name="public" id="prive" value="0" onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
                             </td>
                         </tr>
 
@@ -582,6 +611,19 @@
                         }
                 }			
         }
+	
+/*	function cacher(){
+		var radio = document.getElementById("public");
+		var dest = document.getElementById("tddest");
+		var groupe = document.getElementById("tdgroupe");
+		if(radio.checked==true){
+			dest.rowspan=1;
+			groupe.rowspan=1;
+		}else{
+			dest.rowspan=4;
+			groupe.rowspan=4;
+		}
+	}*/
         </script>
     </body>
 </html>

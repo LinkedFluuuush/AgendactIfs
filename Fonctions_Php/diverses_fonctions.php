@@ -9,7 +9,7 @@ function descGroupe($idGroupe, $conn, $i){
 			$option.="&nbsp &nbsp &nbsp";
 		}
 		$option.='<img id="'.utf8_encode($row['idgroupe']).'" src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/>';
-		$option.='<label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')"> '.$row['libelle'].'</label>';
+		$option.='<label for="'.utf8_encode($row['idgroupe']).'">'.utf8_encode($row['libelle']).'</label>';
 		$option.='<input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
 		echo $option;
 		descGroupe($row['idgroupe'], $conn, $i+1);
@@ -82,13 +82,14 @@ function regexHeure($heure)
 	}
 }
 
-//Elimine tous les accents non français
+//Elimine tous les accents non français et echappe les quotes
 function accents($texte)
 {
 	$texte = utf8_decode($texte);
 	$texte = strtr($texte,
 	utf8_decode("ÀÁÂÃÄÅáâãåÒÓÔÕÖØòóõøÈÉÊËÇÌÍÎÏìíÙÚÛÜúÑñ"),
 	utf8_decode("AAAAAAAAAAOOOOOOOOOOEEEEçIIIIIIUUUUUNN"));
+	$texte = str_replace("'", "''", $texte);
 	$texte = utf8_encode($texte);
 	
 	return $texte;
@@ -117,14 +118,14 @@ function explodeDate($date)
 	$heure = substr($date[1], 0, 5);
 	$date = explode('-', $date[0]);
 	$date[3] = $heure;
-	
+
 	return $date;
 }
 
 function formattageDate($dateI)
 {
 	$date[0] = $dateI[3];
-	$date[1] = $dateI[2].'/'.$dateI[1].'/'.$dateI[0];
+	$date[1] = $dateI[2].'-'.$dateI[1].'-'.$dateI[0];
 	
 	return $date;
 }
@@ -155,7 +156,7 @@ function sessionValide($utilisateur, $pass)
     //error_reporting(0);
     if (($utilisateur == null) or ($pass == null))
     {
-            return false;
+        return false;
     }
     return (oci_connect($utilisateur,$pass,"info"));
 }
@@ -226,36 +227,187 @@ function jourProchain ($mois, $jour, $annee) {
     return $jour;
 }
 
-function supprimer($conn, $idEv) {
-    //L'utilisateur est bien connecté
-    if(!empty($_SESSION['id'])) {
-        /*echo $idEv;*/
-        
-        //Vérification : l'utilisateur qui veut supprimer l'événement en est bien l'auteur
-        $sqlVerif = "SELECT idutilisateur FROM aci_evenement WHERE idevenement = ".$idEv;
+function supprimer($conn, $idEv)
+{
+	//L'utilisateur est bien connecté
+	if(!empty($_SESSION['id']))
+	{
+		//Vérification : l'utilisateur qui veut supprimer l'événement en est bien l'auteur
+		$sqlVerif = "SELECT idutilisateur FROM aci_evenement WHERE idevenement = ".$idEv;
+	
+		$temp = $conn->query($sqlVerif);
+		$verif = $temp->fetch();
+	
+		if(!empty($verif))
+		{
+			//Suppression des participants
+			$sqlDeleteDestUtil = "DELETE FROM aci_destutilisateur WHERE idevenement = ".$idEv;
 
-        $temp = $conn->query($sqlVerif);
-        $verif = $temp->fetch();
+			//Suppression des groupes de participants
+			$sqlDeleteDestGroupe = "DELETE FROM aci_destgroupe WHERE idevenement = ".$idEv;
 
-        if(!empty($verif)) {
-            //Suppression des participants
-            $sqlDeleteDestUtil = "DELETE FROM aci_destutilisateur WHERE idevenement = ".$idEv;
+			//Suppression de l'événement
+			$sqlDeleteEvenement = "DELETE FROM aci_evenement WHERE idevenement = ".$idEv;
 
-            //Suppression des groupes de participants
-            $sqlDeleteDestGroupe = "DELETE FROM aci_destgroupe WHERE idevenement = ".$idEv;
+			$execution = $conn->query($sqlDeleteDestUtil);
+			$execution = $conn->query($sqlDeleteDestGroupe);
+			$execution = $conn->query($sqlDeleteEvenement);
 
-            //Suppression de l'événement
-            $sqlDeleteEvenement = "DELETE FROM aci_evenement WHERE idevenement = ".$idEv;
-
-            $execution = $conn->query($sqlDeleteDestUtil);
-            $execution = $conn->query($sqlDeleteDestGroupe);
-            $execution = $conn->query($sqlDeleteEvenement);
-
-            if(!empty($execution))
-                return true;
-        }
-    }
-    return false;
+			if(!empty($execution))
+				return true;
+		}
+	}
+	return false;
 }
 
+//require_once('../../PHPMailer_5.2.2/class.phpmailer.php');
+
+function envoyerMail($adresse, $sujet, $contenu, $contenu_txt)
+{
+/* 	try{
+		$mail = new PHPMailer(true);
+		$mail->IsSMTP();
+		$mail->SMTPAuth = true;
+		$mail->Host = 'smtp.gmail.com';
+		$mail->Port = '25';
+		$mail->Username = 'airone.masson@gmail.com';
+		$mail->Password = 'p2370_g245gm';
+		//$mail->SMTPDebug = 2;
+		$mail->SetFrom('airone.masson@gmail.com', 'AgendactIfs');
+		$mail->Subject = $sujet;
+		$mail->MsgHTML($contenu);
+		$mail->AddAddress($adresse);
+
+		if(!$mail->Send())
+			return false;
+			
+		return true;
+	}
+	catch(Exception $e){
+		//echo $e->getMessage();
+	} */
+	
+	if (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $adresse)) // On filtre les serveurs qui rencontrent des bogues.
+	{
+	    $passage_ligne = "\r\n";
+	}
+	else
+	{
+	    $passage_ligne = "\n";
+	}
+	  
+	//=====Création de la boundary
+	$boundary = "-----=".md5(rand());
+	//==========
+	  
+	//=====Création du header de l'e-mail.
+	$header = "From: \"AgendactIfs\"<noreply@agendactifs.com>".$passage_ligne;
+	$header.= "Reply-to: \"AgendactIfs\"<noreply@agendactifs.com>".$passage_ligne;
+	$header.= "MIME-Version: 1.0".$passage_ligne;
+	$header.= "Content-Type: multipart/alternative;".$passage_ligne." boundary=\"$boundary\"".$passage_ligne;
+	//==========
+	
+	//=====Création du message.
+	$message = $passage_ligne."--".$boundary.$passage_ligne;
+	//=====Ajout du message au format texte.
+	$message.= "Content-Type: text/plain; charset=\"UTF-8\"".$passage_ligne;
+	$message.= "Content-Transfer-Encoding: 8bit".$passage_ligne;
+	$message.= $passage_ligne.$contenu_txt.$passage_ligne;
+	//==========
+	$message.= $passage_ligne."--".$boundary.$passage_ligne;
+	//=====Ajout du message au format HTML
+	$message.= "Content-Type: text/html; charset=\"UTF-8\"".$passage_ligne;
+	$message.= "Content-Transfer-Encoding: 8bit".$passage_ligne;
+	$message.= $passage_ligne.$contenu.$passage_ligne;
+	//==========
+	$message.= $passage_ligne."--".$boundary."--".$passage_ligne;
+	$message.= $passage_ligne."--".$boundary."--".$passage_ligne;
+	//==========
+
+	//=====Envoi de l'e-mail.
+	if(mail($adresse,utf8_decode("[Agendact'Ifs]".$sujet),$message,$header))
+		return true;
+	else
+		return false;
+	//==========
+}
+
+//Création des courriels de notification à envoyer
+function notifications($conn, $idDest, $nomAuteur, $prenomAuteur, $dateDebut, $dateFin, $libelleLong, $type)
+{
+	//Récupération du nom, du prénom et de l'adresse e-mail du rappelé
+	$sql2 = "SELECT prenom, nom, adresse_mail FROM aci_utilisateur WHERE notificationactive = 1 and idutilisateur = ".$idDest;
+
+	$util = $conn->query($sql2)->fetch();
+
+	//Si les notifications sont activées
+	if(!empty($util))
+	{
+		$dateDebut = explode(' ',$dateDebut);
+		if(!empty($dateFin))
+			$dateFin = explode(' ',$dateFin);
+
+		$contenu = "<h1>".$libelleLong."</h1>";
+		$contenu_txt = $libelleLong."\n";
+		
+		$contenu = $contenu."Bonjour ".$util[0]." ".$util[1]."<br>";
+		$contenu_txt = $contenu_txt."Bonjour ".$util[0]." ".$util[1]."\n";
+		
+		//Si il s'agit d'une création d'événement
+		if($type == "creer")
+		{
+			$contenu = $contenu."Vous êtes invité(e) à participer à l'événement ".$libelleLong.", organisé par ".$prenomAuteur." ".$nomAuteur;
+			$contenu = $contenu.", qui se déroulera ";
+			
+			$contenu_txt = $contenu_txt."Vous êtes invité(e) à participer à l'événement ".$libelleLong.", organisé par ".$prenomAuteur." ".$nomAuteur;
+			$contenu_txt = $contenu_txt.", qui se déroulera ";
+		}
+		
+		//Si il s'agit d'une suppression d'événement
+		if($type == "supprimer")
+		{
+			$contenu = $contenu."L'événement ".$libelleLong." organisé par ".$prenomAuteur." ".$nomAuteur.", initialement prévu ";
+			$contenu_txt = $contenu_txt."L'événement ".$libelleLong." organisé par ".$prenomAuteur." ".$nomAuteur.", initialement prévu ";
+		}
+		
+		if(!empty($dateFin[0])){
+			$contenu = $contenu."du ";
+			$contenu_txt = $contenu_txt."du ";
+		}
+		else{
+			$contenu = $contenu."le ";
+			$contenu_txt = $contenu_txt."le ";
+		}
+			
+		$contenu = $contenu.$dateDebut[0];
+		$contenu_txt = $contenu_txt.$dateDebut[0];
+		
+		if($dateDebut[1] != "00:00"){
+			$contenu = $contenu." à ".$dateDebut[1];
+			$contenu_txt = $contenu_txt." à ".$dateDebut[1];
+		}
+
+		if(!empty($dateFin[0]))
+		{
+			$contenu = $contenu." au ".$dateFin[0];
+			$contenu_txt = $contenu_txt." au ".$dateFin[0];
+			if($dateFin[1] != "00:00"){
+				$contenu = $contenu." à ".$dateFin[1];
+				$contenu_txt = $contenu_txt." à ".$dateFin[1];
+			}
+		}
+			
+		if($type == "supprimer")
+		{
+			$contenu = $contenu." a été annulé";
+			$contenu_txt = $contenu_txt." a été annulé";
+		}
+		
+		$contenu = $contenu.".<br><br>L'équipe d'AgendactIfs<br><br><small>Ce courriel est généré automatiquement, veuillez ne pas y répondre</small>";
+		$contenu_txt = $contenu_txt.".\n\nL'équipe d'AgendactIfs\n\nCe courriel est généré automatiquement, veuillez ne pas y répondre";
+
+		//Envoi du message
+		envoyerMail($util[2], $libelleLong, $contenu, $contenu_txt);
+	}
+}
 ?>
