@@ -422,18 +422,18 @@ function calculTailleEve($dateDebut, $dateFin) {
     
     if ($dureeMinute != 0) {
         if ($dureeMinute <= 15) {
-            return ($dureeHeure.'.25')*20;
+            return ($dureeHeure.'.25')*40;
         }
         else if ($dureeMinute > 15 and $dureeMinute <= 30) {
-            return ($dureeHeure.'.5')*20;
+            return ($dureeHeure.'.5')*40;
         }
         else if ($dureeMinute > 30 and $dureeMinute <= 45) {
-            return ($dureeHeure.'.75')*20;
+            return ($dureeHeure.'.75')*40;
         }
         elseif ($dureeMinute > 45 and $dureeMinute <= 59) {
-            return $dureeHeure*20;
+            return $dureeHeure*40;
         }
     }    
-    return ($dureeHeure.'.'.$dureeMinute)*20;
+    return ($dureeHeure.'.'.$dureeMinute)*40;
 }
 ?>

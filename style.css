@@ -435,7 +435,7 @@ ul.nav > li ul li.priorite label:hover {
 
 #corpsCal.semaine td {
    /* hauteur des cases */
-   height: 20px;
+   height: 40px;
       
    /* alignement du texte à l'intérieur des cases */
    vertical-align: middle;
@@ -467,8 +467,7 @@ ul.nav > li ul li.priorite label:hover {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    
-    width: 100%;
+    position: absolute;
 }
 
 /* Infobulle */
@@ -484,7 +483,7 @@ ul.nav > li ul li.priorite label:hover {
    text-decoration: none;
    background-color: #a5c1e0;
    border: 1px solid #7fa2cb;
-   position: absolute;
+   float: left;
 }
 
 #corpsCal.semaine li.info span {
