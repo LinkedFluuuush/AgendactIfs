@@ -15,7 +15,15 @@ header( 'content-type: text/html; charset=utf-8' ); ?>
 //Connexion a la bdd
 include("../../Fonctions_Php/connexion.php");
 include_once("../../Fonctions_Php/diverses_fonctions.php");
-$idUtil = $_SESSION['id'];
+
+if ($_SESSION['id']) {
+    $idUtil = $_SESSION['id'];
+}
+else {
+    // Redirection vers la page mois.php si la personne n'est pas connectée
+    header('Location: ../Calendrier/mois.php');
+}
+
 $insertion = false;
 
 //--------REGEX---------//
