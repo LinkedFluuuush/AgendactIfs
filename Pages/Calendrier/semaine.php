@@ -166,13 +166,12 @@
         $nomMois1 = $tabMois[$mois1 - 1];
         $nomMois2 = $tabMois[$mois2 - 1];
         
+        // SAVOIR SI LA PERSONNE EST CONNECTEE
         if(!empty($_SESSION['id']))
             $idUtil = $_SESSION['id'];
         else
             $idUtil = 0;
-        
-        $idSession = 1; //$_SESSION['login'];
-        
+                
         ?>
         
         <div id="global">
@@ -213,19 +212,20 @@
                 $resultats = $conn->query($sql);
                 $resultats->setFetchMode(PDO::FETCH_ASSOC);
                 
-				
                 if ($resultats != null) {
                     $i=0;
                     while ($row = $resultats->fetch()) {
                         //on recupère un tableau contenant les dates et les titres longs)
                         $donnees[$i]["dateDebut"] = $row["DATEDEBUT"];
+                        $donnees[$i]["dateFin"] = $row["DATEFIN"];
                         $donnees[$i]["libelleCourt"] = stripslashes($row["LIBELLECOURT"]);
                         $donnees[$i]["libelleLong"] = stripslashes($row["LIBELLELONG"]);
                         $i++;
                     }
                 }
+		
                 
-				
+                
                 for ($i = 0 ; $i <= 23 ; $i++) { //heures de 0 à 23
                     echo '<tr>';
                     echo '<td class="nomHeure">'.$i.':00</td>';
@@ -239,31 +239,36 @@
                             for ($k = 0 ; $k < count($donnees) ; $k++) {
                                 for ($min = 0 ; $min < 60 ; $min++){
                                     $heureTestee = date("Y-m-d H:i:s", mktime($time[0], $min, 00, $mois1, $jourDebut, $annee1));
-                                    //echo $heureTestee;
                                     if($heureTestee == $donnees[$k]["dateDebut"]) {
                                             $libelleCourt[$boucle] = $donnees[$k]["libelleCourt"];
                                             $libelleLong[$boucle] = $donnees[$k]["libelleLong"];
+                                            $tailleEve[$boucle] = calculTailleEve($donnees[$k]["dateDebut"], $donnees[$k]["dateFin"]);
                                             $boucle++;
                                     }
                                 }
                             }
                         }
-                        echo '<td onclick="document.location.href =\'jour.php?a='.$annee.'&m='.$mois.'&j='.($jour + $j-1).'&u=3\';">';
+                        
                         if ($boucle >= 1) {
+                            echo '<td class="evenement" onclick="document.location.href =\'jour.php?a='.$annee.'&m='.$mois.'&j='.($jour + $j-1).'&u=3\';">';
                             echo '<ul>';
                             for ($l = 0 ; $l < $boucle ; $l++) {
-                                echo '<li class="info">';
+                                echo '<li class="info" style="height:'. $tailleEve[$l] .'px;">';
                                 echo $libelleCourt[$l];
-                                echo '<span>' . $libelleLong[$l] . '</span>';
+                                echo '<span>'.$libelleLong[$l].'</span>';
                                 echo '</li>';
                             }
                             echo '</ul>';
+                            echo '</td>';
+                        }
+                        else {
+                            echo '<td onclick="document.location.href =\'jour.php?a='.$annee.'&m='.$mois.'&j='.($jour + $j-1).'&u=3\';"></td>';
                         }
                         echo'</td>';                            
                         $jourDebut++;       
                     }
                     $jourDebut = $jourDebut-7;
-                    echo '</tr>';
+                    echo '</tr>';                    
                 }
                 ?>
             </table>

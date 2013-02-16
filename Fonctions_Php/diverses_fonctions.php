@@ -410,4 +410,30 @@ function notifications($conn, $idDest, $nomAuteur, $prenomAuteur, $dateDebut, $d
 		envoyerMail($util[2], $libelleLong, $contenu, $contenu_txt);
 	}
 }
+
+function calculTailleEve($dateDebut, $dateFin) {
+    $dateFinHeure = date('H', strtotime($dateFin));
+    $dateFinMinute = date('i', strtotime($dateFin));
+    $dateDebutHeure = date('H', strtotime($dateDebut));
+    $dateDebutMinute = date('i', strtotime($dateDebut));
+    
+    $dureeHeure = $dateFinHeure - $dateDebutHeure;
+    $dureeMinute = $dateFinMinute - $dateDebutMinute;
+    
+    if ($dureeMinute != 0) {
+        if ($dureeMinute <= 15) {
+            return ($dureeHeure.'.25')*20;
+        }
+        else if ($dureeMinute > 15 and $dureeMinute <= 30) {
+            return ($dureeHeure.'.5')*20;
+        }
+        else if ($dureeMinute > 30 and $dureeMinute <= 45) {
+            return ($dureeHeure.'.75')*20;
+        }
+        elseif ($dureeMinute > 45 and $dureeMinute <= 59) {
+            return $dureeHeure*20;
+        }
+    }    
+    return ($dureeHeure.'.'.$dureeMinute)*20;
+}
 ?>

@@ -35,13 +35,14 @@
 
         //si les variables $_GET existent, on les utilises et au passage, on les stockent dans les variable de session
         if((!empty($_GET['a'])) && (!empty($_GET['m'])) && (!empty($_GET['j']))) {
-            $annee = $_GET['a'];
-            $mois = $_GET['m'];
-            $jour = $_GET['j'];
+            $timestamp = mktime(00, 00, 00, $_GET['m'], $_GET['j'], $_GET['a']);
+            $jour = date("d", $timestamp);
+            $mois = date("m", $timestamp);
+            $annee = date("Y", $timestamp);
             
-            $_SESSION['annee'] = $_GET['a'];
-            $_SESSION['mois'] = $_GET['m'];
-            $_SESSION['jour'] = $_GET['j'];
+            $_SESSION['annee'] = $annee;
+            $_SESSION['mois'] = $mois;
+            $_SESSION['jour'] = $jour;
 
             if($mois == 13)
                     $mois = 0;
