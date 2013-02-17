@@ -75,7 +75,9 @@ if($connLDAP){
 					$row = $resultats->fetch();
 					$idUser = $row['max(idutilisateur)+1'];
 					
-					$req = "INSERT INTO aci_utilisateur VALUES (".$idUser.", '".$contenu["sn"][0]."', '".$contenu["givenname"][0]."', '".$contenu["mail"][0]."', '".$contenu['uid'][0]."', '".md5(random(32))."', 1, 1, curdate())";
+					$nom = strtoupper($contenu["sn"][0]);
+					
+					$req = "INSERT INTO aci_utilisateur VALUES (".$idUser.", '".$nom."', '".$contenu["givenname"][0]."', '".$contenu["mail"][0]."', '".$contenu['uid'][0]."', '".md5(random(32))."', 1, 1, curdate())";
 
 					$resultats = $conn->query($req);
 				}

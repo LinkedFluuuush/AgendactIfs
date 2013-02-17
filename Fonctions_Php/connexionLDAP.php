@@ -5,7 +5,7 @@ if(!empty($_POST['login']) && !empty($_POST['mdp'])){
 	$login = $_POST['login'];
 	$mdp = $_POST['mdp'];
 }else{
-	//header("location:../Pages/Calendrier/mois.php?login=0");
+	header("location:../Pages/Calendrier/mois.php?login=0");
 	exit();
 }
 
@@ -75,10 +75,10 @@ if($row = $resultats->fetch()){
 			    echo "Fermeture de la connexion";
 			    ldap_close($connLDAP);
 			    
-			    //header("location:../");
+			    header("location:../");
 		    }
 		    else{
-			//header("location:../Pages/Calendrier/mois.php?login=0");
+			header("location:../Pages/Calendrier/mois.php?login=0");
 			exit();
 		    }
 	    }
