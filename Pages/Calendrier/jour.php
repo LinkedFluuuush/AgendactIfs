@@ -35,13 +35,14 @@
 
         //si les variables $_GET existent, on les utilises et au passage, on les stockent dans les variable de session
         if((!empty($_GET['a'])) && (!empty($_GET['m'])) && (!empty($_GET['j']))) {
-            $annee = $_GET['a'];
-            $mois = $_GET['m'];
-            $jour = $_GET['j'];
+            $timestamp = mktime(00, 00, 00, $_GET['m'], $_GET['j'], $_GET['a']);
+            $jour = date("d", $timestamp);
+            $mois = date("m", $timestamp);
+            $annee = date("Y", $timestamp);
             
-            $_SESSION['annee'] = $_GET['a'];
-            $_SESSION['mois'] = $_GET['m'];
-            $_SESSION['jour'] = $_GET['j'];
+            $_SESSION['annee'] = $annee;
+            $_SESSION['mois'] = $mois;
+            $_SESSION['jour'] = $jour;
 
             if($mois == 13)
                     $mois = 0;
@@ -63,7 +64,6 @@
         else
             $idUtil = 0;
         
-        $nomSession = 'Test'; //$_SESSION['login'];
 
         $sql = "SELECT aci_evenement.*, aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert FROM aci_evenement
         JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
@@ -90,7 +90,7 @@
                 
                 <p class="ajouter_retour">
                     <?php
-                    if(!empty($nomSession))
+                    if(!empty($idUtil))
                         echo '<a class="btn" href="../Evenement/creer.php?a='.date("Y", $dateTimestampDebutMEPJ).'&m='.
                             date("m", $dateTimestampDebutMEPJ).'&j='.date("d", $dateTimestampDebutMEPJ).'">Ajouter</a>';
 
@@ -151,18 +151,20 @@
                             if(!empty($lieu))
                                 echo 'Lieu : ' . $lieu . '<br>'; 
                             echo 'Post&eacute; par <b>' . $auteur . '</b> le <b>' . $dateInsert . '</b>';
-                            ?>
                             
-                            <div class="modifier_suppr">
-                                <form name="modifier" action="../Evenement/modifier.php" method="POST">
-                                    <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" />
-                                    <input class="btn" type="submit" name="modifier_eve" value="Modifier" />
-                                </form>
-                                <form name="modifier" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-                                    <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" />
-                                    <input class="btn" type="submit" name="supprimer_eve" value="Supprimer" onclick="confirm('Voulez-vous vraiment supprimer cet &eacute;v&egrave;nement ?');"/>
-                                </form>
-                            </div>
+                            
+                            if(!empty($idUtil)) { ?>
+                                <div class="modifier_suppr">
+                                    <form name="modifier" action="../Evenement/modifier.php" method="POST">
+                                        <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" />
+                                        <input class="btn" type="submit" name="modifier_eve" value="Modifier" />
+                                    </form>
+                                    <form name="modifier" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+                                        <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" />
+                                        <input class="btn" type="submit" name="supprimer_eve" value="Supprimer" onclick="confirm('Voulez-vous vraiment supprimer cet &eacute;v&egrave;nement ?');"/>
+                                    </form>
+                                </div>
+                            <?php } ?>
                         </p>
 
                         <?php $i++;

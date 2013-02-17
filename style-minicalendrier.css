@@ -1,5 +1,9 @@
+#miniCalendrier {
+    min-width: 130px;
+}
+
 #miniCalendrier table {
-    width: 100%;
+    width: 100%; /* 100% de #nav */
     text-align: center;
     background-color: #ececec;
     border-collapse: collapse;

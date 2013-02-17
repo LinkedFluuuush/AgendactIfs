@@ -74,10 +74,13 @@ input, textarea, select {
 
 /* PARTIE SOUS-MENU */
 
+li.connexion input.zoneDeSaisie {
+    width: 90%;
+}
+
 #nav {
     float: left;
     width: 13%;
-    min-width: 130px;
     position: absolute;
     height: 98.5%;
     overflow: auto;
@@ -88,6 +91,7 @@ input, textarea, select {
 ul.nav {
     margin: 0;
     padding: 0;
+    min-width: 130px;
 }
 
 ul.nav * {
@@ -431,14 +435,16 @@ ul.nav > li ul li.priorite label:hover {
 
 #corpsCal.semaine td {
    /* hauteur des cases */
-   height: 27px;
+   height: 40px;
       
    /* alignement du texte à l'intérieur des cases */
    vertical-align: middle;
+   /*padding-left: 1%;*/
 }
 
 #corpsCal.semaine td.nomHeure {
-    vertical-align: middle;
+    padding-top: 0;
+    vertical-align: top;
     border-style: none;
     text-align: right;
     padding-right: 30px; /* pour que les num de semaines ne soient pas collés au tableau du mois */
@@ -449,30 +455,44 @@ ul.nav > li ul li.priorite label:hover {
     font-weight: bold;
     text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8);
     font-size: .9em;
+    border-bottom: 1px solid #cfcfcf;
+}
+
+#corpsCal.semaine td.evenement {
+    /* Test couleur évènements semaine */
+   
 }
 
 #corpsCal.semaine ul {
-    text-align: left;
     list-style-type: none;
     padding: 0;
-    padding-top: 3px;
-    padding-left: 3px;
+    margin: 0;
+    position: absolute;
 }
 
 /* Infobulle */
 
 #corpsCal.semaine li.info {
-    margin:0;
-   position: relative;
+   margin:0;
+   padding: 0;
+   display: inline;
+   margin-right: 2px;
+   padding-left: 1px;
+   padding-right: 1px;
+   /*position: relative;*/
    text-decoration: none;
-   /*border-bottom: 1px gray dotted;*/ /* on souligne le texte */
+   background-color: #a5c1e0;
+   border: 1px solid #7fa2cb;
+   float: left;
 }
+
 #corpsCal.semaine li.info span {
    display: none; /* on masque l'infobulle */
 }
 #corpsCal.semaine li.info:hover {
    background: none; /* correction d'un bug IE */
    z-index: 500; /* on définit une valeur pour l'ordre d'affichage */
+   background-color: #bed2e8;
 
 }
 #corpsCal.semaine li.info:hover span {
