@@ -184,6 +184,7 @@
                     <th><?php echo '<a href=\'semaine.php?annee='.$anneeSuiv.'&mois='.$moisSuiv.'&jour='.$jourSuiv.'\'> &#9658; </a>'; ?></th>
                 </tr>
             </table>
+                        
             <table>
                 <tr>
                     <th></th>
@@ -222,9 +223,7 @@
                         $donnees[$i]["libelleLong"] = stripslashes($row["LIBELLELONG"]);
                         $i++;
                     }
-                }
-		
-                
+                }               
                 
                 for ($i = 0 ; $i <= 23 ; $i++) { //heures de 0 à 23
                     echo '<tr>';
@@ -240,10 +239,10 @@
                                 for ($min = 0 ; $min < 60 ; $min++){
                                     $heureTestee = date("Y-m-d H:i:s", mktime($time[0], $min, 00, $mois1, $jourDebut, $annee1));
                                     if($heureTestee == $donnees[$k]["dateDebut"]) {
-                                            $libelleCourt[$boucle] = $donnees[$k]["libelleCourt"];
-                                            $libelleLong[$boucle] = $donnees[$k]["libelleLong"];
-                                            $tailleEve[$boucle] = calculTailleEve($donnees[$k]["dateDebut"], $donnees[$k]["dateFin"]);
-                                            $boucle++;
+                                        $libelleCourt[$boucle] = $donnees[$k]["libelleCourt"];
+                                        $libelleLong[$boucle] = $donnees[$k]["libelleLong"];
+                                        $tailleEve[$boucle] = calculTailleEve($donnees[$k]["dateDebut"], $donnees[$k]["dateFin"]);
+                                        $boucle++;
                                     }
                                 }
                             }
@@ -273,6 +272,6 @@
                 ?>
             </table>
         </div>
-        </div>
+        </div>        
     </body>
 </html>
