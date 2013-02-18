@@ -11,21 +11,22 @@ $nomPage = $temp[sizeof($temp)-1];
         <li>
             <div class="header">Connexion</div>
             <ul class="menu">
-                    <?php if(empty($_SESSION['id'])){ 
+                <?php if(empty($_SESSION['id'])){ ?>
+                    <li class="connexion">
+                        <form name="connexion" action="../../Fonctions_Php/connexionLDAP.php" method="POST">
+                            <input class="zoneDeSaisie" type="text" name="login" placeholder="Identifiant"><br>
+                            <input class="zoneDeSaisie" type="password" name="mdp" placeholder="Mot de passe">
+                            <input class="btn" type="submit" name="valider_conn" value="Valider">
+                        </form>
+                        <?php
                         if(isset($_GET['login']) && $_GET['login'] == 0){
-                            echo "<span style=\"color:red\">Connexion echouée.</span>";
+                            echo '<span style="color:red;">Connexion echouée.</span>';
                         } ?>
-                        <li class="connexion">
-                            <form name="connexion" action="../../Fonctions_Php/connexionLDAP.php" method="POST">
-                                <input class="zoneDeSaisie" type="text" name="login" placeholder="Identifiant"><br>
-                                <input class="zoneDeSaisie" type="password" name="mdp" placeholder="Mot de passe">
-                                <input class="btn" type="submit" name="valider_conn" value="Valider">
-                            </form>
-                        </li>
-                    <?php }
-                    else {
-                        echo "<li onclick =\"document.location.href ='../../Fonctions_Php/deconnexion.php'\"><a href=\"../../Fonctions_Php/deconnexion.php\">".$_SESSION['prenom']." ".ucfirst(strtolower($_SESSION['nom']))." - Déconnexion</a></li>";
-                    } ?>
+                    </li>
+                <?php }
+                else {
+                    echo "<li onclick =\"document.location.href ='../../Fonctions_Php/deconnexion.php'\"><a href=\"../../Fonctions_Php/deconnexion.php\">".$_SESSION['prenom']." ".ucfirst(strtolower($_SESSION['nom']))." - Déconnexion</a></li>";
+                } ?>
             </ul>
         </li>
         <li>
