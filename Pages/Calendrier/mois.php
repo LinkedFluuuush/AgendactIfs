@@ -21,10 +21,13 @@
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
 
+        // INITIALISATION DES VARIABLES $jour, $mois, $annee --------------------------------------------------
+        
+               
         //on définit des valeurs par defaut aux variable année, mois et jour (par défaut : aujourd'hui)
         $annee = date('Y');
         $mois = date('m');
-        $jour = date('d');
+        $jour = 1;
 
         //si les variables $_POST existent, on les utilises et au passage, on les stockent dans les variable de session
         if((!empty($_GET['annee'])) && (!empty($_GET['mois']))) {
@@ -43,13 +46,11 @@
         if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty($_SESSION['jour']))) {
             $annee = $_SESSION['annee'];
             $mois = $_SESSION['mois'];
-            $jour = $_SESSION['jour'];
+            $jour = 1;
 
             if($mois == 13)
                 $mois = 0;
         }
-
-
 
         // Nombre de jours du mois
         $days = retourneJour($annee, $mois);
@@ -57,9 +58,6 @@
         //on genere le timestamp de début et de fin de mois
         $dateTimestampDebut = mktime(00, 00, 00, $mois, 01, $annee);
         $dateTimestampFin = mktime(23, 59, 59, $mois, $days, $annee);
-
-        //$dateTimestampDebut = "$annee-$mois-01 00:00:00";
-        //$dateTimestampFin = "$annee-$mois-$days 23:59:59";
 
         //On définit le premier et le dernier jour du mois, ainsi que le nombre de semaines
         $firstDay = date('w',$dateTimestampDebut - 86400);
@@ -166,8 +164,7 @@
 
                     // Affichage des n° de semaines + lien avec paramètres transmis à semaine.php
                     //-------------------------------------------------------------------------------------------------------------------
-
-                    $timestamp = mktime(23, 59, 59, $mois, $jour, $annee);
+                    $timestamp = mktime(00, 00, 00, $mois, $jour, $annee);
                     $numSemaine = date('W', $timestamp); // indique le numéro de semaine
 
                     echo '<td class="numSemaine" onclick="document.location.href = \'semaine.php?annee='.$annee.'&amp;mois='.$mois.'&amp;jour='.$jour.'\';"><a href="semaine.php?annee='.$annee.'&amp;mois='.$mois.'&amp;jour='.$jour.'">'. $numSemaine . '</a></td>';
