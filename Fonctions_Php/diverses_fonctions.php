@@ -50,7 +50,13 @@ function saisieFormReq($chaine, $conn){
 				$resultats = $conn->query($req);
 				
 				while($row = $resultats->fetch()){
-					echo "<div onclick =this.parentNode.removeChild(this);>".$row['info']." <img src=\"../../Images/boutonMoinsReduit2.png\" style=\"cursor:pointer\"/><input type=\"hidden\"name=\"".$chaine."[]\" value=\"".explode(" ",$row['info'])[2]."\"/></div>";
+					$mail = explode(" ",$row['info'])[2];
+					$div =  "<div onclick =this.parentNode.removeChild(this);>";
+					$div .= $row['info'];
+					$div .= " <img src=\"../../Images/boutonMoinsReduit2.png\" style=\"cursor:pointer\"/><input type=\"hidden\"name=\"";
+					$div .= $chaine;
+					$div .= "[]\" value=\"".$mail."\"/></div>";
+					echo $div;
 				}
 			}
 		}
