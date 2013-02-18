@@ -50,12 +50,12 @@ function saisieFormReq($chaine, $conn){
 				$resultats = $conn->query($req);
 				
 				while($row = $resultats->fetch()){
-					$mail = explode(" ",$row['info'])[2];
+					$mail = explode(" ",$row['info']);
 					$div =  "<div onclick =this.parentNode.removeChild(this);>";
 					$div .= $row['info'];
 					$div .= " <img src=\"../../Images/boutonMoinsReduit2.png\" style=\"cursor:pointer\"/><input type=\"hidden\"name=\"";
 					$div .= $chaine;
-					$div .= "[]\" value=\"".$mail."\"/></div>";
+					$div .= "[]\" value=\"".$mail[2]."\"/></div>";
 					echo $div;
 				}
 			}
