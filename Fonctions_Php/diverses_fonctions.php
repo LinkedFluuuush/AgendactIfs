@@ -9,11 +9,25 @@ function descGroupe($idGroupe, $conn, $i){
 			$option.="&nbsp &nbsp &nbsp";
 		}
 		$option.='<img id="'.utf8_encode($row['idgroupe']).'" src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/>';
-		$option.='<label for="'.utf8_encode($row['idgroupe']).'">'.utf8_encode($row['libelle']).'</label>';
-		$option.='<input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
+		$option.='<label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')">'.$row['libelle'].'</label>';
+		$option.='<input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).' '.checkAuto(utf8_encode($row['idgroupe'])).'"/><br/>';
 		echo $option;
 		descGroupe($row['idgroupe'], $conn, $i+1);
 		echo "</div>";
+	}
+}
+
+function checkAuto($id){
+	if(!empty($_POST['groupe'])){
+		$groupe[] = $_POST['groupe'];
+				
+		foreach($groupe as $cle => $contenu){
+			foreach($contenu as $cle2 => $contenu2){
+				if($contenu2 == $id){
+					return "checked";
+				}
+			}
+		}
 	}
 }
 
@@ -23,6 +37,23 @@ function saisieFormString($chaine)
 		echo $_POST["$chaine"];
 	else
 		echo "";
+}
+
+function saisieFormReq($chaine, $conn){
+	if(!empty($_POST["$chaine"])){
+		$donnee[] = $_POST["$chaine"];
+		
+		foreach($donnee as $cle => $contenu){
+			foreach($contenu as $cle2 => $contenu2){
+				$req = "SELECT CONCAT(nom,' ', prenom,' ', adresse_mail) AS info FROM aci_utilisateur WHERE adresse_mail = '".$contenu2."';";
+				$resultats = $conn->query($req);
+				
+				while($row = $resultats->fetch()){
+					echo "<div onclick =this.parentNode.removeChild(this);>".$row['info']." <img src=\"../../Images/boutonMoinsReduit2.png\" style=\"cursor:pointer\"/><input type=\"hidden\"name=\"".$chaine."[]\" value=\"".explode(" ",$row['info'])[2]."\"/></div>";
+				}
+			}
+		}
+	}
 }
 
 function regexChaine($chaine, $limiteTaille)
