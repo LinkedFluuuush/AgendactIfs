@@ -292,6 +292,7 @@ if(!empty($_POST['submit']))
 			    <td rowspan="4" id="tddest">
                                 <label for="addParticipant"><b>Ajouter un destinataire</b></label><br>
                                 <div id="dest" style="overflow:auto;height:250px;width:250px;border:1px solid #abadb3;padding:5px;background-color:white;">
+				<?php saisieFormReq("dest", $conn);?>
                                 </div><br/>
                                 <input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
                                 <div id="resultsParticipant"></div>
@@ -339,7 +340,10 @@ if(!empty($_POST['submit']))
                                     $req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe NOT IN (SELECT idgroupe_1 FROM aci_contenir)";
                                     $resultats = $conn -> query($req);
                                     while($row = $resultats->fetch()){
-                                        echo '<img id="'.utf8_encode($row['idgroupe']).'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/><label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')"> '.$row['libelle'].'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
+                                        echo '<img id="'.utf8_encode($row['idgroupe']).'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/>
+					<label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')"> '
+					.$row['libelle'].'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" 
+					id="'.utf8_encode($row['idgroupe']).'" '.checkAuto(utf8_encode($row['idgroupe'])).'/><br/>';
                                         descGroupe($row['idgroupe'], $conn, 1);
                                     }
                                     ?>
@@ -542,13 +546,8 @@ if(!empty($_POST['submit']))
 		div.appendChild(img);
 		div.appendChild(hidden);
                 div.onclick = function(){
-                        removeChildSafe(div);
-                        other = div.ParentNode.childNodes;
-                        alert(other+" fin");
-                        for(i = 0; i <other.length; i++){
-                            other[i].selected="true";
-                        }
-                }	
+			removeChildSafe(div);	
+		}
                 selected.appendChild(div);
                 searchElement.value = '';
                 results.style.display = 'none';
