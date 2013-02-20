@@ -115,7 +115,7 @@
                 </p>
                 
                 <?php               
-                if ($resultats != null) {
+                if (!empty($resultats)) {
                     $i=1;                    
                     while ($row = $resultats->fetch() and $i != 0) {
                         $numeroEve = $row['IDEVENEMENT'];	
@@ -158,7 +158,7 @@
 								if($idUtil == $idAuteur)
 								{?>
 									<div class="modifier_suppr">
-										<form name="modifier" action="../Evenement/modifier.php" method="POST">
+										<form name="modifier" action="../Evenement/modifier.php?i=<?php echo $numeroEve;?>" method="POST">
 											<input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" />
 											<input class="btn" type="submit" name="modifier_eve" value="Modifier" />
 										</form>

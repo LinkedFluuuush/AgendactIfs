@@ -213,7 +213,7 @@
                 $resultats = $conn->query($sql);
                 $resultats->setFetchMode(PDO::FETCH_ASSOC);
                 
-                if ($resultats != null) {
+                if (!empty($resultats)) {
                     $i=0;
                     while ($row = $resultats->fetch()) {
                         //on recupère un tableau contenant les dates et les titres longs)

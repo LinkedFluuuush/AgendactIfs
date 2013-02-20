@@ -144,7 +144,7 @@
 
                 $resultats = $conn->query($sql);
 
-                if ($resultats != null) {
+                if (!empty($resultats)) {
                     $cons = 0;
                     while ($row = $resultats->fetch()) {
                         //on recupère un tableau contenant les date et les titre long)
