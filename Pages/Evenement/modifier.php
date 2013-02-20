@@ -1,38 +1,102 @@
-﻿<?php header( 'content-type: text/html; charset=utf-8' ); ?>
+﻿<?php session_start(); 
+header( 'content-type: text/html; charset=utf-8' ); ?>
 <!DOCTYPE html>
 <html>
-<head>
+    <head>
 	<title>Modifier un évènement</title>
         <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
         <link href="../../style.css" rel="stylesheet" type="text/css">
         <link href="../../style-minicalendrier.css" rel="stylesheet" type="text/css">
-</head>
-<body>
+        <link href="../../bootstrap.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
 
 <?php
 //Connexion a la bdd
 include("../../Fonctions_Php/connexion.php");
-$idUtil = 1;
+include_once("../../Fonctions_Php/diverses_fonctions.php");
+
+if ($_SESSION['id'] && !empty($_GET['i'])) {
+    $idUtil = $_SESSION['id'];
+    $req = "SELECT idUtilisateur FROM aci_evenement WHERE idEvenement = ".$_GET['i'];
+    $resultat = $conn->query($req);
+    try{
+	$row = $resultat->fetch();
+	if($row[0] != $idUtil)
+		// Redirection vers la page mois.php si la personne n'est pas l'auteur
+		header('Location: ../Calendrier/mois.php');
+    }
+    catch(Exception $e){
+	// Redirection vers la page mois.php si l'evenement n'existe pas
+	header('Location: ../Calendrier/mois.php');
+    }
+}
+else {
+    // Redirection vers la page mois.php si la personne n'est pas connectée
+    header('Location: ../Calendrier/mois.php');
+}
+
 $insertion = false;
 
 //--------REGEX---------//
-include_once("../../Fonctions_Php/diverses_fonctions.php");
 
-if(!empty($_POST['idEve']))
+$valide = true; //Permet de savoir si au moins un élément saisi dans le formulaire est invalide
+$erreurLibelleCourt = "";
+$erreurLibelleLong = "";
+$erreurDescription = "";
+$erreurDateDebut = "";
+$erreurDateFin = "";
+$erreurDate ="";
+$erreurHeureDebut = "";
+$erreurHeureFin = "";
+
+if(!empty($_POST['submit']))
 {
-
-	$idEve = $_POST['idEve'];
-	//Récupération des attributs de l'évènement
-	$sql = "SELECT aci_evenement.* from aci_evenement where aci_evenement.idevenement = $idEve";
-        
-    $resultats = $conn->query($sql);
-	$resultats = $resultats->fetch();
+	//Vérification de la saisie des champs nécessaires
+	if(empty($_POST['libelleCourt']))
+	{
+		$valide = false;
+		$erreurLibelleCourt = "Obligatoire";
+	}
 	
-	$libelleCourt = $resultats['libellecourt'];
-	echo $libelleCourt;
-	//traiter les résultats et le remplissage de la page avec les données récupérées dans la base.
+	if(empty($_POST['libelleLong']))
+	{
+		$valide = false;
+		$erreurLibelleLong = "Obligatoire";
+	}
 	
+	if(empty($_POST['description']))
+	{
+		$valide = false;
+		$erreurDescription = "Obligatoire";
+	}
 	
+	if(empty($_POST['dateDebut']))
+	{
+		$valide = false;
+		$erreurDateDebut = "Obligatoire";
+	}
+	
+	if($valide)
+	{
+		$priorite = $_POST['priorite'];
+		$public = $_POST['public'];
+		$libelleCourt = $_POST['libelleCourt'];
+		$libelleLong = $_POST['libelleLong'];
+		$description = $_POST['description'];
+		$lieu = $_POST['lieu'];
+	
+		//Remise à zéro des variables pour tests par expressions régulières
+		$valide = true;
+		$erreurLibelleCourt = "";
+		$erreurLibelleLong = "";
+		$erreurDescription = "";
+		$erreurDateDebut = "";
+		$erreurDateFin = "";
+		$erreurDate = "";
+		$erreurHeureDebut = "";
+		$erreurHeureFin = "";
+		
 		//Libelle court
 		$libelleCourt = accents($libelleCourt);
 		
@@ -58,25 +122,27 @@ if(!empty($_POST['idEve']))
 			$erreurDateDebut = "La date saisie est invalide";
 		}
 		
-		if(regexDate($_POST['dateFin']) && comparaisonDate($_POST['dateFin'], date("d/m/Y")))
-			$dateFin = $_POST['dateFin'];
-		else if (empty($_POST['dateFin']))
+		//Vérifications nécessaires seulement si une date de fin est définie
+		if(!empty($_POST['dateFin']))
 		{
-			$dateFin = null;
-		}
-		else
-		{
-			$valide = false;
-			$erreurDateFin = "La date saisie est invalide";
-		}
-		
-		if(comparaisonDate($_POST['dateFin'], $_POST['dateDebut'])){}
-		else
-		{
-			$valide = false;
-			$erreurDate = "Un évènement ne peut pas se terminer avant de commencer";
-		}
+			if(regexDate($_POST['dateFin']) && comparaisonDate($_POST['dateFin'], date("d/m/Y")))
+				$dateFin = $_POST['dateFin'];
+			else
+			{
+				$valide = false;
+				$erreurDateFin = "La date saisie est invalide";
+			}
 			
+			if(comparaisonDate($_POST['dateFin'], $_POST['dateDebut'])){}
+			else
+			{
+				$valide = false;
+				$erreurDate = "Un évènement ne peut pas se terminer avant de commencer";
+			}
+		}
+		else
+			$dateFin = null;
+		
 		//Heure
 		if(regexHeure($_POST['heureDebut']))
 			$heureDebut = $_POST['heureDebut'];
@@ -103,12 +169,7 @@ if(!empty($_POST['idEve']))
 		}
 	
 		if($valide)
-		{
-			//Récupération du prochain numéro d'événement attribuable
-			$reqIdEv = "select ifnull(max(idevenement),0)+1 from aci_evenement";
-			$temp = $conn->query($reqIdEv);
-			$idEv = $temp->fetch();
-			
+		{	
 			//Récupération de l'idlieu du lieu à ajouter à l'événement
 			if(!empty($lieu))
 			{
@@ -123,406 +184,472 @@ if(!empty($_POST['idEve']))
 			
 			//Insertion de l'événement
 			//echo "$idEv[0], $idUtil, $priorite, 1, $libelleLong, $libelleCourt, $description, $dateDebut $heureDebut, $dateFin $heureFin, $public";
-			$sql = "UPDATE `aci_evenement` SET `IDPRIORITE` = $priorite, `IDLIEU` = $idLieu, `LIBELLELONG` = '$libelleLong', `LIBELLECOURT` = '$libelleCourt', `DESCRIPTION` = '$description', `DATEDEBUT` = str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), `DATEFIN` = str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), `ESTPUBLIC`
-			WHERE `IDEVENEMENT` = $idEv";
+			//$sql = "INSERT INTO `aci_evenement` (`IDEVENEMENT`, `IDUTILISATEUR`, `IDPRIORITE`, `IDLIEU`, `LIBELLELONG`, `LIBELLECOURT`, `DESCRIPTION`, `DATEDEBUT`, `DATEFIN`, `ESTPUBLIC`, `DATEINSERT`) 
+			//VALUES ($idEv[0], $idUtil, $priorite, $idLieu, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, curdate())";
 
+			$sql = "UPDATE aci_evenement SET IDPRIORITE = ".$priorite.", IDLIEU = ".$idLieu.", LIBELLELONG = ".$libelleLong.", LIBELLECOURT=".$libelleCourt.", DESCRIPTION = ".$description.", 
+			DATEDEBUT = str_to_date('".$dateDebut." ".$heureDebut."', '%d/%m/%Y %H:%i'), DATEFIN = str_to_date('".$dateFin." ".$heureFin."', '%d/%m/%Y %H:%i'), ESTPUBLIC = ".$public.", DATEINSERT = curdate() WHERE idEvenement = ".$_GET['i'];
 			
 			$resultats = $conn->query($sql);
 			
-			if(!empty($_POST['addParticipant0']) && $public == 0)
+			$sqlDelRappel = "DELETE FROM aci_rappel WHERE idEvenement = ".$_GET['i'];
+			$sqlDelDest = "DELETE FROM aci_destutilisateur WHERE idEvenement = ".$_GET['i'];
+			$sqlDelGroupe = "DELETE FROM aci_destgroupe WHERE idEvenement = ".$_GET['i'];
+			
+			$resultats = $conn->query($sqlDelRappel);
+			$resultats = $conn->query($sqlDelDest);
+			$resultats = $conn->query($sqlDelGroupe);
+
+			
+			//Préparation de la création des rappels - récupération du premier idrappel utilisable
+			$sqlIdRappel= "select max(idrappel)+1 from aci_rappel";
+			$temp2 = $conn->query($sqlIdRappel);
+			$idRappel = $temp2->fetch();
+			
+			//Création du rappel à l'auteur de l'événement
+			$sqlRappel = "INSERT INTO aci_rappel VALUES($idRappel[0], $idEv[0], $idUtil, str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i') - INTERVAL 1 DAY)";
+			$idRappel[0]++;
+			$exec = $conn->query($sqlRappel);
+
+			if(!empty($_POST['dest']) && $public == 0)
 			{
-				$i = 0;
-
-				while(!empty($_POST["addParticipant$i"]))
-				{
-					$dest = $_POST["addParticipant$i"];
-
-					//Récupération de l'idutilisateur du participant à ajouter à l'événement
-					$sqlRecupId = "SELECT idutilisateur FROM aci_utilisateur WHERE adresse_mail = '$dest'";
-
-					$temp = $conn->query($sqlRecupId);
-					$id = $temp->fetch();
-					$id =  $id['idutilisateur'];
-
-					$sqlDestUtilisateur = "INSERT INTO `aci_bdd`.`aci_destutilisateur` (`IDUTILISATEUR`, `IDEVENEMENT`, `DATEINSERT`) 
-					VALUES ($id, $idEv[0], curdate())";
+				$dest[] = $_POST['dest'];
+				
+				foreach($dest as $cle => $contenu){
+					foreach($contenu as $cle2 => $contenu2){
 					
-					$insertionUtil = $conn->query($sqlDestUtilisateur);
-					
-					$i++;
+						$sqlId = "SELECT idutilisateur FROM aci_utilisateur WHERE adresse_mail='".$contenu2."'";
+						
+						$temp = $conn->query($sqlId);
+						$idDestUtil = $temp->fetch();
+						
+						//Insertion des utilisateurs destinataires
+						$sql = "INSERT INTO aci_destutilisateur VALUES (".$idDestUtil[0];
+						$sql.=", ".$idEv[0].", curdate())";
+
+						$insert = $conn->query($sql);
+
+						//Envoi de notifications
+						notifications($conn, $idDestUtil[0], $_SESSION['nom'], $_SESSION['prenom'], $dateDebut.' '.$heureDebut, $dateFin.' '.$heureFin, $libelleLong, 'creer');
+						
+						//Création de rappels
+						$sqlRappel = "INSERT INTO aci_rappel VALUES($idRappel[0], $idEv[0], $idDestUtil[0], str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i') - INTERVAL 1 DAY)";
+						$idRappel[0]++;
+						$exec = $conn->query($sqlRappel);
+					}
 				}
 			}
 			
-			//TODO
-			/* for($i=0;$i<$destGroupe.length;$i++)
+			if(!empty($_POST['groupe']) && $public == 0)
 			{
-				$sqlDestGroupe = "INSERT INTO `aci_bdd`.`aci_destgroupe` (`IDEVENEMENT`, `IDGROUPE`, `DATEINSERT`) 
-				VALUES ($idEv[0], $destGroupe[$i], curdate())";
-			
-				$insertionGroupe = $conn->query($sqlDestGroupe);
-			}*/
-			
+				$groupe[] = $_POST['groupe'];
+				
+				foreach($groupe as $cle => $contenu){
+					foreach($contenu as $cle2 => $contenu2){
+					
+						//Insertion des utilisateurs destinataires
+						$sql = "INSERT INTO aci_destgroupe VALUES (".$idEv[0].", $contenu2";
+						$sql.=", curdate())";
+
+						$insert = $conn->query($sql);
+						
+						$sqlMail = "SELECT idutilisateur FROM aci_composer JOIN aci_groupe USING ( idgroupe ) WHERE idgroupe LIKE '".$contenu2."%'";
+						
+						$temp = $conn->query($sqlMail);
+						
+						while($mailGroupe = $temp->fetch())
+						{
+							//Envoi de notifications
+							notifications($conn, $mailGroupe[0], $_SESSION['nom'], $_SESSION['prenom'], $dateDebut.' '.$heureDebut, $dateFin.' '.$heureFin, $libelleLong, 'creer');
+							
+							$sqlRappel = "INSERT INTO aci_rappel VALUES($idRappel[0], $idEv[0], $mailGroupe[0], str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i') - INTERVAL 1 DAY)";
+							
+							//Création de rappels
+							$idRappel[0]++;
+							$exec = $conn->query($sqlRappel);
+						}
+						
+						$temp->closeCursor();
+					}
+				}
+			}
+						
 			if(!empty($resultats))
 				$insertion = true;
 		}
 	}
+}
 ?>
-<div id="global">
+        <div id="global">
             <?php include('../menu.php'); ?>
-        <div id="corpsCal" class="creer">
-            <table class="titreCal">
-                <tr class="titreCal">
-                    <th>modifier un évènement</th>
-                </tr>
-            </table>
-<form action="" name="FormCreaEvenement" method="post" enctype="multipart/form-data" id="formCreation">
-	<table cellpadding="4" align="center">
-		<tr>
-			<td class="descForm">Priorité : </td>
-			<td class="Form">
-			<select name="priorite" id ="priorite">
-				<option value="1">Haute</option>';
-				<option value="2" selected>Moyenne</option>';
-				<option value="3">Basse</option>';
-			</select>
-			</td>
-		<tr>
-			<td class="descForm">Titre long : </td>
-			<td class="Form"><input type="text" name="libelleLong" id="Eve_titreLong" value="<?php saisieFormString("libelleLong");?>" class="libelleLong" maxlength=32 />
-			<?php echo "<br><b id=\"formErreur\"> $erreurLibelleLong </b>"; ?></td>
-		</tr>
-		<tr>
-			<td class="descForm">Titre court : </td>
-			<td class="Form"><input type="text" name="libelleCourt" id="Eve_titreCourt" value="<?php saisieFormString("libelleCourt");?>" class="libelleCourt" maxlength=5 />
-			<?php echo "<br><b id=\"formErreur\"> $erreurLibelleCourt </b>"; ?></td>
-		</tr>
-		<tr>
-			<td class="descForm">Description :</td>
-			<td class="Form"><textarea name="description" rows="5" cols="30" id="Eve_description" class="area"><?php saisieFormString("description");?></textarea>
-			<?php echo "<br><b id=\"formErreur\"> $erreurDescription </b>"; ?></td>
-		</tr>
-		<tr>
-			<td class="descForm">Date de début :</td>
-			<td class="Form">
-				<input type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateDebut");?>" class="dateDebut" maxlength=10 size=11/>
-				<input type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="<?php saisieFormString("heureDebut");?>" class="heureDebut" maxlength=5 size=4/>
-				<?php echo "<br><b id=\"formErreur\"> $erreurDateDebut $erreurHeureDebut </b>"; ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="descForm">Date de fin :</td>
-			<td class="Form">
-				<input type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateFin");?>"class="dateFin" maxlength=10 size=11/>
-				<input type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php saisieFormString("heureFin");?>" class="heureFin" maxlength=5 size=4/>
-				<?php echo "<br><b id=\"formErreur\"> $erreurDateFin $erreurHeureFin </b>"; ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="descForm">Lieu : </td>
-			<td class="Form">
-				<input type="text" name="lieu" value="<?php saisieFormString("lieu");?>" id="Eve_lieu" autocomplete="off" />
-				<div id="resultsLieu"></div>
-			</td>
-		</tr>
-		<tr>
-			<td class="descForm"> Type : </td>
-			<td class="Form">
-			<input type="radio" name="public" id="public" value="1" checked="checked"> <label for="public">public</label>
-			<input type="radio" name="public" id="prive" value="0"> <label for="prive">privé</label>
-			</td>
-		</tr>
-		<tr>
-			<td class="descForm"> Ajouter un destinataire : </td>
-			<td class="Form"> 
-			<select id="dest" multiple style="width:250px;">
-			</select><br/>
-			<input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
-			<div id="resultsParticipant"></div></td>
-		</tr>
-		<tr><td class="descForm"> Ajouter un groupe de participants : </td>
-		<td class="Form">
-			<div id="groupe" style="overflow:auto;height:250px;width:250px;border:1px solid;border-radius:5px;padding:5px;">
-				<?php
-					$req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe NOT IN (SELECT idgroupe_1 FROM aci_contenir)";
-					$resultats = $conn -> query($req);
-					while($row = $resultats->fetch()){
-						echo '<img id="'.utf8_encode($row['idgroupe']).'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/> <label for="'.utf8_encode($row['idgroupe']).'">'.utf8_encode($row['libelle']).'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'"/><br/>';
-						descGroupe($row['idgroupe'], $conn, 1);
-					}
-				?>
-			</div>
-		</td></tr>
-		<tr><td>
-			<input type="submit" name="submit" value="Valider" class="boutonForm"/>
-			<input type="reset" value="R&eacute;initialiser" class="boutonForm" onclick="reset()"/>
-		</td></tr>
-	</table>
-</form>
+            <div id="corpsCal" class="creer">
+                <table class="titreCal">
+                    <tr class="titreCal">
+                        <th>Créer un évènement</th>
+                    </tr>
+                </table>
+                
+                <form action="" name="FormCreaEvenement" method="post" enctype="multipart/form-data" id="formCreation">
+                    <table cellpadding="4">
+                        <tr>
+                            <td>
+                                <b>Priorité</b> <br>
+                                <select name="priorite" id="priorite">
+                                    <option value="1">Haute</option>';
+                                    <option value="2" selected>Moyenne</option>';
+                                    <option value="3">Basse</option>';
+                                </select>
+                            </td>
+                           <!--  <td rowspan="4">
+                                <label for="addParticipant"><b>Ajouter un destinataire</b></label><br>
+                                <select id="dest" name="dest[]" multiple style="height:200px;width:250px;">
+                                </select><br/>
+                                <input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
+                                <div id="resultsParticipant"></div>
+                            </td> -->
+			    
+			    <td rowspan="4" id="tddest">
+                                <label for="addParticipant"><b>Ajouter un destinataire</b></label><br>
+                                <div id="dest" style="overflow:auto;height:250px;width:250px;border:1px solid #abadb3;padding:5px;background-color:white;">
+				<?php saisieFormReq("dest", $conn);?>
+                                </div><br/>
+                                <input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
+                                <div id="resultsParticipant"></div>
+                            </td>
+                        </tr>
 
-<?php if($insertion) echo '<h3 align="center">Insertion réalisée avec succés</h3>'; ?>
-</body>
+                        <tr>
+                            <td>
+                                <label for="Eve_titreLong"><b>Titre long</b></label> <br>
+                                <input type="text" name="libelleLong" id="Eve_titreLong" value="<?php saisieFormString("libelleLong");?>" class="libelleLong" maxlength=32 />
+                                <?php echo "<b id=\"formErreur\"> $erreurLibelleLong </b>"; ?>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <label for="Eve_titreCourt"><b>Titre court</b></label> <br>
+                                <input type="text" name="libelleCourt" id="Eve_titreCourt" value="<?php saisieFormString("libelleCourt");?>" class="libelleCourt" maxlength=5 />
+                                <?php echo "<b id=\"formErreur\"> $erreurLibelleCourt </b>"; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="Eve_description"><b>Description</b></label> <br>
+                                <textarea name="description" rows="5" cols="30" id="Eve_description" class="area"><?php saisieFormString("description");?></textarea>
+                                <?php echo "<b id=\"formErreur\"> $erreurDescription </b>"; ?>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <label for="Eve_dateDebut"><b>Date de début</b></label><br>
+                                <?php if (!empty($_GET['a']) and !empty($_GET['m']) and !empty($_GET['j'])) { ?>
+                                    <input type="text" name="dateDebut" id="Eve_dateDebut" value="<?php echo $_GET['j'].'/'.$_GET['m'].'/'.$_GET['a']; ?>" class="dateDebut" maxlength=10 size=11/>
+                                <?php } else { ?>
+                                    <input type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateDebut");?>" class="dateDebut" maxlength=10 size=11/>
+                                <?php } ?>
+                                    <input type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="<?php saisieFormString("heureDebut");?>" class="heureDebut" maxlength=5 size=4/>
+                                    <?php echo "<b id=\"formErreur\"> $erreurDateDebut $erreurHeureDebut </b>"; ?>
+                            </td>
+                            <td rowspan="4" id="tdgroupe">
+                                <label for="groupe"><b>Ajouter un groupe de participants</b></label><br>
+                                <div id="groupe" style="overflow:auto;height:250px;width:250px;border:1px solid #abadb3;padding:5px;background-color:white;">
+                                    <?php
+                                    $req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe NOT IN (SELECT idgroupe_1 FROM aci_contenir)";
+                                    $resultats = $conn -> query($req);
+                                    while($row = $resultats->fetch()){
+                                        echo '<img id="'.utf8_encode($row['idgroupe']).'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/>
+					<label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')"> '
+					.$row['libelle'].'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" 
+					id="'.utf8_encode($row['idgroupe']).'" '.checkAuto(utf8_encode($row['idgroupe'])).'/><br/>';
+                                        descGroupe($row['idgroupe'], $conn, 1);
+                                    }
+                                    ?>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>                    
+                            <td>
+                                <label for="Eve_dateFin"><b>Date de fin</b></label><br>
+                                <input type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateFin");?>"class="dateFin" maxlength=10 size=11/>
+                                <input type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php saisieFormString("heureFin");?>" class="heureFin" maxlength=5 size=4/>
+                                <?php echo "<b id=\"formErreur\"> $erreurDateFin $erreurHeureFin </b>"; ?>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <label for="Eve_lieu"><b>Lieu</b></label> <br>
+                                <input type="text" name="lieu" value="<?php saisieFormString("lieu");?>" id="Eve_lieu" autocomplete="off" />
+                                <div id="resultsLieu"></div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <b>Type</b> <br>
+                                <input type="radio" name="public" id="public" value="1" checked="checked" onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
+                                <input type="radio" name="public" id="prive" value="0" onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td cellspan="2">
+                                <input class="btn" type="submit" name="submit" value="Valider"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td cellspan="2">
+                                <?php
+                                if($insertion)
+                                    echo '<div class="alert alert-success"><b>Insertion réalisée avec succès.</b></div>';
+                                ?>
+                            </td>
+                        </tr>
+                    </table>
+                 </form>
+            </div>
+        </div>
+            
+        <script type="text/javascript">
+            (function(){
+
+            var searchElement = document.getElementById('Eve_lieu');
+            var results = document.getElementById('resultsLieu');
+            var value = searchElement.value;
+            var selectedResult = -1;
+            var previousRequest;
+            var previousValue = searchElement.value;
+
+            function getLieu(value){
+                var xhr = new XMLHttpRequest();
+
+                xhr.onreadystatechange = function() {
+                    if(xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)){
+                        afficheLieu(xhr.responseText);
+                    }
+                }
+
+                xhr.open('POST', '../../Fonctions_Php/XMLgetLieu.php');
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.send('valeur='+value);
+
+                return xhr;
+            }
+
+            function afficheLieu(response){
+                results.style.display = response.length ? 'block' : 'none';
+
+                if(response.length){
+                    var lieux = response.split('|');
+
+                    results.innerHTML = '';
+
+                    for(var i = 0, div; i < lieux.length ; i++){
+                        div = results.appendChild(document.createElement('div'));
+                        div.innerHTML = lieux[i];
+
+                        div.onclick = function(){
+                            chooseResult(this);
+                        }
+                    }
+                }
+            }
+
+            function chooseResult(result){
+                searchElement.value = result.innerHTML;
+                results.style.display = 'none';
+                result.className = '';
+                searchElement.focus();
+            }
+
+            searchElement.onkeyup = function(e){
+                e = e || window.event;
+
+                var divs = results.getElementsByTagName('div');
+                if(e.keyCode == 38 && selectedResult > -1){
+                        divs[selectedResult--].className = '';
+                        if(selectedResult > -1){
+                                divs[selectedResult].className = 'result_focus';
+                        }
+                }
+                else if(e.keyCode == 40 && selectedResult < divs.length-1){
+                        results.style.display = 'block';
+                        if(selectedResult > -1){
+                                divs[selectedResult].className = 'result_focus';
+                        }
+                        divs[++selectedResult].className = '';
+                }
+                else if(e.keyCode == 13 && selectedResult > -1){
+                        chooseResult(divs[selectedResult]);
+                }
+                else if(searchElement.value == ''){
+                    results.innerHTML = '';
+                }
+                else if(searchElement.value != previousValue){
+                        previousValue = searchElement.value;
+
+                        if(previousRequest && previousRequest.readyState < 4){
+                                previousRequest.abort();
+                        }
+
+                        previousRequest = getLieu(previousValue);
+                        selectedResult = -1;
+                }
+            }
+        })();
+
+        (function(){
+
+            var searchElement = document.getElementById('addParticipant');
+            var results = document.getElementById('resultsParticipant');
+            var selected = document.getElementById('dest');
+            var value = searchElement.value;
+            var selectedResult = -1;
+            var previousRequest;
+            var previousValue = searchElement.value;
+
+            function getLieu(value){
+                var xhr = new XMLHttpRequest();
+
+                xhr.onreadystatechange = function() {
+                    if(xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)){
+                        afficheLieu(xhr.responseText);
+                    }
+                }
+
+                xhr.open('POST', '../../Fonctions_Php/XMLgetPersonne.php');
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.send('valeur='+value);
+
+                return xhr;
+            }
+
+            function afficheLieu(response){
+                results.style.display = response.length ? 'block' : 'none';
+
+                if(response.length){
+                    var lieux = response.split('|');
+
+                    results.innerHTML = '';
+
+                    for(var i = 0, div; i < lieux.length ; i++){
+                        div = results.appendChild(document.createElement('div'));
+                        div.innerHTML = lieux[i];
+
+                        div.onclick = function(){
+                            chooseResult(this);
+                        }
+                    }
+                }
+            }
+
+            function chooseResult(result){
+                var div = document.createElement('div');
+		var hidden = document.createElement('input');
+		var img = document.createElement('img');
+                var other;
+		
+		img.src='../../Images/boutonMoinsReduit2.png';
+		img.style.cursor='pointer';
+		
+		hidden.type='hidden';
+		hidden.name='dest[]';
+                hidden.value=result.innerHTML.split(" ")[2];
+		
+                div.appendChild(document.createTextNode(result.innerHTML));
+		div.appendChild(document.createTextNode("  "));
+		div.appendChild(img);
+		div.appendChild(hidden);
+                div.onclick = function(){
+			removeChildSafe(div);	
+		}
+                selected.appendChild(div);
+                searchElement.value = '';
+                results.style.display = 'none';
+                result.className = '';
+                searchElement.focus();
+            }
+
+            function removeChildSafe(el) {
+            //before deleting el, recursively delete all of its children.
+            while(el.childNodes.length > 0) {
+                removeChildSafe(el.childNodes[el.childNodes.length-1]);
+            }
+            el.parentNode.removeChild(el);
+        }
+
+            searchElement.onkeyup = function(e){
+                e = e || window.event;
+
+                var divs = results.getElementsByTagName('div');
+                if(e.keyCode == 38 && selectedResult > -1){
+                        divs[selectedResult--].className = '';
+                        if(selectedResult > -1){
+                                divs[selectedResult].className = 'result_focus';
+                        }
+                }
+                else if(e.keyCode == 40 && selectedResult < divs.length-1){
+                        results.style.display = 'block';
+                        if(selectedResult > -1){
+                                divs[selectedResult].className = 'result_focus';
+                        }
+                        divs[++selectedResult].className = '';
+                }
+                else if(e.keyCode == 13 && selectedResult > -1){
+                        chooseResult(divs[selectedResult]);
+                }
+                else if(searchElement.value == ''){
+                    results.innerHTML = '';
+                }
+                else if(searchElement.value != previousValue){
+                        previousValue = searchElement.value;
+
+                        if(previousRequest && previousRequest.readyState < 4){
+                                previousRequest.abort();
+                        }
+
+                        previousRequest = getLieu(previousValue);
+                        selectedResult = -1;
+                }
+            }
+        })();
+
+        function developper(idGroupe){
+                var spans = document.getElementsByClassName(idGroupe);
+                var i;
+                var img = document.getElementById(idGroupe);
+                var src = img.src.split('/');
+
+                if(src[src.length-1] == "arborescencePlus.png"){
+                        img.src="../../Images/arborescenceMoins.png";
+                        for(i=0; i < spans.length; i++){
+                                spans[i].style.display="block";
+                        }
+                }
+                else{
+                        img.src="../../Images/arborescencePlus.png";
+                        for(i=0; i < spans.length; i++){
+                                spans[i].style.display="none";
+                        }
+                }			
+        }
+	
+/*	function cacher(){
+		var radio = document.getElementById("public");
+		var dest = document.getElementById("tddest");
+		var groupe = document.getElementById("tdgroupe");
+		if(radio.checked==true){
+			dest.rowspan=1;
+			groupe.rowspan=1;
+		}else{
+			dest.rowspan=4;
+			groupe.rowspan=4;
+		}
+	}*/
+        </script>
+    </body>
 </html>
-
-<script>
-function selectGroupe2(){
-	var list = document.getElementById('groupe1');
-	var selectionne = list.value;
-	
-	var xhr = new XMLHttpRequest();
-	
-	xhr.onreadystatechange = function (){
-	    if(xhr.readyState == 4){
-		    if(xhr.status == 200 || xhr.status == 0){
-			/*var response = xhr.responseXML;
-			alert(xhr.getAllResponseHeaders());
-			var options = response.getElementsByTagName('option');
-			var i;
-			var select = document.getElementById('groupe2');
-			for(i = 0; i < options.length; i++){
-				select.appendChild(options[i]);
-			}*/
-			document.getElementById('groupe2').innerHTML = "<option value=0></option>" + xhr.responseText;
-			document.getElementById('groupe3').innerHTML = "<option value=0></option>";
-		    }
-	    }
-	}
-	
-	xhr.open('POST','../../Fonctions_Php/XMLSelectEvent.php');
-	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xhr.send('valeur='+selectionne);
-}
-
-function selectGroupe3(){
-	var list = document.getElementById('groupe2');
-	var selectionne = list.value;
-	
-	var xhr = new XMLHttpRequest();
-	
-	xhr.onreadystatechange = function (){
-	    if(xhr.readyState == 4){
-		    if(xhr.status == 200 || xhr.status == 0){
-			/*var response = xhr.responseXML;
-			alert(xhr.getAllResponseHeaders());
-			var options = response.getElementsByTagName('option');
-			var i;
-			var select = document.getElementById('groupe3');
-			for(i = 0; i < options.length; i++){
-				select.appendChild(options[i]);
-			}*/
-			document.getElementById('groupe3').innerHTML = "<option value=0></option>" + xhr.responseText;
-		    }
-	    }
-	}
-	
-	xhr.open('POST','../../Fonctions_Php/XMLSelectEvent.php');
-	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xhr.send('valeur='+selectionne);
-}
-
-function reset(){
-    document.getElementById('groupe2').innerHTML = "<option value=0></option>";
-    document.getElementById('groupe3').innerHTML = "<option value=0></option>";   
-}
-
-(function(){
-
-    var searchElement = document.getElementById('Eve_lieu');
-    var results = document.getElementById('resultsLieu');
-    var value = searchElement.value;
-    var selectedResult = -1;
-    var previousRequest;
-    var previousValue = searchElement.value;
-    
-    function getLieu(value){
-	var xhr = new XMLHttpRequest();
-
-	xhr.onreadystatechange = function() {
-	    if(xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)){
-		afficheLieu(xhr.responseText);
-	    }
-	}
-	
-	xhr.open('POST', '../../Fonctions_Php/XMLgetLieu.php');
-	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xhr.send('valeur='+value);
-	
-	return xhr;
-    }
-
-    function afficheLieu(response){
-	results.style.display = response.length ? 'block' : 'none';
-
-	if(response.length){
-	    var lieux = response.split('|');
-	    
-	    results.innerHTML = '';
-
-	    for(var i = 0, div; i < lieux.length ; i++){
-		div = results.appendChild(document.createElement('div'));
-		div.innerHTML = lieux[i];
-
-		div.onclick = function(){
-		    chooseResult(this);
-		}
-	    }
-	}
-    }
-
-    function chooseResult(result){
-	searchElement.value = result.innerHTML;
-	results.style.display = 'none';
-	result.className = '';
-	searchElement.focus();
-    }
-    
-    searchElement.onkeyup = function(e){
-	e = e || window.event;
-	    
-	var divs = results.getElementsByTagName('div');
-	if(e.keyCode == 38 && selectedResult > -1){
-		divs[selectedResult--].className = '';
-		if(selectedResult > -1){
-			divs[selectedResult].className = 'result_focus';
-		}
-	}
-	else if(e.keyCode == 40 && selectedResult < divs.length-1){
-		results.style.display = 'block';
-		if(selectedResult > -1){
-			divs[selectedResult].className = 'result_focus';
-		}
-		divs[++selectedResult].className = '';
-	}
-	else if(e.keyCode == 13 && selectedResult > -1){
-		chooseResult(divs[selectedResult]);
-	}
-	else if(searchElement.value == ''){
-	    results.innerHTML = '';
-	}
-	else if(searchElement.value != previousValue){
-		previousValue = searchElement.value;
-		
-		if(previousRequest && previousRequest.readyState < 4){
-			previousRequest.abort();
-		}
-		
-		previousRequest = getLieu(previousValue);
-		selectedResult = -1;
-	}
-    }
-})();
-
-(function(){
-
-    var searchElement = document.getElementById('addParticipant');
-    var results = document.getElementById('resultsParticipant');
-    var selected = document.getElementById('dest');
-    var value = searchElement.value;
-    var selectedResult = -1;
-    var previousRequest;
-    var previousValue = searchElement.value;
-    
-    function getLieu(value){
-	var xhr = new XMLHttpRequest();
-
-	xhr.onreadystatechange = function() {
-	    if(xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)){
-		afficheLieu(xhr.responseText);
-	    }
-	}
-	
-	xhr.open('POST', '../../Fonctions_Php/XMLgetPersonne.php');
-	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xhr.send('valeur='+value);
-	
-	return xhr;
-    }
-
-    function afficheLieu(response){
-	results.style.display = response.length ? 'block' : 'none';
-
-	if(response.length){
-	    var lieux = response.split('|');
-	    
-	    results.innerHTML = '';
-
-	    for(var i = 0, div; i < lieux.length ; i++){
-		div = results.appendChild(document.createElement('div'));
-		div.innerHTML = lieux[i];
-
-		div.onclick = function(){
-		    chooseResult(this);
-		}
-	    }
-	}
-    }
-
-    function chooseResult(result){
-	var div = document.createElement('option');
-	div.selected = "true";
-	div.value=result.innerHTML.split(" ")[2];
-	div.appendChild(document.createTextNode(result.innerHTML));
-	div.onclick = function(){
-		div.parentNode.removeChild(div);
-	}	
-	selected.appendChild(div);
-	searchElement.value = '';
-	results.style.display = 'none';
-	result.className = '';
-	searchElement.focus();
-    }
-    
-    searchElement.onkeyup = function(e){
-	e = e || window.event;
-	    
-	var divs = results.getElementsByTagName('div');
-	if(e.keyCode == 38 && selectedResult > -1){
-		divs[selectedResult--].className = '';
-		if(selectedResult > -1){
-			divs[selectedResult].className = 'result_focus';
-		}
-	}
-	else if(e.keyCode == 40 && selectedResult < divs.length-1){
-		results.style.display = 'block';
-		if(selectedResult > -1){
-			divs[selectedResult].className = 'result_focus';
-		}
-		divs[++selectedResult].className = '';
-	}
-	else if(e.keyCode == 13 && selectedResult > -1){
-		chooseResult(divs[selectedResult]);
-	}
-	else if(searchElement.value == ''){
-	    results.innerHTML = '';
-	}
-	else if(searchElement.value != previousValue){
-		previousValue = searchElement.value;
-		
-		if(previousRequest && previousRequest.readyState < 4){
-			previousRequest.abort();
-		}
-		
-		previousRequest = getLieu(previousValue);
-		selectedResult = -1;
-	}
-    }
-})();
-
-function developper(idGroupe, close){
-	var spans = document.getElementsByClassName(idGroupe);
-	var i;
-	var img = document.getElementById(idGroupe);
-	
-	if(img.src.lastIndexOf("arborescencePlus.png") !=-1 && close != 1){
-		img.src="../../Images/arborescenceMoins.png";
-		for(i=0; i < spans.length; i++){
-			spans[i].style.display="inline";
-		}
-	}
-	else{
-		img.src="../../Images/arborescencePlus.png";
-		for(i=0; i < spans.length; i++){
-			spans[i].style.display="none";
-		}
-	}			
-}
-</script>
