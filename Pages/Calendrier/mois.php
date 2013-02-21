@@ -110,11 +110,11 @@
         <div id="corpsCal" class="mois">
             <table class="titreCal">
                 <tr class="titreCal">
-                    <th><a href="mois.php?annee=<?php echo $annee; ?>&amp;mois=1">|&#9668; </a></th>
+                    <th><a href="mois.php?annee=<?php echo $annee-1; ?>&amp;mois=<?php echo $mois; ?>">|&#9668; </a></th>
                     <th><a href="mois.php?annee=<?php echo $anneePrec; ?>&amp;mois=<?php echo $moisPrec; ?>"> &#9668; </a></th>
                     <th width="500px"><?php echo $nomMois . ' ' . $annee; ?></th>
                     <th><a href="mois.php?annee=<?php echo $anneeSuiv; ?>&amp;mois=<?php echo $moisSuiv; ?>"> &#9658; </a></th>
-                    <th><a href="mois.php?annee=<?php echo $annee; ?>&amp;mois=12"> &#9658;| </a></th>
+                    <th><a href="mois.php?annee=<?php echo $annee+1; ?>&amp;mois=<?php echo $mois; ?>"> &#9658;| </a></th>
                 </tr>
             </table>
             <!-- Affichage du nom du mois + année et des liens du mois précédent/suivant -->
@@ -148,10 +148,10 @@
                     $cons = 0;
                     while ($row = $resultats->fetch()) {
                         //on recupère un tableau contenant les date et les titre long)
-                        $donnees[$cons]["dateDebut"] = htmlentities($row["DATEDEBUT"], ENT_QUOTES);
-                        $donnees[$cons]["dateFin"] = htmlentities($row["DATEFIN"], ENT_QUOTES);
-                        $donnees[$cons]["titreCourt"] = stripslashes(htmlentities($row["LIBELLECOURT"], ENT_QUOTES));
-                        $donnees[$cons]["titreLong"] = stripslashes(htmlentities($row["LIBELLELONG"], ENT_QUOTES));
+                        $donnees[$cons]["dateDebut"] = $row["DATEDEBUT"];
+                        $donnees[$cons]["dateFin"] = $row["DATEFIN"];
+                        $donnees[$cons]["titreCourt"] = stripslashes($row["LIBELLECOURT"]);
+                        $donnees[$cons]["titreLong"] = stripslashes($row["LIBELLELONG"]);
                         $cons ++;
                     }
                 }
