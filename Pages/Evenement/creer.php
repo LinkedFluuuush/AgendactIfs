@@ -374,8 +374,8 @@ if(!empty($_POST['submit']))
                         <tr>
                             <td>
                                 <b>Type</b> <br>
-                                <input type="radio" name="public" id="public" value="1" checked="checked" onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
-                                <input type="radio" name="public" id="prive" value="0" onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
+                                <input type="radio" name="public" id="public" value="1" onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
+                                <input type="radio" name="public" id="prive" value="0" checked="checked" onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
                             </td>
                         </tr>
 
@@ -622,18 +622,22 @@ if(!empty($_POST['submit']))
                 }			
         }
 	
-/*	function cacher(){
+	function cacher(){
 		var radio = document.getElementById("public");
-		var dest = document.getElementById("tddest");
-		var groupe = document.getElementById("tdgroupe");
+		var divdest = document.getElementById("dest");
+		var dest = document.getElementById("addParticipant");
+		var groupe = document.getElementsByTagName("input");
 		if(radio.checked==true){
-			dest.rowspan=1;
-			groupe.rowspan=1;
+			dest.disabled=true;
+			for(var i = 0; i < groupe.length; i++){
+				if(groupe[i].name=="groupe[]")
+					groupe[i].checked = false;
+			}
+			divdest.innerHTML="";
 		}else{
-			dest.rowspan=4;
-			groupe.rowspan=4;
+			dest.disabled=false;	
 		}
-	}*/
+	}
         </script>
     </body>
 </html>
