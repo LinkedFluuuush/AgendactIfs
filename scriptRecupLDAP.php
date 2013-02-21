@@ -8,8 +8,8 @@ if(!empty($resultats)){
 	echo("Reinitialisation complète");
 }
 
-$login="jeanbaptiste.louvet";
-$mdp="300691Link*d";
+$login="LOGIN";
+$mdp="MOT DE PASSE";
 
 $baseDN = "dc=iutc3,dc=unicaen,dc=fr";
 $ldapServer = "ruche";
