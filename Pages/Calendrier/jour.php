@@ -64,11 +64,11 @@
             $idUtil = 0;
         
 
-        $sql = "SELECT aci_evenement.*, aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert FROM aci_evenement
+         $sql = "SELECT aci_evenement.*, aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert FROM aci_evenement
         JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
-        JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
-        WHERE (dateFin >= '$annee-$mois-$jour 00:00:00' or dateFin is null)
-        and dateDebut <= '$annee-$mois-$jour 23:59:59'
+        LEFT JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
+        WHERE (dateFin >= '$annee-$mois-$jour 00:00:00' and dateDebut <= '$annee-$mois-$jour 23:59:59')
+		or (dateFin is null and dateDebut <= '$annee-$mois-$jour 23:59:59' and dateDebut >= '$annee-$mois-$jour 00:00:00')
         and idpriorite <= $priorite
         and ((estPublic = 1)
             or ($idUtil = aci_evenement.idUtilisateur)

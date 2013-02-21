@@ -201,7 +201,7 @@
 		$sql = "SELECT aci_evenement.* , aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert
                         FROM aci_evenement
                         JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
-                        JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
+                        LEFT JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
                         WHERE (dateFin >=  '$annee1-$mois1-$jourDebut 00:00:00' or dateFin is null)
                         AND dateDebut <=  '$annee2-$mois2-$jourFin 23:59:59'
                         and idpriorite <= $priorite
