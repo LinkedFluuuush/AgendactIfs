@@ -62,11 +62,11 @@
         
         $days = retourneJour($annee, $moisFin);
 
-        if(!empty($_SESSION['id']))
-            $idUtil = $_SESSION['id'];
-        else
-            $idUtil = 0;
-                
+		if(!empty($_SESSION['id']))
+			$idUtil = $_SESSION['id'];
+		else
+			$idUtil = 0;
+			
         $idSession = 1 ;//$_SESSION['login'];
         
         //Le lien : prcdent
@@ -88,9 +88,10 @@
         }
         ?>
         
+        
         <div id="global">
-            <?php include('../menu.php'); ?>
-        <div id="corpsCal" class="semestre">
+	        <?php include('../menu.php'); ?>
+	<div id="corpsCal" class="semestre">            
             <table class="titreCal">
                 <tr class="titreCal">
                     <th><a href="semestre.php?a=<?php echo $anneePrec; ?>&s=<?php echo $semestrePrec; ?>"> &#9668; </a></th>
@@ -99,7 +100,7 @@
                 </tr>
             </table>
             <table>                
-     		<?php if ($semestre == 1) { ?>
+     		<?php if ($semestre ==1) { ?>
      		<tr>
                     <th><a href="mois.php?annee=<?php echo($annee);?>&mois=1" style="cursor: pointer;"> Janvier </a></th>
                     <th><a href="mois.php?annee=<?php echo($annee);?>&mois=2" style="cursor: pointer;"> F&eacute;vrier </a></th>
@@ -125,22 +126,22 @@
 			JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
 			where (dateFin >= '$annee-$moisDebut-01 00:00:00' or dateFin is null)
 			and dateDebut <= '$annee-$moisFin-$days 23:59:59'
-                        and idpriorite <= $priorite
+            and idpriorite <= $priorite
 			and ((estPublic = 1)
-                            or ($idUtil = aci_evenement.idUtilisateur)
-                            or $idUtil in (SELECT idutilisateur FROM aci_destutilisateur WHERE aci_destutilisateur.idevenement = aci_evenement.idevenement)
-                            or $idUtil in (SELECT idutilisateur FROM aci_composer JOIN aci_destgroupe USING (idgroupe) WHERE aci_destgroupe.idevenement = aci_evenement.idevenement))";
+				or ($idUtil = aci_evenement.idUtilisateur)
+				or $idUtil in (SELECT idutilisateur FROM aci_destutilisateur WHERE aci_destutilisateur.idevenement = aci_evenement.idevenement)
+				or $idUtil in (SELECT idutilisateur FROM aci_composer JOIN aci_destgroupe USING (idgroupe) WHERE aci_destgroupe.idevenement = aci_evenement.idevenement))";
 
                 $resultats = $conn->query($sql);
 	
-                if (!empty($resultats)) {
+                if ($resultats != null) {
                     $cons = 0;
                     while ($row = $resultats->fetch()) {
                         //on recupère un tableau contenant les dates et les titres longs
-                        $donnees[$cons]["dateDebut"] = $row["DATEDEBUT"];
-                        $donnees[$cons]["dateFin"] = $row["DATEFIN"];
-                        $donnees[$cons]["titreCourt"] = stripslashes($row["LIBELLECOURT"]);
-                        $donnees[$cons]["titreLong"] = stripslashes($row["LIBELLELONG"]);
+                        $donnees[$cons]["dateDebut"] = htmlentities($row["DATEDEBUT"], ENT_QUOTES);
+                        $donnees[$cons]["dateFin"] = htmlentities($row["DATEFIN"], ENT_QUOTES);
+                        $donnees[$cons]["titreCourt"] = stripslashes(htmlentities($row["LIBELLECOURT"], ENT_QUOTES));
+                        $donnees[$cons]["titreLong"] = stripslashes(htmlentities($row["LIBELLELONG"], ENT_QUOTES));
 
                         $cons ++;
                     }
@@ -150,7 +151,7 @@
 
                 $evenement ='';
 	
-                for($jour = 1; $jour < 32; $jour++)	{
+                for($jour=1; $jour<32; $jour++)	{
                     echo'<tr>';
 		
                     for($mois = $debutSemestre; $mois < ($debutSemestre + 6) ; $mois++) {			
@@ -165,16 +166,17 @@
 					$temp = explode('-',$dateDebut[0]);
 					$dateDebut = mktime(00,00,00, $temp[1],$temp[2],$temp[0]);
 
-					if(!empty($donnees[$k]["dateFin"])) {
-                                            $dateFin = explode(' ',$donnees[$k]["dateFin"]);
-                                            $temp = explode('-',$dateFin[0]);
-                                            $dateFin = mktime(00,00,00, $temp[1],$temp[2],$temp[0]);
-                                        }
+					if(!empty($donnees[$k]["dateFin"]))
+					{
+						$dateFin = explode(' ',$donnees[$k]["dateFin"]);
+						$temp = explode('-',$dateFin[0]);
+						$dateFin = mktime(00,00,00, $temp[1],$temp[2],$temp[0]);
+					}
 					else
-                                            $dateFin = null;
+						$dateFin = null;
 
-					//On affiche les évènements qui se déroulent dans la journée
-					if($dateCourante >= $dateDebut && $dateCourante <= $dateFin) {
+					//On affiche les évènements qui se déroulent dans la journée (gestion des événements sans date de fin)
+					if(($dateCourante >= $dateDebut && $dateCourante <= $dateFin) or ($dateCourante == $dateDebut && empty($dateFin))) {
 						$titreCourt[$boucle] = $donnees[$k]["titreCourt"];
 						$titreLong[$boucle] = $donnees[$k]["titreLong"];
 						$boucle++;

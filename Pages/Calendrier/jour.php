@@ -115,7 +115,7 @@
                 </p>
                 
                 <?php               
-                if (!empty($resultats)) {
+                if ($resultats != null) {
                     $i=1;                    
                     while ($row = $resultats->fetch() and $i != 0) {
                         $numeroEve = $row['IDEVENEMENT'];	

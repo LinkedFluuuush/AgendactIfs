@@ -21,13 +21,10 @@
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
 
-        // INITIALISATION DES VARIABLES $jour, $mois, $annee --------------------------------------------------
-        
-               
         //on définit des valeurs par defaut aux variable année, mois et jour (par défaut : aujourd'hui)
         $annee = date('Y');
         $mois = date('m');
-        $jour = 1;
+        $jour = date('d');
 
         //si les variables $_POST existent, on les utilises et au passage, on les stockent dans les variable de session
         if((!empty($_GET['annee'])) && (!empty($_GET['mois']))) {
@@ -46,11 +43,13 @@
         if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty($_SESSION['jour']))) {
             $annee = $_SESSION['annee'];
             $mois = $_SESSION['mois'];
-            $jour = 1;
+            $jour = $_SESSION['jour'];
 
             if($mois == 13)
                 $mois = 0;
         }
+
+
 
         // Nombre de jours du mois
         $days = retourneJour($annee, $mois);
@@ -58,6 +57,9 @@
         //on genere le timestamp de début et de fin de mois
         $dateTimestampDebut = mktime(00, 00, 00, $mois, 01, $annee);
         $dateTimestampFin = mktime(23, 59, 59, $mois, $days, $annee);
+
+        //$dateTimestampDebut = "$annee-$mois-01 00:00:00";
+        //$dateTimestampFin = "$annee-$mois-$days 23:59:59";
 
         //On définit le premier et le dernier jour du mois, ainsi que le nombre de semaines
         $firstDay = date('w',$dateTimestampDebut - 86400);
@@ -74,11 +76,11 @@
 
         //----------
 
-        if(!empty($_SESSION['id']))
-            $idUtil = $_SESSION['id'];
-        else
-            $idUtil = 0;
-        
+		if(!empty($_SESSION['id']))
+			$idUtil = $_SESSION['id'];
+		else
+			$idUtil = 0;
+			
         $idSession = 1; //$_SESSION['login'];
         $nomSession = 'Test';
 
@@ -103,9 +105,8 @@
         }
         ?>
         
-        
         <div id="global">
-            <?php include('../menu.php'); ?>
+		<?php include('../menu.php'); ?>
         <div id="corpsCal" class="mois">
             <table class="titreCal">
                 <tr class="titreCal">
@@ -116,7 +117,6 @@
                     <th><a href="mois.php?annee=<?php echo $annee; ?>&amp;mois=12"> &#9658;| </a></th>
                 </tr>
             </table>
-            
             <!-- Affichage du nom du mois + année et des liens du mois précédent/suivant -->
             <table>
                 <tr>
@@ -132,26 +132,26 @@
 
                 <?php
                 $sql = "SELECT aci_evenement.*, aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert FROM aci_evenement
-                        JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
-                        JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
-                        where (dateFin >= '$annee-$mois-01 00:00:00' or dateFin is null)
-                        and dateDebut <= '$annee-$mois-$days 23:59:59'
-                        and idpriorite <= $priorite
-                        and ((estPublic = 1)
-                                or ($idUtil = aci_evenement.idUtilisateur)
-                                or $idUtil in (SELECT idutilisateur FROM aci_destutilisateur WHERE aci_destutilisateur.idevenement = aci_evenement.idevenement)
-                                or $idUtil in (SELECT idutilisateur FROM aci_composer JOIN aci_destgroupe USING (idgroupe) WHERE aci_destgroupe.idevenement = aci_evenement.idevenement))";
+						JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
+						JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
+						where (dateFin >= '$annee-$mois-01 00:00:00' or dateFin is null)
+						and dateDebut <= '$annee-$mois-$days 23:59:59'
+						and idpriorite <= $priorite
+						and ((estPublic = 1)
+							or ($idUtil = aci_evenement.idUtilisateur)
+							or $idUtil in (SELECT idutilisateur FROM aci_destutilisateur WHERE aci_destutilisateur.idevenement = aci_evenement.idevenement)
+							or $idUtil in (SELECT idutilisateur FROM aci_composer JOIN aci_destgroupe USING (idgroupe) WHERE aci_destgroupe.idevenement = aci_evenement.idevenement))";
 
                 $resultats = $conn->query($sql);
 
-                if (!empty($resultats)) {
+                if ($resultats != null) {
                     $cons = 0;
                     while ($row = $resultats->fetch()) {
                         //on recupère un tableau contenant les date et les titre long)
-                        $donnees[$cons]["dateDebut"] = $row["DATEDEBUT"];
-                        $donnees[$cons]["dateFin"] = $row["DATEFIN"];
-                        $donnees[$cons]["titreCourt"] = stripslashes($row["LIBELLECOURT"]);
-                        $donnees[$cons]["titreLong"] = stripslashes($row["LIBELLELONG"]);
+                        $donnees[$cons]["dateDebut"] = htmlentities($row["DATEDEBUT"], ENT_QUOTES);
+                        $donnees[$cons]["dateFin"] = htmlentities($row["DATEFIN"], ENT_QUOTES);
+                        $donnees[$cons]["titreCourt"] = stripslashes(htmlentities($row["LIBELLECOURT"], ENT_QUOTES));
+                        $donnees[$cons]["titreLong"] = stripslashes(htmlentities($row["LIBELLELONG"], ENT_QUOTES));
                         $cons ++;
                     }
                 }
@@ -164,7 +164,8 @@
 
                     // Affichage des n° de semaines + lien avec paramètres transmis à semaine.php
                     //-------------------------------------------------------------------------------------------------------------------
-                    $timestamp = mktime(00, 00, 00, $mois, $jour, $annee);
+
+                    $timestamp = mktime(23, 59, 59, $mois, $jour, $annee);
                     $numSemaine = date('W', $timestamp); // indique le numéro de semaine
 
                     echo '<td class="numSemaine" onclick="document.location.href = \'semaine.php?annee='.$annee.'&amp;mois='.$mois.'&amp;jour='.$jour.'\';"><a href="semaine.php?annee='.$annee.'&amp;mois='.$mois.'&amp;jour='.$jour.'">'. $numSemaine . '</a></td>';
@@ -187,16 +188,17 @@
                                 $temp = explode('-',$dateDebut[0]);
                                 $dateDebut = mktime(00,00,00, $temp[1],$temp[2],$temp[0]);
 
-                                if(!empty($donnees[$k]["dateFin"])) {
-                                    $dateFin = explode(' ',$donnees[$k]["dateFin"]);
-                                    $temp = explode('-',$dateFin[0]);
-                                    $dateFin = mktime(00,00,00, $temp[1],$temp[2],$temp[0]);
-                                }
-                                else
-                                    $dateFin = null;
+								if(!empty($donnees[$k]["dateFin"]))
+								{
+									$dateFin = explode(' ',$donnees[$k]["dateFin"]);
+									$temp = explode('-',$dateFin[0]);
+									$dateFin = mktime(00,00,00, $temp[1],$temp[2],$temp[0]);
+								}
+								else
+									$dateFin = null;
 
-                                //On affiche les évènements qui se déroulent dans la journée
-                                if($dateCourante >= $dateDebut && $dateCourante <= $dateFin) {
+                                //On affiche les évènements qui se déroulent dans la journée (gestion des événements sans date de fin)
+                                if(($dateCourante >= $dateDebut && $dateCourante <= $dateFin) or ($dateCourante == $dateDebut && empty($dateFin))) {
                                     $titreCourt[$boucle] = $donnees[$k]["titreCourt"];
                                     $titreLong[$boucle] = $donnees[$k]["titreLong"];
                                     $boucle++;
