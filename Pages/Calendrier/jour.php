@@ -21,12 +21,11 @@
         <?php
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
-        
-        //Suppression d'un événement
-        if(isset($_POST['idEve'])){
-            if(supprimer($conn, $_POST['idEve']))
+	
+	//Suppression d'un événement
+        if(isset($_GET['d']) && $_GET['d']==1){
                 echo '<div class="alert alert-success"><b>Suppression réalisée avec succès.</b></div>';
-            }
+	}
         
         //on définit des valeurs par defaut aux variable année, mois et jour (par défaut : aujourd'hui)
         $annee = date('Y');
@@ -162,10 +161,9 @@
 											<input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" />
 											<input class="btn" type="submit" name="modifier_eve" value="Modifier" />
 										</form>
-										<form name="supprimer" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-											<input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" />
-											<input class="btn" type="submit" name="supprimer_eve" value="Supprimer" onclick="confirm('Voulez-vous vraiment supprimer cet &eacute;v&egrave;nement ?');"/>
-										</form>
+									<input class="btn" name="supprimer_eve" value="Supprimer" onclick="if(confirm('Voulez-vous vraiment supprimer cet &eacute;v&egrave;nement ?')){
+										document.location.href = '../Evenement/supprimer.php?i=<?php echo $numeroEve;?>';
+									}"/>
 									</div>
                             <?php }
 							} ?>

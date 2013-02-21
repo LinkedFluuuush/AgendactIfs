@@ -265,39 +265,6 @@ function jourProchain ($mois, $jour, $annee) {
     return $jour;
 }
 
-function supprimer($conn, $idEv)
-{
-	//L'utilisateur est bien connecté
-	if(!empty($_SESSION['id']))
-	{
-		//Vérification : l'utilisateur qui veut supprimer l'événement en est bien l'auteur
-		$sqlVerif = "SELECT idutilisateur FROM aci_evenement WHERE idevenement = ".$idEv;
-	
-		$temp = $conn->query($sqlVerif);
-		$verif = $temp->fetch();
-	
-		if(!empty($verif))
-		{
-			//Suppression des participants
-			$sqlDeleteDestUtil = "DELETE FROM aci_destutilisateur WHERE idevenement = ".$idEv;
-
-			//Suppression des groupes de participants
-			$sqlDeleteDestGroupe = "DELETE FROM aci_destgroupe WHERE idevenement = ".$idEv;
-
-			//Suppression de l'événement
-			$sqlDeleteEvenement = "DELETE FROM aci_evenement WHERE idevenement = ".$idEv;
-
-			$execution = $conn->query($sqlDeleteDestUtil);
-			$execution = $conn->query($sqlDeleteDestGroupe);
-			$execution = $conn->query($sqlDeleteEvenement);
-
-			if(!empty($execution))
-				return true;
-		}
-	}
-	return false;
-}
-
 //require_once('../../PHPMailer_5.2.2/class.phpmailer.php');
 
 function envoyerMail($adresse, $sujet, $contenu, $contenu_txt)
