@@ -630,12 +630,19 @@ if(!empty($_POST['submit']))
 		if(radio.checked==true){
 			dest.disabled=true;
 			for(var i = 0; i < groupe.length; i++){
-				if(groupe[i].name=="groupe[]")
+				if(groupe[i].name=="groupe[]"){
 					groupe[i].checked = false;
+					groupe[i].disabled=true;
+				}
 			}
 			divdest.innerHTML="";
 		}else{
 			dest.disabled=false;	
+			for(var i = 0; i < groupe.length; i++){
+				if(groupe[i].name=="groupe[]"){
+					groupe[i].disabled=false;
+				}
+			}
 		}
 	}
         </script>
