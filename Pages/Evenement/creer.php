@@ -175,13 +175,13 @@ if(!empty($_POST['submit']))
 				//Insertion de l'événement
 				//echo "$idEv[0], $idUtil, $priorite, 1, $libelleLong, $libelleCourt, $description, $dateDebut $heureDebut, $dateFin $heureFin, $public";
 				$sql = "INSERT INTO `aci_evenement` (`IDEVENEMENT`, `IDUTILISATEUR`, `IDPRIORITE`, `IDLIEU`, `LIBELLELONG`, `LIBELLECOURT`, `DESCRIPTION`, `DATEDEBUT`, `DATEFIN`, `ESTPUBLIC`, `DATEINSERT`) 
-				VALUES ($idEv[0], $idUtil, $priorite, $idLieu, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, curdate())";
+				VALUES ($idEv[0], $idUtil, $priorite, $idLieu, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, now())";
 			}
 			//Si il n'y a pas de lieu défini
 			else
 			{
 				$sql = "INSERT INTO `aci_evenement` (`IDEVENEMENT`, `IDUTILISATEUR`, `IDPRIORITE`, `LIBELLELONG`, `LIBELLECOURT`, `DESCRIPTION`, `DATEDEBUT`, `DATEFIN`, `ESTPUBLIC`, `DATEINSERT`) 
-				VALUES ($idEv[0], $idUtil, $priorite, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, curdate())";
+				VALUES ($idEv[0], $idUtil, $priorite, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, now())";
 			}
 			$resultats = $conn->query($sql);
 			
@@ -209,7 +209,7 @@ if(!empty($_POST['submit']))
 						
 						//Insertion des utilisateurs destinataires
 						$sql = "INSERT INTO aci_destutilisateur VALUES (".$idDestUtil[0];
-						$sql.=", ".$idEv[0].", curdate())";
+						$sql.=", ".$idEv[0].", now())";
 
 						$insert = $conn->query($sql);
 
@@ -233,7 +233,7 @@ if(!empty($_POST['submit']))
 					
 						//Insertion des utilisateurs destinataires
 						$sql = "INSERT INTO aci_destgroupe VALUES (".$idEv[0].", $contenu2";
-						$sql.=", curdate())";
+						$sql.=", now())";
 
 						$insert = $conn->query($sql);
 						
@@ -275,6 +275,14 @@ if(!empty($_POST['submit']))
                 
                 <form action="" name="FormCreaEvenement" method="post" enctype="multipart/form-data" id="formCreation">
                     <table cellpadding="4">
+		    <tr>
+                            <td cellspan="2">
+                                <?php
+                                if($insertion)
+                                    echo '<div class="alert alert-success"><b>Insertion réalisée avec succès.</b></div>';
+                                ?>
+                            </td>
+                        </tr>
                         <tr>
                             <td>
                                 <b>Priorité</b> <br>
@@ -382,15 +390,6 @@ if(!empty($_POST['submit']))
                         <tr>
                             <td cellspan="2">
                                 <input class="btn" type="submit" name="submit" value="Valider"/>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td cellspan="2">
-                                <?php
-                                if($insertion)
-                                    echo '<div class="alert alert-success"><b>Insertion réalisée avec succès.</b></div>';
-                                ?>
                             </td>
                         </tr>
                     </table>

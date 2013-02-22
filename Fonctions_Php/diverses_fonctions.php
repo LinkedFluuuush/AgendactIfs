@@ -407,6 +407,12 @@ function notifications($conn, $idDest, $nomAuteur, $prenomAuteur, $dateDebut, $d
 			$contenu = $contenu." a été annulé";
 			$contenu_txt = $contenu_txt." a été annulé";
 		}
+		else
+		{
+			$dateEx = explode('/', $dateDebut[0]);
+			$contenu = $contenu.".<br/><br/>Vous pouvez visualiser cet évènement ici : <a href=http://spartacus.iutc3.unicaen.fr/~jeanbaptiste.louvet/AgendactIfs/Pages/Calendrier/jour.php?a=".$dateEx[2]."&m=".$dateEx[1]."&j=".$dateEx[0].">".$libelleLong."</a>";
+			$contenu_txt = $contenu_txt.".\n\nVous pouvez visualiser cet évènement ici : http://spartacus.iutc3.unicaen.fr/~jeanbaptiste.louvet/AgendactIfs/Pages/Calendrier/jour.php?a=".$dateEx[2]."&m=".$dateEx[1]."&j=".$dateEx[0];
+		}
 		
 		$contenu = $contenu.".<br><br>L'équipe d'AgendactIfs<br><br><small>Ce courriel est généré automatiquement, veuillez ne pas y répondre</small>";
 		$contenu_txt = $contenu_txt.".\n\nL'équipe d'AgendactIfs\n\nCe courriel est généré automatiquement, veuillez ne pas y répondre";
