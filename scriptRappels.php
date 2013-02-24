@@ -61,7 +61,7 @@ $rappels = $conn->query($sql);
 while($rappel = $rappels->fetch())
 {
 	//Récupération de l'évènement correspondant au rappel
-	$sql = "SELECT * FROM aci_evenement WHERE idevenement = ".$rappel['idevenement'];
+	$sql = "SELECT DATE_FORMAT(dateDebut, '%e/%m/%Y %H:%i') as DATEDEBUT, DATE_FORMAT(dateFin, '%e/%m/%Y %H:%i') as DATEFIN, libelleLong, idUtilisateur FROM aci_evenement WHERE idevenement = ".$rappel['idevenement'];
 	
 	$evenements = $conn->query($sql);
 	
