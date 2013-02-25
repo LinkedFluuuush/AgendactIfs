@@ -175,13 +175,13 @@ if(!empty($_POST['submit']))
 				//Insertion de l'événement
 				//echo "$idEv[0], $idUtil, $priorite, 1, $libelleLong, $libelleCourt, $description, $dateDebut $heureDebut, $dateFin $heureFin, $public";
 				$sql = "INSERT INTO `aci_evenement` (`IDEVENEMENT`, `IDUTILISATEUR`, `IDPRIORITE`, `IDLIEU`, `LIBELLELONG`, `LIBELLECOURT`, `DESCRIPTION`, `DATEDEBUT`, `DATEFIN`, `ESTPUBLIC`, `DATEINSERT`) 
-				VALUES ($idEv[0], $idUtil, $priorite, $idLieu, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, curdate())";
+				VALUES ($idEv[0], $idUtil, $priorite, $idLieu, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, now())";
 			}
 			//Si il n'y a pas de lieu défini
 			else
 			{
 				$sql = "INSERT INTO `aci_evenement` (`IDEVENEMENT`, `IDUTILISATEUR`, `IDPRIORITE`, `LIBELLELONG`, `LIBELLECOURT`, `DESCRIPTION`, `DATEDEBUT`, `DATEFIN`, `ESTPUBLIC`, `DATEINSERT`) 
-				VALUES ($idEv[0], $idUtil, $priorite, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, curdate())";
+				VALUES ($idEv[0], $idUtil, $priorite, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, now())";
 			}
 			$resultats = $conn->query($sql);
 			
@@ -209,7 +209,7 @@ if(!empty($_POST['submit']))
 						
 						//Insertion des utilisateurs destinataires
 						$sql = "INSERT INTO aci_destutilisateur VALUES (".$idDestUtil[0];
-						$sql.=", ".$idEv[0].", curdate())";
+						$sql.=", ".$idEv[0].", now())";
 
 						$insert = $conn->query($sql);
 
@@ -233,7 +233,7 @@ if(!empty($_POST['submit']))
 					
 						//Insertion des utilisateurs destinataires
 						$sql = "INSERT INTO aci_destgroupe VALUES (".$idEv[0].", $contenu2";
-						$sql.=", curdate())";
+						$sql.=", now())";
 
 						$insert = $conn->query($sql);
 						
@@ -275,6 +275,14 @@ if(!empty($_POST['submit']))
                 
                 <form action="" name="FormCreaEvenement" method="post" enctype="multipart/form-data" id="formCreation">
                     <table cellpadding="4">
+		    <tr>
+                            <td cellspan="2">
+                                <?php
+                                if($insertion)
+                                    echo '<div class="alert alert-success"><b>Evénement ajouté avec succès.</b></div>';
+                                ?>
+                            </td>
+                        </tr>
                         <tr>
                             <td>
                                 <b>Priorité</b> <br>
@@ -295,7 +303,7 @@ if(!empty($_POST['submit']))
 			    <td rowspan="4" id="tddest">
                                 <label for="addParticipant"><b>Ajouter un destinataire</b></label><br>
                                 <div id="dest" style="overflow:auto;height:250px;width:250px;border:1px solid #abadb3;padding:5px;background-color:white;">
-				<?php saisieFormReq("dest", $conn);?>
+				<?php if(!$insertion) saisieFormReq("dest", $conn);?>
                                 </div><br/>
                                 <input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
                                 <div id="resultsParticipant"></div>
@@ -305,7 +313,7 @@ if(!empty($_POST['submit']))
                         <tr>
                             <td>
                                 <label for="Eve_titreLong"><b>Titre long</b></label> <br>
-                                <input type="text" name="libelleLong" id="Eve_titreLong" value="<?php saisieFormString("libelleLong");?>" class="libelleLong" maxlength=32 />
+                                <input type="text" name="libelleLong" id="Eve_titreLong" value="<?php if(!$insertion) saisieFormString("libelleLong");?>" class="libelleLong" maxlength=32 />
                                 <?php echo "<b id=\"formErreur\"> $erreurLibelleLong </b>"; ?>
                             </td>
                         </tr>
@@ -313,14 +321,14 @@ if(!empty($_POST['submit']))
                         <tr>
                             <td>
                                 <label for="Eve_titreCourt"><b>Titre court</b></label> <br>
-                                <input type="text" name="libelleCourt" id="Eve_titreCourt" value="<?php saisieFormString("libelleCourt");?>" class="libelleCourt" maxlength=5 />
+                                <input type="text" name="libelleCourt" id="Eve_titreCourt" value="<?php if(!$insertion) saisieFormString("libelleCourt");?>" class="libelleCourt" maxlength=5 />
                                 <?php echo "<b id=\"formErreur\"> $erreurLibelleCourt </b>"; ?>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <label for="Eve_description"><b>Description</b></label> <br>
-                                <textarea name="description" rows="5" cols="30" id="Eve_description" class="area"><?php saisieFormString("description");?></textarea>
+                                <textarea name="description" rows="5" cols="30" id="Eve_description" class="area"><?php if(!$insertion) saisieFormString("description");?></textarea>
                                 <?php echo "<b id=\"formErreur\"> $erreurDescription </b>"; ?>
                             </td>
                         </tr>
@@ -330,10 +338,11 @@ if(!empty($_POST['submit']))
                                 <label for="Eve_dateDebut"><b>Date de début</b></label><br>
                                 <?php if (!empty($_GET['a']) and !empty($_GET['m']) and !empty($_GET['j'])) { ?>
                                     <input type="text" name="dateDebut" id="Eve_dateDebut" value="<?php echo $_GET['j'].'/'.$_GET['m'].'/'.$_GET['a']; ?>" class="dateDebut" maxlength=10 size=11/>
+                                    <input type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="00:00" class="heureDebut" maxlength=5 size=4/>
                                 <?php } else { ?>
-                                    <input type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateDebut");?>" class="dateDebut" maxlength=10 size=11/>
+                                    <input type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YYYY" value="<?php if(!$insertion) saisieFormString("dateDebut");?>" class="dateDebut" maxlength=10 size=11/>
+                                    <input type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="<?php if(!$insertion) saisieFormString("heureDebut");?>" class="heureDebut" maxlength=5 size=4/>
                                 <?php } ?>
-                                    <input type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="<?php saisieFormString("heureDebut");?>" class="heureDebut" maxlength=5 size=4/>
                                     <?php echo "<b id=\"formErreur\"> $erreurDateDebut $erreurHeureDebut </b>"; ?>
                             </td>
                             <td rowspan="4" id="tdgroupe">
@@ -357,8 +366,8 @@ if(!empty($_POST['submit']))
                         <tr>                    
                             <td>
                                 <label for="Eve_dateFin"><b>Date de fin</b></label><br>
-                                <input type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateFin");?>"class="dateFin" maxlength=10 size=11/>
-                                <input type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php saisieFormString("heureFin");?>" class="heureFin" maxlength=5 size=4/>
+                                <input type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" value="<?php if(!$insertion) saisieFormString("dateFin");?>"class="dateFin" maxlength=10 size=11/>
+                                <input type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php if(!$insertion) saisieFormString("heureFin");?>" class="heureFin" maxlength=5 size=4/>
                                 <?php echo "<b id=\"formErreur\"> $erreurDateFin $erreurHeureFin </b>"; ?>
                             </td>
                         </tr>
@@ -366,7 +375,7 @@ if(!empty($_POST['submit']))
                         <tr>
                             <td>
                                 <label for="Eve_lieu"><b>Lieu</b></label> <br>
-                                <input type="text" name="lieu" value="<?php saisieFormString("lieu");?>" id="Eve_lieu" autocomplete="off" />
+                                <input type="text" name="lieu" value="<?php if(!$insertion) saisieFormString("lieu");?>" id="Eve_lieu" autocomplete="off" />
                                 <div id="resultsLieu"></div>
                             </td>
                         </tr>
@@ -374,23 +383,14 @@ if(!empty($_POST['submit']))
                         <tr>
                             <td>
                                 <b>Type</b> <br>
-                                <input type="radio" name="public" id="public" value="1" checked="checked" onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
-                                <input type="radio" name="public" id="prive" value="0" onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
+                                <input type="radio" name="public" id="public" value="1" onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
+                                <input type="radio" name="public" id="prive" value="0" checked="checked" onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
                             </td>
                         </tr>
 
                         <tr>
                             <td cellspan="2">
                                 <input class="btn" type="submit" name="submit" value="Valider"/>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td cellspan="2">
-                                <?php
-                                if($insertion)
-                                    echo '<div class="alert alert-success"><b>Insertion réalisée avec succès.</b></div>';
-                                ?>
                             </td>
                         </tr>
                     </table>
@@ -622,18 +622,29 @@ if(!empty($_POST['submit']))
                 }			
         }
 	
-/*	function cacher(){
+	function cacher(){
 		var radio = document.getElementById("public");
-		var dest = document.getElementById("tddest");
-		var groupe = document.getElementById("tdgroupe");
+		var divdest = document.getElementById("dest");
+		var dest = document.getElementById("addParticipant");
+		var groupe = document.getElementsByTagName("input");
 		if(radio.checked==true){
-			dest.rowspan=1;
-			groupe.rowspan=1;
+			dest.disabled=true;
+			for(var i = 0; i < groupe.length; i++){
+				if(groupe[i].name=="groupe[]"){
+					groupe[i].checked = false;
+					groupe[i].disabled=true;
+				}
+			}
+			divdest.innerHTML="";
 		}else{
-			dest.rowspan=4;
-			groupe.rowspan=4;
+			dest.disabled=false;	
+			for(var i = 0; i < groupe.length; i++){
+				if(groupe[i].name=="groupe[]"){
+					groupe[i].disabled=false;
+				}
+			}
 		}
-	}*/
+	}
         </script>
     </body>
 </html>

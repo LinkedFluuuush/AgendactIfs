@@ -61,7 +61,7 @@ $rappels = $conn->query($sql);
 while($rappel = $rappels->fetch())
 {
 	//Récupération de l'évènement correspondant au rappel
-	$sql = "SELECT * FROM aci_evenement WHERE idevenement = ".$rappel['idevenement'];
+	$sql = "SELECT DATE_FORMAT(dateDebut, '%e/%m/%Y %H:%i') as DATEDEBUT, DATE_FORMAT(dateFin, '%e/%m/%Y %H:%i') as DATEFIN, libelleLong, idUtilisateur FROM aci_evenement WHERE idevenement = ".$rappel['idevenement'];
 	
 	$evenements = $conn->query($sql);
 	
@@ -118,6 +118,10 @@ while($rappel = $rappels->fetch())
 		}
 	}
 	
+	$dateEx = explode('/', $dateDebut[0]);
+	$contenu = $contenu.".<br/><br/>Vous pouvez visualiser cet évènement ici : <a href=http://spartacus.iutc3.unicaen.fr/~jeanbaptiste.louvet/AgendactIfs/Pages/Calendrier/jour.php?a=".$dateEx[2]."&m=".$dateEx[1]."&j=".$dateEx[0].">".$libelleLong."</a>";
+	$contenu_txt = $contenu_txt.".\n\nVous pouvez visualiser cet évènement ici : http://spartacus.iutc3.unicaen.fr/~jeanbaptiste.louvet/AgendactIfs/Pages/Calendrier/jour.php?a=".$dateEx[2]."&m=".$dateEx[1]."&j=".$dateEx[0];
+	
 	$contenu = $contenu.".<br><br>L'équipe d'AgendactIfs<br><br><small>Ce courriel est généré automatiquement, veuillez ne pas y répondre</small>";
 	$contenu_txt = $contenu_txt.".\n\nL'équipe d'AgendactIfs\nCe courriel est généré automatiquement, veuillez ne pas y répondre";
 	echo $contenu_txt;
@@ -147,9 +151,9 @@ while($rappel = $rappels->fetch())
 
 	//=====Envoi de l'e-mail.
 	if(mail($util[2],utf8_decode("[Agendact'Ifs]".$evenement['LIBELLELONG']),$message,$header))
-		echo stripcslashes('\nMessage envoyé avec succès\n');
+		echo stripcslashes('\n\nMessage envoyé avec succès\n\n');
 	else
-		echo stripcslashes('\nMessage non envoyé\n');
+		echo stripcslashes('\n\nMessage non envoyé\n\n');
 	//==========
 	//Suppression du rappel envoyé de la base de données
 	$suppressionRappel = "DELETE FROM aci_rappel WHERE idrappel = ".$rappel['idrappel'];

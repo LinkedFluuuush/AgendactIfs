@@ -1,15 +1,22 @@
 <?php
 session_start();
 include("../../Fonctions_Php/connexion.php");
+include("../../Fonctions_Php/diverses_fonctions.php");
 $suppr = 0;
 $idUtil = $_SESSION['id'];
 if(!empty($_GET['i'])){
-	$req = "SELECT idUtilisateur FROM aci_evenement WHERE idEvenement = ".$_GET['i'];
+	$req = "SELECT aci_evenement.idUtilisateur, nom, prenom, dateDebut, dateFin, libelleLong FROM aci_evenement JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur WHERE idEvenement = ".$_GET['i'];
 	$resultat = $conn->query($req);
 	 try{
 		$row = $resultat->fetch();
-	if($row[0] == $idUtil)
+		if($row[0] == $idUtil){
+			$req2="SELECT idUtilisateur FROM aci_destutilisateur WHERE idEvenement = ".$_GET['i'];
+			$resultat2 = $conn->query($req2);
+			while($row2 = $resultat2->fetch()){
+				notifications($conn,$row2['idUtilisateur'], $row['nom'], $row['prenom'], $row['dateDebut'], $row['dateFin'], $row['libelleLong'], "supprimer");
+			}
 			$suppr = supprimer($conn, $_GET['i']);
+		}
 	}
 	catch(Exception $e){
 	}
