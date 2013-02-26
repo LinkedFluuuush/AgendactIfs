@@ -16,11 +16,11 @@ $nomPage = $temp[sizeof($temp)-1];
                         <form name="connexion" action="../../Fonctions_Php/connexionLDAP.php" method="POST">
                             <input class="zoneDeSaisie" type="text" name="login" placeholder="Identifiant"><br>
                             <input class="zoneDeSaisie" type="password" name="mdp" placeholder="Mot de passe">
-                            <input class="btn" type="submit" name="valider_conn" value="Valider">
+                            <input type="submit" class="btn" style="padding: 2px 8px;" name="valider_conn" value="Valider">
                         </form>
                         <?php
                         if(isset($_GET['login']) && $_GET['login'] == 0){
-                            echo '<span style="color:red;">Connexion echouée.</span>';
+                            echo '<div class="alert alert-error" style="padding:2px;"><b>Connexion échouée.</b></div>';
                         } ?>
                     </li>
                 <?php }

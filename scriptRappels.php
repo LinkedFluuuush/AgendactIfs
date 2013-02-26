@@ -82,13 +82,13 @@ while($rappel = $rappels->fetch())
 		$dateFin = explode(' ',$evenement['DATEFIN']);
 	
 	$contenu = "<h1>".$evenement['LIBELLELONG']."</h1>";
-	$contenu = $contenu."Bonjour ".$util[0]." ".$util[1];
+	$contenu = $contenu."Bonjour ".$util[0]." ".ucfirst(strtolower($util[1])).",";
 	$contenu = $contenu."<br>Nous vous rappelons que l'événement ".$evenement['LIBELLELONG'].", organisé par ".$auteur[0]." ".$auteur[1];
 	$contenu = $contenu." se déroulera ";
 	
 	$contenu_txt = $evenement['LIBELLELONG']."\n";
 	$contenu_txt = $contenu_txt."Bonjour ".$util[0]." ".$util[1];
-	$contenu_txt = $contenu_txt."\nNous vous rappelons que l'événement ".$evenement['LIBELLELONG'].", organisé par ".$auteur[0]." ".$auteur[1];
+	$contenu_txt = $contenu_txt."\nNous vous rappelons que l'événement ".$evenement['LIBELLELONG'].", organisé par ".$auteur[0]." ".ucfirst(strtolower($auteur[1]));
 	$contenu_txt = $contenu_txt." se déroulera ";
 	
 	if(!empty($dateFin[0])){
@@ -119,11 +119,11 @@ while($rappel = $rappels->fetch())
 	}
 	
 	$dateEx = explode('/', $dateDebut[0]);
-	$contenu = $contenu.".<br/><br/>Vous pouvez visualiser cet évènement ici : <a href=http://spartacus.iutc3.unicaen.fr/~jeanbaptiste.louvet/AgendactIfs/Pages/Calendrier/jour.php?a=".$dateEx[2]."&m=".$dateEx[1]."&j=".$dateEx[0].">".$libelleLong."</a>";
-	$contenu_txt = $contenu_txt.".\n\nVous pouvez visualiser cet évènement ici : http://spartacus.iutc3.unicaen.fr/~jeanbaptiste.louvet/AgendactIfs/Pages/Calendrier/jour.php?a=".$dateEx[2]."&m=".$dateEx[1]."&j=".$dateEx[0];
+	$contenu = $contenu.".<br/><br/>Vous pouvez visualiser cet évènement ici : <a href=http://spartacus.iutc3.unicaen.fr/~jeanbaptiste.louvet/AgendactIfs/Pages/Calendrier/jour.php?a=".$dateEx[2]."&m=".$dateEx[1]."&j=".$dateEx[0].">".$libelleLong.".</a>";
+	$contenu_txt = $contenu_txt.".\n\nVous pouvez visualiser cet évènement ici : http://spartacus.iutc3.unicaen.fr/~jeanbaptiste.louvet/AgendactIfs/Pages/Calendrier/jour.php?a=".$dateEx[2]."&m=".$dateEx[1]."&j=".$dateEx[0].".";
 	
-	$contenu = $contenu.".<br><br>L'équipe d'AgendactIfs<br><br><small>Ce courriel est généré automatiquement, veuillez ne pas y répondre</small>";
-	$contenu_txt = $contenu_txt.".\n\nL'équipe d'AgendactIfs\nCe courriel est généré automatiquement, veuillez ne pas y répondre";
+	$contenu = $contenu.".<br><br>L'équipe d'AgendactIfs.<br><br><small>Ce courriel est généré automatiquement, veuillez ne pas y répondre.</small>";
+	$contenu_txt = $contenu_txt.".\n\nL'équipe d'AgendactIfs.\nCe courriel est généré automatiquement, veuillez ne pas y répondre.";
 	echo $contenu_txt;
 	
 	//Envoi du message

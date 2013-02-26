@@ -152,7 +152,7 @@
                             echo '<span style="font-size:1.1em"><b>'.trim($titre).'</b></span>';
                             echo '<br>'.$desc.'<br>';
                             if(!empty($lieu))
-                                echo 'Lieu : ' . $lieu . '<br>'; 
+                                echo '<b>Lieu : </b>' . $lieu . '<br>'; 
                             echo 'Post&eacute; par <b>' . $auteur . '</b> le <b>' . $dateInsert . '</b>';
                             
                             
