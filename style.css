@@ -108,7 +108,7 @@ ul.nav > li {
 ul.nav > li > div.header {
     font-weight: bold;
     text-transform: uppercase;
-    padding: 12px;
+    padding: 8px 0 8px 12px;
     border-bottom: 1px #396e9f solid;
     /*width: 180px;*/
     /*min-width: 100px;*/
@@ -116,7 +116,7 @@ ul.nav > li > div.header {
 
 ul.nav > li ul li {
     background-color: #ececec;
-    padding: 12px; 
+    padding: 8px 0 8px 12px; 
     border-bottom: 1px solid #dcdcdc; 
     border-top: 1px solid #fff;
     color: #727272; 
@@ -128,8 +128,14 @@ ul.nav > li ul li.selected {
     background-color: #e7e7e7;
 }
 
+ul.nav > li ul li.connexion {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
 ul.nav > li ul li.connexion form {
     text-align: center;
+    padding-left: 0;
 }
 
 ul.nav > li ul li.connexion input {
