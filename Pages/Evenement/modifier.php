@@ -207,9 +207,13 @@ if(!empty($_POST['submit']))
 			$idRappel = $temp2->fetch();
 			
 			//Création du rappel à l'auteur de l'événement
-			$sqlRappel = "INSERT INTO aci_rappel VALUES($idRappel[0], $idEv[0], $idUtil, str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i') - INTERVAL 1 DAY)";
+			
+			$sqlInfosUtil = "SELECT rappelhaute, rappelmoyenne, rappelbasse FROM aci_utilisateur WHERE idutilisateur = ".$idUtil;
+			$temp2 = $conn->query($sqlInfosUtil);
+			$rappelUtil = $temp2->fetch();
+
+			creationRappel($conn, $idEv[0], $priorite, $idUtil, $idRappel[0], $rappelUtil['rappelhaute'], $rappelUtil['rappelmoyenne'], $rappelUtil['rappelbasse'], $dateDebut.' '.$heureDebut);
 			$idRappel[0]++;
-			$exec = $conn->query($sqlRappel);
 
 			if(!empty($_POST['dest']) && $public == 0)
 			{
@@ -232,10 +236,9 @@ if(!empty($_POST['submit']))
 						//Envoi de notifications
 						notifications($conn, $idDestUtil[0], $_SESSION['nom'], $_SESSION['prenom'], $dateDebut.' '.$heureDebut, $dateFin.' '.$heureFin, $libelleLong, 'creer');
 						
-						//Création de rappels
-						$sqlRappel = "INSERT INTO aci_rappel VALUES($idRappel[0], $idEv[0], $idDestUtil[0], str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i') - INTERVAL 1 DAY)";
+						//Création de rappels						
+						creationRappel($conn, $idEv[0], $priorite, $idDestUtil[0], $idRappel[0], $idDestUtil['rappelhaute'], $idDestUtil['rappelmoyenne'], $idDestUtil['rappelbasse'], $dateDebut.' '.$heureDebut);
 						$idRappel[0]++;
-						$exec = $conn->query($sqlRappel);
 					}
 				}
 			}
@@ -262,11 +265,9 @@ if(!empty($_POST['submit']))
 							//Envoi de notifications
 							notifications($conn, $mailGroupe[0], $_SESSION['nom'], $_SESSION['prenom'], $dateDebut.' '.$heureDebut, $dateFin.' '.$heureFin, $libelleLong, 'creer');
 							
-							$sqlRappel = "INSERT INTO aci_rappel VALUES($idRappel[0], $idEv[0], $mailGroupe[0], str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i') - INTERVAL 1 DAY)";
-							
-							//Création de rappels
+							//Création de rappels						
+							creationRappel($conn, $idEv[0], $priorite, $mailGroupe[0], $idRappel[0], $mailGroupe['rappelhaute'], $mailGroupe['rappelmoyenne'], $mailGroupe['rappelbasse'], $dateDebut.' '.$heureDebut);
 							$idRappel[0]++;
-							$exec = $conn->query($sqlRappel);
 						}
 						
 						$temp->closeCursor();
@@ -733,3 +734,48 @@ else {
         </script>
     </body>
 </html>
+
+<?php
+function creationRappel($conn, $idEvenement, $priorite, $idUtilisateur, $idRappel, $rappelHaute, $rappelMoyenne, $rappelBasse, $date)
+{
+	if($priorite == 1)
+	{
+		$rappel = explode(' ', $rappelHaute);
+		
+		insertionRappel($conn, $idEvenement, $idUtilisateur, $idRappel, $date, $rappel[0], $rappel[1], $rappel[2], $rappel[3], $rappel[4]);
+	}
+	elseif($priorite == 2)
+	{
+		$rappel = explode(' ', $rappelMoyenne);
+		
+		insertionRappel($conn, $idEvenement, $idUtilisateur, $idRappel, $date, $rappel[0], $rappel[1], $rappel[2], $rappel[3], $rappel[4]);
+	}
+	elseif($priorite == 3 && $rappelBasse != '00 00 00 00 00')
+	{
+		$rappel = explode(' ', $rappelBasse);
+		
+		insertionRappel($conn, $idEvenement, $idUtilisateur, $idRappel, $date, $rappel[0], $rappel[1], $rappel[2], $rappel[3], $rappel[4]);
+	}
+}
+
+function insertionRappel($conn, $idEvenement, $idUtilisateur, $idRappel, $date, $jour, $mois, $annee, $heure, $minute)
+{
+	//Insertion du rappel dans la base
+	$sqlRappel = "INSERT INTO aci_rappel VALUES($idRappel, $idEvenement, $idUtilisateur, str_to_date('$date', '%d/%m/%Y %H:%i')";
+
+	if(!empty($jour))
+		$sqlRappel .= " - INTERVAL $jour DAY";
+	if(!empty($mois))
+		$sqlRappel .= " - INTERVAL $mois MONTH";
+	if(!empty($annee))
+		$sqlRappel .= " - INTERVAL $annee YEAR";
+	if(!empty($heure))
+		$sqlRappel .= " - INTERVAL $heure HOUR";
+	if(!empty($minute))
+		$sqlRappel .= " - INTERVAL $minute MINUTE";
+
+	$sqlRappel .= ")";
+	
+	$exec = $conn->query($sqlRappel);
+}
+?>
