@@ -66,11 +66,11 @@
         LEFT JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
         WHERE (dateFin >= '$annee-$mois-$jour 00:00:00' and dateDebut <= '$annee-$mois-$jour 23:59:59')
 		or (dateFin is null and dateDebut <= '$annee-$mois-$jour 23:59:59' and dateDebut >= '$annee-$mois-$jour 00:00:00')
-        and idpriorite <= $priorite
-        and ((estPublic = 1)
-            or ($idUtil = aci_evenement.idUtilisateur)
-            or $idUtil in (SELECT idutilisateur FROM aci_destutilisateur WHERE aci_destutilisateur.idevenement = aci_evenement.idevenement)
-            or $idUtil in (SELECT idutilisateur FROM aci_composer JOIN aci_destgroupe USING (idgroupe) WHERE aci_destgroupe.idevenement = aci_evenement.idevenement))";
+                and idpriorite <= $priorite
+                and ((estPublic = 1)
+                    or ($idUtil = aci_evenement.idUtilisateur)
+                    or $idUtil in (SELECT idutilisateur FROM aci_destutilisateur WHERE aci_destutilisateur.idevenement = aci_evenement.idevenement)
+                    or $idUtil in (SELECT idutilisateur FROM aci_composer JOIN aci_destgroupe USING (idgroupe) WHERE aci_destgroupe.idevenement = aci_evenement.idevenement))";
         
         $resultats = $conn->query($sql);
         
