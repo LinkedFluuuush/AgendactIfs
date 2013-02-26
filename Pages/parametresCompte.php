@@ -97,51 +97,68 @@ if(empty($_SESSION['id'])) {
         </table>
 		<form action="<?php echo $_SERVER['PHP_SELF'];?>" name="FormParametres" method="post" enctype="multipart/form-data" id="formParametres">
 			<table align="center" cellpadding="4">
+                            <tr>
+                                <td>
+                                    <label><b>Notifications</b></label>
+                                </td>
+                                <td>
+                                    <input type="radio" name="notif" id="notifA" value="1" <?php checked(1, "NOTIFICATION", $infoUtil);?>> <label for="notifA">Activé</label>
+                                    <input type="radio" name="notif" id="notifD" value="0" <?php checked(0, "NOTIFICATION", $infoUtil);?>> <label for="notifD">Désactivé</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <b>Rappels</b>
+                                    </label>
+                                </td>
+                                <td>
+                                    <input type="radio" name="rappel" id="rappelA" value="1" <?php checked(1, "RAPPEL", $infoUtil);?>> <label for="rappelA">Activé</label>
+                                    <input type="radio" name="rappel" id="rappelD" value="0" <?php checked(0, "RAPPEL", $infoUtil);?>> <label for="rappelD">Désactivé</label>
+                                </td>
+                            </tr>
+                            
+                            <tr><td></td></tr>
+                            <tr><td></td></tr>
+                            
+                            <tr>
+                                <td><b>Temps avant le rappel des évènements</b></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Priorité haute</b>
+                                </td>
+                                <td>
+                                    <input type="text" name="jHaute" size=1 maxlength=2 value="<?php echo $rappelHaute[0]; ?>"> jour(s) &nbsp;
+                                    <input type="text" name="hHaute" size=1 maxlength=2 value="<?php echo $rappelHaute[3]; ?>"> heure(s)
+                                </td>
+                            </tr>
 				<tr>
-					<td>Notifications </td>
-					<td><input type="radio" name="notif" id="notifA" value="1" <?php checked(1, "NOTIFICATION", $infoUtil);?>> <label for="notifA">Activé</label>
-						</br>
-						<input type="radio" name="notif" id="notifD" value="0" <?php checked(0, "NOTIFICATION", $infoUtil);?>> <label for="notifD">Désactivé</label>
-					</td>
-				</tr>
-				<tr>
-					<td>Rappels : </td>
-					<td><input type="radio" name="rappel" id="rappelA" value="1" <?php checked(1, "RAPPEL", $infoUtil);?>> <label for="rappelA">Activé</label>
-						</br>
-						<input type="radio" name="rappel" id="rappelD" value="0" <?php checked(0, "RAPPEL", $infoUtil);?>> <label for="rappelD">Désactivé</label>
-					</td>
-				</tr>
-				<tr>
-					<td>Temps avant rappels d'événements : </td>
-					<td>Heure Jour
-				</tr>
-				<tr>
-					<td>Priorité haute : </td>
-					<td><input type="text" name="hHaute" size=1 maxlength=2 value="<?php echo $rappelHaute[3]; ?>"> &nbsp;
-						<input type="text" name="jHaute" size=1 maxlength=2 value="<?php echo $rappelHaute[0]; ?>">
-					</td>
+                                    <td>
+                                        <b>Priorité moyenne</b>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="jMoyenne" size=1 maxlength=2 value="<?php echo $rappelMoyenne[0]; ?>"> jour(s) &nbsp;
+                                        <input type="text" name="hMoyenne" size=1 maxlength=2 value="<?php echo $rappelMoyenne[3]; ?>"> heure(s)
+                                    </td>
 				</tr>
 				</tr>
 				<tr>
-					<td>Priorité moyenne : </td>
-					<td><input type="text" name="hMoyenne" size=1 maxlength=2 value="<?php echo $rappelMoyenne[3]; ?>"> &nbsp;
-						<input type="text" name="jMoyenne" size=1 maxlength=2 value="<?php echo $rappelMoyenne[0]; ?>">
-					</td>
-				</tr>
-				</tr>
-				<tr>
-					<td>Priorité basse : </td>
-					<td><input type="text" name="hBasse" size=1 maxlength=2 value="<?php echo $rappelBasse[3]; ?>"> &nbsp;
-						<input type="text" name="jBasse" size=1 maxlength=2 value="<?php echo $rappelBasse[0]; ?>">
-					</td>
+                                    <td>
+                                        <b>Priorité basse</b>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="jBasse" size=1 maxlength=2 value="<?php echo $rappelBasse[0]; ?>"> jour(s) &nbsp;
+                                        <input type="text" name="hBasse" size=1 maxlength=2 value="<?php echo $rappelBasse[3]; ?>"> heure(s)
+                                    </td>
 				</tr>
 			</table>
-			<p align="center"><input type="submit" value="Enregistrer"></p>
+                    <p align="center"><input type="submit" class="btn" value="Enregistrer"></p>
 		</form>
 		<?php
 		
 		if($envoye)
-			echo '<div class="alert alert-success">Mise à jour des paramètres effectuée.</div>';
+			echo '<div class="alert alert-success"><b>Mise à jour des paramètres effectuée.</b></div>';
 		?>
 	</div>
 </div>

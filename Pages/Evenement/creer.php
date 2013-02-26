@@ -281,7 +281,7 @@ if(!empty($_POST['submit']))
                     <table cellpadding="4">
                         <tr>
                             <td>
-                                <b>Priorité</b> <br>
+                                <label for="priorite"><b>Priorité</b></label><br>
                                 <select name="priorite" id="priorite">
                                     <option value="1">Haute</option>';
                                     <option value="2" selected>Moyenne</option>';
@@ -370,7 +370,7 @@ if(!empty($_POST['submit']))
 
                         <tr>
                             <td>
-                                <b>Type</b> <br>
+                                <label><b>Type</b></label><br>
                                 <input type="radio" name="public" id="public" value="1" <?php if($public == 1) echo 'checked'; ?> onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
                                 <input type="radio" name="public" id="prive" value="0" <?php if($public == 0) echo 'checked'; ?> onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
                             </td>

@@ -355,7 +355,7 @@ else {
                     <table cellpadding="4">
                         <tr>
                             <td>
-                                <b>Priorité</b> <br>
+                                <label><b>Priorité</b></label><br>
                                 <select name="priorite" id="priorite">
                                     <option value="1">Haute</option>';
                                     <option value="2" selected>Moyenne</option>';
@@ -451,7 +451,7 @@ else {
 
                         <tr>
                             <td>
-                                <b>Type</b> <br>
+                                <label><b>Type</b></label> <br>
 								<?php if(isset($_POST["public"]) && $_POST["public"] == 0) {?>
 									<input type="radio" name="public" id="public" value="1" onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
 									<input type="radio" name="public" id="prive" value="0" checked="checked" onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
