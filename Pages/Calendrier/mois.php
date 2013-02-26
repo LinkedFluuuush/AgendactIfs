@@ -24,7 +24,7 @@
         //on définit des valeurs par defaut aux variable année, mois et jour (par défaut : aujourd'hui)
         $annee = date('Y');
         $mois = date('m');
-        $jour = date('d');
+        $jour = 1;
 
         //si les variables $_POST existent, on les utilises et au passage, on les stockent dans les variable de session
         if((!empty($_GET['annee'])) && (!empty($_GET['mois']))) {
@@ -43,13 +43,11 @@
         if ((!empty($_SESSION['annee'])) && (!empty($_SESSION['mois'])) && (!empty($_SESSION['jour']))) {
             $annee = $_SESSION['annee'];
             $mois = $_SESSION['mois'];
-            $jour = $_SESSION['jour'];
+            $jour = 1;
 
             if($mois == 13)
                 $mois = 0;
         }
-
-
 
         // Nombre de jours du mois
         $days = retourneJour($annee, $mois);
@@ -76,10 +74,10 @@
 
         //----------
 
-		if(!empty($_SESSION['id']))
-			$idUtil = $_SESSION['id'];
-		else
-			$idUtil = 0;
+        if(!empty($_SESSION['id']))
+                $idUtil = $_SESSION['id'];
+        else
+                $idUtil = 0;
 			
         $idSession = 1; //$_SESSION['login'];
         $nomSession = 'Test';
@@ -132,15 +130,15 @@
 
                 <?php
                 $sql = "SELECT aci_evenement.*, aci_utilisateur.nom, aci_utilisateur.prenom, aci_utilisateur.idUtilisateur, aci_lieu.libelle lieu, aci_evenement.dateinsert FROM aci_evenement
-						JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
-						LEFT JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
-						where (dateFin >= '$annee-$mois-01 00:00:00' or dateFin is null)
-						and dateDebut <= '$annee-$mois-$days 23:59:59'
-						and idpriorite <= $priorite
-						and ((estPublic = 1)
-							or ($idUtil = aci_evenement.idUtilisateur)
-							or $idUtil in (SELECT idutilisateur FROM aci_destutilisateur WHERE aci_destutilisateur.idevenement = aci_evenement.idevenement)
-							or $idUtil in (SELECT idutilisateur FROM aci_composer JOIN aci_destgroupe USING (idgroupe) WHERE aci_destgroupe.idevenement = aci_evenement.idevenement))";
+                        JOIN aci_utilisateur ON aci_evenement.idUtilisateur = aci_utilisateur.idUtilisateur
+                        LEFT JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
+                        where (dateFin >= '$annee-$mois-01 00:00:00' or dateFin is null)
+                        and dateDebut <= '$annee-$mois-$days 23:59:59'
+                        and idpriorite <= $priorite
+                        and ((estPublic = 1)
+                                or ($idUtil = aci_evenement.idUtilisateur)
+                                or $idUtil in (SELECT idutilisateur FROM aci_destutilisateur WHERE aci_destutilisateur.idevenement = aci_evenement.idevenement)
+                                or $idUtil in (SELECT idutilisateur FROM aci_composer JOIN aci_destgroupe USING (idgroupe) WHERE aci_destgroupe.idevenement = aci_evenement.idevenement))";
 
                 $resultats = $conn->query($sql);
 
