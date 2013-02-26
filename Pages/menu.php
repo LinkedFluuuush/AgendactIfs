@@ -84,7 +84,7 @@ $nomPage = $temp[sizeof($temp)-1];
         </li>
         <li>
             <?php if(!empty($_SESSION['id'])) { ?>
-                <div class="header">Rappels/notifications</div>
+                <div class="header">Rappels/notifs</div>
                 <ul class="menu">
                     <li>
                         <a href="../parametresCompte.php">Paramètres</a>
