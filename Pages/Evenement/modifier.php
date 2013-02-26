@@ -279,13 +279,65 @@ if(!empty($_POST['submit']))
 		}
 	}
 }
+else {
+	$req = "SELECT * from aci_evenement where idevenement =". $_GET["i"];
+	$res = $conn->query($req);
+	$row = $res->fetch();
+
+	$_POST["libelleLong"] = $row["LIBELLELONG"];
+	$_POST["libelleCourt"] = $row["LIBELLECOURT"];
+	$_POST["description"] = $row["DESCRIPTION"];
+	
+	$dateD = formattageDate(explodeDate($row["DATEDEBUT"]));
+	
+	$_POST["dateDebut"] = $dateD[1];
+	$_POST["heureDebut"] = $dateD[0];
+	
+	$dateF = formattageDate(explodeDate($row["DATEFIN"]));
+	
+	$_POST["dateFin"] = $dateF[1];
+	$_POST["heureFin"] = $dateF[0];
+	
+	$reqLieu = "SELECT libelle from aci_lieu where idlieu =" .$row["IDLIEU"];
+	$resLieu = $conn->query($reqLieu);
+	$rowLieu = $resLieu->fetch();
+	
+	$_POST["lieu"] = $rowLieu["libelle"];
+
+	$_POST["public"] = $row["ESTPUBLIC"];
+	
+	$reqParticipant = "SELECT adresse_mail from aci_destutilisateur 
+	JOIN aci_utilisateur ON aci_destutilisateur.idutilisateur = aci_utilisateur.idutilisateur 
+	WHERE idevenement = ".$_GET["i"];
+	$resParticipant = $conn->query($reqParticipant);
+	
+	$i = 0;
+	while($rowParticipant = $resParticipant->fetch(PDO::FETCH_NUM)){
+		$rowParticipants[$i] = $rowParticipant[0];
+		$i++;
+	}
+	
+	$_POST["dest"] = $rowParticipants;
+	
+	$reqGroupe = "SELECT idgroupe from aci_destgroupe
+	WHERE idevenement = ".$_GET["i"];
+	$resGroupe = $conn->query($reqGroupe);
+	
+	$i = 0;
+	while($rowGroupe = $resGroupe->fetch(PDO::FETCH_NUM)){
+		$rowGroupes[$i] = $rowGroupe[0];
+		$i++;
+	}
+	
+	$_POST["groupe"] = $rowGroupes;
+}
 ?>
         <div id="global">
             <?php include('../menu.php'); ?>
             <div id="corpsCal" class="creer">
                 <table class="titreCal">
                     <tr class="titreCal">
-                        <th>Créer un évènement</th>
+                        <th>Modifier un évènement</th>
                     </tr>
                 </table>
                 
@@ -390,8 +442,13 @@ if(!empty($_POST['submit']))
                         <tr>
                             <td>
                                 <b>Type</b> <br>
-                                <input type="radio" name="public" id="public" value="1" checked="checked" onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
-                                <input type="radio" name="public" id="prive" value="0" onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
+								<?php if(isset($_POST["public"]) && $_POST["public"] == 0) {?>
+									<input type="radio" name="public" id="public" value="1" onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
+									<input type="radio" name="public" id="prive" value="0" checked="checked" onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
+								<?php } else { ?>
+									<input type="radio" name="public" id="public" value="1" checked="checked" onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
+									<input type="radio" name="public" id="prive" value="0" onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
+								<?php } ?>
                             </td>
                         </tr>
 
@@ -638,18 +695,37 @@ if(!empty($_POST['submit']))
                 }			
         }
 	
-/*	function cacher(){
+	function cacher(){
 		var radio = document.getElementById("public");
-		var dest = document.getElementById("tddest");
-		var groupe = document.getElementById("tdgroupe");
+		var divdest = document.getElementById("dest");
+		var dest = document.getElementById("addParticipant");
+		var groupe = document.getElementsByTagName("input");
 		if(radio.checked==true){
-			dest.rowspan=1;
-			groupe.rowspan=1;
+			dest.disabled=true;
+			for(var i = 0; i < groupe.length; i++){
+				if(groupe[i].name=="groupe[]"){
+					groupe[i].checked = false;
+					groupe[i].disabled=true;
+				}
+			}
+			divdest.innerHTML="";
 		}else{
-			dest.rowspan=4;
-			groupe.rowspan=4;
+			dest.disabled=false;	
+			for(var i = 0; i < groupe.length; i++){
+				if(groupe[i].name=="groupe[]"){
+					groupe[i].disabled=false;
+				}
+			}
 		}
-	}*/
+	}
+	
+	function changerType(estpublic){
+		if(estpublic == 0)
+			var publi = document.getElementById("public");
+			var prive = document.getElementById("prive");
+			publi.checked = false;
+			prive.checked = true;
+	}
         </script>
     </body>
 </html>
