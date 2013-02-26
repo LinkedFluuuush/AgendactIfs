@@ -13,19 +13,25 @@ $nomPage = $temp[sizeof($temp)-1];
             <ul class="menu">
                 <?php if(empty($_SESSION['id'])){ ?>
                     <li class="connexion">
+                        <?php
+                        if(isset($_GET['login']) && $_GET['login'] == 0){
+                            echo '<div class="alert alert-error" style="padding:2px;margin-bottom:8px;"><b>Connexion échouée.</b></div>';
+                        } ?>
                         <form name="connexion" action="../../Fonctions_Php/connexionLDAP.php" method="POST">
                             <input class="zoneDeSaisie" type="text" name="login" placeholder="Identifiant"><br>
                             <input class="zoneDeSaisie" type="password" name="mdp" placeholder="Mot de passe">
                             <input type="submit" class="btn" style="padding: 2px 8px;" name="valider_conn" value="Valider">
                         </form>
-                        <?php
-                        if(isset($_GET['login']) && $_GET['login'] == 0){
-                            echo '<div class="alert alert-error" style="padding:2px;"><b>Connexion échouée.</b></div>';
-                        } ?>
                     </li>
                 <?php }
                 else {
-                    echo "<li onclick =\"document.location.href ='../../Fonctions_Php/deconnexion.php'\"><a href=\"../../Fonctions_Php/deconnexion.php\">".$_SESSION['prenom']." ".ucfirst(strtolower($_SESSION['nom']))." - Déconnexion</a></li>";
+                    if($nomPage == "parametresCompte.php") {
+                        echo "<li onclick =\"document.location.href ='../Fonctions_Php/deconnexion.php'\"><a href=\"../Fonctions_Php/deconnexion.php\">".$_SESSION['prenom']." ".ucfirst(strtolower($_SESSION['nom']))." - Déconnexion</a></li>";
+                    }
+                    else {
+                        echo "<li onclick =\"document.location.href ='../../Fonctions_Php/deconnexion.php'\"><a href=\"../../Fonctions_Php/deconnexion.php\">".$_SESSION['prenom']." ".ucfirst(strtolower($_SESSION['nom']))." - Déconnexion</a></li>";
+                    }
+                    
                 } ?>
             </ul>
         </li>
@@ -36,6 +42,9 @@ $nomPage = $temp[sizeof($temp)-1];
                  if(!empty($_SESSION['id'])) {
                     if ($nomPage == "creer.php") {
                         echo '<li class="selected">Créer</li>';
+                    }
+                    else if ($nomPage == "parametresCompte.php") {
+                        echo '<li onclick ="document.location.href =\'Evenement/creer.php\'"><a href="../Evenement/creer.php">Créer</a></li>';
                     }
                     else {
                         echo '<li onclick ="document.location.href =\'../Evenement/creer.php\'"><a href="../Evenement/creer.php">Créer</a></li>';
@@ -55,26 +64,38 @@ $nomPage = $temp[sizeof($temp)-1];
                  if ($nomPage == "semestre.php") {
                      echo '<li class="selected">Semestre</li>';
                  }
+                 else if ($nomPage == "parametresCompte.php") {
+                     echo '<li onclick ="document.location.href =\'Calendrier/semestre.php\'"><a href="../Calendrier/semestre.php">Semestre</a></li>';
+                 }
                  else {
                      echo '<li onclick ="document.location.href =\'../Calendrier/semestre.php\'"><a href="../Calendrier/semestre.php">Semestre</a></li>';
                  }
-                 
+                 //-------------------------------------------------------------------------------------------
                  if ($nomPage == "mois.php") {
                      echo '<li class="selected">Mois</li>';
+                 }
+                 else if ($nomPage == "parametresCompte.php") {
+                     echo '<li onclick ="document.location.href =\'Calendrier/mois.php\'"><a href="../Calendrier/mois.php">Mois</a></li>';
                  }
                  else {
                      echo '<li onclick ="document.location.href =\'../Calendrier/mois.php\'"><a href="../Calendrier/mois.php">Mois</a></li>';
                  }
-                 
+                 //-------------------------------------------------------------------------------------------
                  if ($nomPage == "semaine.php") {
                      echo '<li class="selected">Semaine</li>';
+                 }
+                 else if ($nomPage == "parametresCompte.php") {
+                     echo '<li onclick ="document.location.href =\'Calendrier/semaine.php\'"><a href="../Calendrier/semaine.php">Semaine</a></li>';
                  }
                  else {
                      echo '<li onclick ="document.location.href =\'../Calendrier/semaine.php\'"><a href="../Calendrier/semaine.php">Semaine</a></li>';
                  }
-                 
+                 //--------------------------------------------------------------------------------------------
                  if ($nomPage == "jour.php") {
                      echo '<li class="selected">Jour</li>';
+                 }
+                 else if ($nomPage == "parametresCompte.php") {
+                     echo '<li onclick ="document.location.href =\'Calendrier/jour.php\'"><a href="../Calendrier/jour.php">Jour</a></li>';
                  }
                  else {
                      echo '<li onclick ="document.location.href =\'../Calendrier/jour.php\'"><a href="../Calendrier/jour.php">Jour</a></li>';
@@ -86,9 +107,12 @@ $nomPage = $temp[sizeof($temp)-1];
             <?php if(!empty($_SESSION['id'])) { ?>
                 <div class="header">Rappels/notifs</div>
                 <ul class="menu">
-                    <li>
-                        <a href="../parametresCompte.php">Paramètres</a>
-                    </li>
+                    <?php  if($nomPage == "parametresCompte.php") {
+                        echo '<li class="selected">Paramètres</li>';
+                     }
+                     else {
+                         echo '<li onclick ="document.location.href =\'../parametresCompte.php\'"><a href="../parametresCompte.php">Paramètres</a></li>';
+                     } ?>
                 </ul>
            <?php } ?>
         </li>
