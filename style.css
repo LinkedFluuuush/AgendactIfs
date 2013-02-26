@@ -528,6 +528,10 @@ ul.nav > li ul li.priorite label:hover {
     text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8);
 }
 
+#corpsCal.jour p.affichage_details {
+    width: 400px;
+}
+
 #corpsCal.jour span.titre, p, p.ajouter_retour, div.modifier_suppr, .alert-success {
     margin-left: 1.5%;
 }

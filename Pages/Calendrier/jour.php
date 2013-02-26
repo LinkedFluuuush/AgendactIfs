@@ -22,10 +22,7 @@
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
 	
-	//Suppression d'un événement
-        if(isset($_GET['d']) && $_GET['d']==1){
-                echo '<div class="alert alert-success"><b>Suppression réalisée avec succès.</b></div>';
-	}
+	
         
         //on définit des valeurs par defaut aux variable année, mois et jour (par défaut : aujourd'hui)
         $annee = date('Y');
@@ -69,11 +66,11 @@
         LEFT JOIN aci_lieu ON aci_evenement.idLieu = aci_lieu.idLieu
         WHERE (dateFin >= '$annee-$mois-$jour 00:00:00' and dateDebut <= '$annee-$mois-$jour 23:59:59')
 		or (dateFin is null and dateDebut <= '$annee-$mois-$jour 23:59:59' and dateDebut >= '$annee-$mois-$jour 00:00:00')
-        and idpriorite <= $priorite
-        and ((estPublic = 1)
-            or ($idUtil = aci_evenement.idUtilisateur)
-            or $idUtil in (SELECT idutilisateur FROM aci_destutilisateur WHERE aci_destutilisateur.idevenement = aci_evenement.idevenement)
-            or $idUtil in (SELECT idutilisateur FROM aci_composer JOIN aci_destgroupe USING (idgroupe) WHERE aci_destgroupe.idevenement = aci_evenement.idevenement))";
+                and idpriorite <= $priorite
+                and ((estPublic = 1)
+                    or ($idUtil = aci_evenement.idUtilisateur)
+                    or $idUtil in (SELECT idutilisateur FROM aci_destutilisateur WHERE aci_destutilisateur.idevenement = aci_evenement.idevenement)
+                    or $idUtil in (SELECT idutilisateur FROM aci_composer JOIN aci_destgroupe USING (idgroupe) WHERE aci_destgroupe.idevenement = aci_evenement.idevenement))";
         
         $resultats = $conn->query($sql);
         
@@ -86,6 +83,13 @@
             <?php include('../menu.php'); ?>
             <div id="corpsCal" class="jour">
                 <table class="titreCal"><tr class="titreCal"><th><?php echo $date; ?></th></tr></table>
+                
+                <?php
+                //Suppression d'un événement
+                if(isset($_GET['d']) && $_GET['d'] == 1){
+                    echo '<div class="alert alert-success"><b>Suppression réalisée avec succès.</b></div>';
+                }
+                ?>
                 
                 <p class="ajouter_retour">
                     <?php
@@ -152,23 +156,22 @@
                             echo 'Post&eacute; par <b>' . $auteur . '</b> le <b>' . $dateInsert . '</b>';
                             
                             
-                            if(!empty($idUtil))
-							{ 
-								if($idUtil == $idAuteur)
-								{?>
-									<div class="modifier_suppr">
-										<form name="modifier" action="../Evenement/modifier.php?i=<?php echo $numeroEve;?>" method="POST">
-											<input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" />
-											<input class="btn" type="submit" name="modifier_eve" value="Modifier" />
-										</form>
-									<input class="btn" name="supprimer_eve" value="Supprimer" onclick="if(confirm('Voulez-vous vraiment supprimer cet &eacute;v&egrave;nement ?')){
-										document.location.href = '../Evenement/supprimer.php?i=<?php echo $numeroEve;?>';
-									}"/>
-									</div>
+                            if(!empty($idUtil)) { 
+                                if($idUtil == $idAuteur) { ?>
+                                    <div class="modifier_suppr">
+                                        <form name="modifier" action="../Evenement/modifier.php?i=<?php echo $numeroEve;?>" method="POST">
+                                            <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" />
+                                            <input class="btn" type="submit" name="modifier_eve" value="Modifier" />
+                                        </form>
+                                        <form>
+                                            <input type="button" class="btn" name="supprimer_eve" value="Supprimer" onclick="if(confirm('Voulez-vous vraiment supprimer cet &eacute;v&egrave;nement ?')){
+                                                    document.location.href = '../Evenement/supprimer.php?i=<?php echo $numeroEve;?>';
+                                            }"/>
+                                        </form>
+                                    </div>
                             <?php }
-							} ?>
+                            } ?>
                         </p>
-
                         <?php $i++;
                     }
                 }
