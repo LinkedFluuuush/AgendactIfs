@@ -619,18 +619,29 @@ if(!empty($_POST['submit']))
                 }			
         }
 	
-/*	function cacher(){
-		var radio = document.getElementById("public");
-		var dest = document.getElementById("tddest");
-		var groupe = document.getElementById("tdgroupe");
-		if(radio.checked==true){
-			dest.rowspan=1;
-			groupe.rowspan=1;
-		}else{
-			dest.rowspan=4;
-			groupe.rowspan=4;
+		function cacher(){
+			var radio = document.getElementById("public");
+			var divdest = document.getElementById("dest");
+			var dest = document.getElementById("addParticipant");
+			var groupe = document.getElementsByTagName("input");
+			if(radio.checked==true){
+				dest.disabled=true;
+				for(var i = 0; i < groupe.length; i++){
+					if(groupe[i].name=="groupe[]"){
+						groupe[i].checked = false;
+						groupe[i].disabled=true;
+					}
+				}
+				divdest.innerHTML="";
+			}else{
+				dest.disabled=false;	
+				for(var i = 0; i < groupe.length; i++){
+					if(groupe[i].name=="groupe[]"){
+						groupe[i].disabled=false;
+					}
+				}
+			}
 		}
-	}*/
         </script>
     </body>
 </html>
