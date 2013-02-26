@@ -311,25 +311,29 @@ else {
 	WHERE idevenement = ".$_GET["i"];
 	$resParticipant = $conn->query($reqParticipant);
 	
-	$i = 0;
-	while($rowParticipant = $resParticipant->fetch(PDO::FETCH_NUM)){
-		$rowParticipants[$i] = $rowParticipant[0];
-		$i++;
+	if ($resParticipant->rowCount() > 0){
+		$i = 0;
+		while($rowParticipant = $resParticipant->fetch(PDO::FETCH_NUM)){
+			$rowParticipants[$i] = $rowParticipant[0];
+			$i++;
+		}
+		
+		$_POST["dest"] = $rowParticipants;
 	}
-	
-	$_POST["dest"] = $rowParticipants;
 	
 	$reqGroupe = "SELECT idgroupe from aci_destgroupe
 	WHERE idevenement = ".$_GET["i"];
 	$resGroupe = $conn->query($reqGroupe);
 	
-	$i = 0;
-	while($rowGroupe = $resGroupe->fetch(PDO::FETCH_NUM)){
-		$rowGroupes[$i] = $rowGroupe[0];
-		$i++;
+	if ($resGroupe->rowCount() > 0){ 
+		$i = 0;
+		while($rowGroupe = $resGroupe->fetch(PDO::FETCH_NUM)){
+			$rowGroupes[$i] = $rowGroupe[0];
+			$i++;
+		}
+		
+		$_POST["groupe"] = $rowGroupes;
 	}
-	
-	$_POST["groupe"] = $rowGroupes;
 }
 ?>
         <div id="global">
