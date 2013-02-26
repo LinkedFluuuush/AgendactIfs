@@ -279,6 +279,34 @@ if(!empty($_POST['submit']))
 		}
 	}
 }
+else {
+	$req = "SELECT * from aci_evenement where idevenement =". $_GET["i"];
+	$res = $conn->query($req);
+	$row = $res->fetch();
+
+	$_POST["libelleLong"] = $row["LIBELLELONG"];
+	$_POST["libelleCourt"] = $row["LIBELLECOURT"];
+	$_POST["description"] = $row["DESCRIPTION"];
+	
+	$dateD = explodeDate($row["DATEDEBUT"]);
+	
+	$_POST["dateDebut"] = $dateD[2]."/".$dateD[1]."/".$dateD[0];
+	$_POST["heureDebut"] = $dateD[3];
+	
+	$dateF = explodeDate($row["DATEFIN"]);
+	
+	$_POST["dateFin"] = $dateF[2]."/".$dateF[1]."/".$dateF[0];
+	$_POST["heureFin"] = $dateF[3];
+	
+	$reqLieu = "SELECT libelle from aci_lieu where idlieu =" .$row["IDLIEU"];
+	$resLieu = $conn->query($reqLieu);
+	$rowLieu = $resLieu->fetch();
+	
+	$_POST["lieu"] = $rowLieu["libelle"];
+
+	$_POST["public"] = $row["ESTPUBLIC"];
+	
+}
 ?>
         <div id="global">
             <?php include('../menu.php'); ?>
@@ -638,18 +666,29 @@ if(!empty($_POST['submit']))
                 }			
         }
 	
-/*	function cacher(){
+	function cacher(){
 		var radio = document.getElementById("public");
-		var dest = document.getElementById("tddest");
-		var groupe = document.getElementById("tdgroupe");
+		var divdest = document.getElementById("dest");
+		var dest = document.getElementById("addParticipant");
+		var groupe = document.getElementsByTagName("input");
 		if(radio.checked==true){
-			dest.rowspan=1;
-			groupe.rowspan=1;
+			dest.disabled=true;
+			for(var i = 0; i < groupe.length; i++){
+				if(groupe[i].name=="groupe[]"){
+					groupe[i].checked = false;
+					groupe[i].disabled=true;
+				}
+			}
+			divdest.innerHTML="";
 		}else{
-			dest.rowspan=4;
-			groupe.rowspan=4;
+			dest.disabled=false;	
+			for(var i = 0; i < groupe.length; i++){
+				if(groupe[i].name=="groupe[]"){
+					groupe[i].disabled=false;
+				}
+			}
 		}
-	}*/
+	}
         </script>
     </body>
 </html>
