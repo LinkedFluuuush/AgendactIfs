@@ -16,8 +16,9 @@ header( 'content-type: text/html; charset=utf-8' ); ?>
 include("../Fonctions_Php/connexion.php");
 include_once("../Fonctions_Php/diverses_fonctions.php");
 
-if(!empty($_SESSION['id']))
-{
+if(empty($_SESSION['id'])) {
+    header('Location: Calendrier/mois.php');
+}
 	$idUtil = $_SESSION['id'];
 	$envoye = false;
 	
@@ -89,8 +90,13 @@ if(!empty($_SESSION['id']))
 <div id="global">
     <?php include('./menu.php'); ?>
     <div id="corpsCal" class="parametresCompte">
+        <table class="titreCal">
+            <tr class="titreCal">
+                <th>Paramètres des notifications et des rappels</th>
+            </tr>
+        </table>
 		<form action="<?php echo $_SERVER['PHP_SELF'];?>" name="FormParametres" method="post" enctype="multipart/form-data" id="formParametres">
-			<table align="center">
+			<table align="center" cellpadding="4">
 				<tr>
 					<td>Notifications </td>
 					<td><input type="radio" name="notif" id="notifA" value="1" <?php checked(1, "NOTIFICATION", $infoUtil);?>> <label for="notifA">Activé</label>
@@ -135,12 +141,11 @@ if(!empty($_SESSION['id']))
 		<?php
 		
 		if($envoye)
-			echo '<h2 align="center">Mise à jour des paramètres effectuée</h2>';
+			echo '<div class="alert alert-success">Mise à jour des paramètres effectuée.</div>';
 		?>
 	</div>
 </div>
 <?php
-}
 
 function checked($boolean, $type, $infoUtil)
 {

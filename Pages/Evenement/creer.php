@@ -29,6 +29,7 @@ $insertion = false;
 //--------REGEX---------//
 
 $valide = true; //Permet de savoir si au moins un élément saisi dans le formulaire est invalide
+$public = 1;
 $erreurLibelleCourt = "";
 $erreurLibelleLong = "";
 $erreurDescription = "";
@@ -101,7 +102,6 @@ if(!empty($_POST['submit']))
 		$description = htmlspecialchars($description);
 
 		//Date
-
 		if(regexDate($_POST['dateDebut']) && comparaisonDate($_POST['dateDebut'], date("d/m/Y")))
 			$dateDebut = $_POST['dateDebut'];
 		else
@@ -175,25 +175,29 @@ if(!empty($_POST['submit']))
 				//Insertion de l'événement
 				//echo "$idEv[0], $idUtil, $priorite, 1, $libelleLong, $libelleCourt, $description, $dateDebut $heureDebut, $dateFin $heureFin, $public";
 				$sql = "INSERT INTO `aci_evenement` (`IDEVENEMENT`, `IDUTILISATEUR`, `IDPRIORITE`, `IDLIEU`, `LIBELLELONG`, `LIBELLECOURT`, `DESCRIPTION`, `DATEDEBUT`, `DATEFIN`, `ESTPUBLIC`, `DATEINSERT`) 
-				VALUES ($idEv[0], $idUtil, $priorite, $idLieu, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, now())";
+				VALUES ($idEv[0], $idUtil, $priorite, $idLieu, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, curdate())";
 			}
 			//Si il n'y a pas de lieu défini
 			else
 			{
 				$sql = "INSERT INTO `aci_evenement` (`IDEVENEMENT`, `IDUTILISATEUR`, `IDPRIORITE`, `LIBELLELONG`, `LIBELLECOURT`, `DESCRIPTION`, `DATEDEBUT`, `DATEFIN`, `ESTPUBLIC`, `DATEINSERT`) 
-				VALUES ($idEv[0], $idUtil, $priorite, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, now())";
+				VALUES ($idEv[0], $idUtil, $priorite, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, curdate())";
 			}
 			$resultats = $conn->query($sql);
-			
+
 			//Préparation de la création des rappels - récupération du premier idrappel utilisable
-			$sqlIdRappel= "select max(idrappel)+1 from aci_rappel";
+			$sqlIdRappel= "SELECT ifnull(max(idrappel), 0)+1 FROM aci_rappel";
 			$temp2 = $conn->query($sqlIdRappel);
 			$idRappel = $temp2->fetch();
 			
 			//Création du rappel à l'auteur de l'événement
-			$sqlRappel = "INSERT INTO aci_rappel VALUES($idRappel[0], $idEv[0], $idUtil, str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i') - INTERVAL 1 DAY)";
+			
+			$sqlInfosUtil = "SELECT rappelhaute, rappelmoyenne, rappelbasse FROM aci_utilisateur WHERE idutilisateur = ".$idUtil;
+			$temp2 = $conn->query($sqlInfosUtil);
+			$rappelUtil = $temp2->fetch();
+
+			creationRappel($conn, $idEv[0], $priorite, $idUtil, $idRappel[0], $rappelUtil['rappelhaute'], $rappelUtil['rappelmoyenne'], $rappelUtil['rappelbasse'], $dateDebut.' '.$heureDebut);
 			$idRappel[0]++;
-			$exec = $conn->query($sqlRappel);
 
 			if(!empty($_POST['dest']) && $public == 0)
 			{
@@ -202,24 +206,23 @@ if(!empty($_POST['submit']))
 				foreach($dest as $cle => $contenu){
 					foreach($contenu as $cle2 => $contenu2){
 					
-						$sqlId = "SELECT idutilisateur FROM aci_utilisateur WHERE adresse_mail='".$contenu2."'";
+						$sqlId = "SELECT idutilisateur, rappelhaute, rappelmoyenne, rappelbasse FROM aci_utilisateur WHERE adresse_mail='".$contenu2."'";
 						
 						$temp = $conn->query($sqlId);
 						$idDestUtil = $temp->fetch();
 						
 						//Insertion des utilisateurs destinataires
 						$sql = "INSERT INTO aci_destutilisateur VALUES (".$idDestUtil[0];
-						$sql.=", ".$idEv[0].", now())";
+						$sql.=", ".$idEv[0].", curdate())";
 
 						$insert = $conn->query($sql);
 
 						//Envoi de notifications
 						notifications($conn, $idDestUtil[0], $_SESSION['nom'], $_SESSION['prenom'], $dateDebut.' '.$heureDebut, $dateFin.' '.$heureFin, $libelleLong, 'creer');
 						
-						//Création de rappels
-						$sqlRappel = "INSERT INTO aci_rappel VALUES($idRappel[0], $idEv[0], $idDestUtil[0], str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i') - INTERVAL 1 DAY)";
+						//Création de rappels						
+						creationRappel($conn, $idEv[0], $priorite, $idDestUtil[0], $idRappel[0], $idDestUtil['rappelhaute'], $idDestUtil['rappelmoyenne'], $idDestUtil['rappelbasse'], $dateDebut.' '.$heureDebut);
 						$idRappel[0]++;
-						$exec = $conn->query($sqlRappel);
 					}
 				}
 			}
@@ -233,11 +236,14 @@ if(!empty($_POST['submit']))
 					
 						//Insertion des utilisateurs destinataires
 						$sql = "INSERT INTO aci_destgroupe VALUES (".$idEv[0].", $contenu2";
-						$sql.=", now())";
+						$sql.=", curdate())";
 
 						$insert = $conn->query($sql);
 						
-						$sqlMail = "SELECT idutilisateur FROM aci_composer JOIN aci_groupe USING ( idgroupe ) WHERE idgroupe LIKE '".$contenu2."%'";
+						$sqlMail = "SELECT idutilisateur, rappelhaute, rappelmoyenne, rappelbasse FROM aci_composer 
+						JOIN aci_groupe USING ( idgroupe ) 
+						JOIN aci_utilisateur USING (idutilisateur)
+						WHERE idgroupe LIKE '".$contenu2."%'";
 						
 						$temp = $conn->query($sqlMail);
 						
@@ -246,11 +252,9 @@ if(!empty($_POST['submit']))
 							//Envoi de notifications
 							notifications($conn, $mailGroupe[0], $_SESSION['nom'], $_SESSION['prenom'], $dateDebut.' '.$heureDebut, $dateFin.' '.$heureFin, $libelleLong, 'creer');
 							
-							$sqlRappel = "INSERT INTO aci_rappel VALUES($idRappel[0], $idEv[0], $mailGroupe[0], str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i') - INTERVAL 1 DAY)";
-							
-							//Création de rappels
+							//Création de rappels						
+							creationRappel($conn, $idEv[0], $priorite, $mailGroupe[0], $idRappel[0], $mailGroupe['rappelhaute'], $mailGroupe['rappelmoyenne'], $mailGroupe['rappelbasse'], $dateDebut.' '.$heureDebut);
 							$idRappel[0]++;
-							$exec = $conn->query($sqlRappel);
 						}
 						
 						$temp->closeCursor();
@@ -275,14 +279,6 @@ if(!empty($_POST['submit']))
                 
                 <form action="" name="FormCreaEvenement" method="post" enctype="multipart/form-data" id="formCreation">
                     <table cellpadding="4">
-		    <tr>
-                            <td cellspan="2">
-                                <?php
-                                if($insertion)
-                                    echo '<div class="alert alert-success"><b>Evénement ajouté avec succès.</b></div>';
-                                ?>
-                            </td>
-                        </tr>
                         <tr>
                             <td>
                                 <b>Priorité</b> <br>
@@ -292,18 +288,11 @@ if(!empty($_POST['submit']))
                                     <option value="3">Basse</option>';
                                 </select>
                             </td>
-                           <!--  <td rowspan="4">
-                                <label for="addParticipant"><b>Ajouter un destinataire</b></label><br>
-                                <select id="dest" name="dest[]" multiple style="height:200px;width:250px;">
-                                </select><br/>
-                                <input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
-                                <div id="resultsParticipant"></div>
-                            </td> -->
 			    
-			    <td rowspan="4" id="tddest">
+							<td rowspan="4" id="tddest">
                                 <label for="addParticipant"><b>Ajouter un destinataire</b></label><br>
                                 <div id="dest" style="overflow:auto;height:250px;width:250px;border:1px solid #abadb3;padding:5px;background-color:white;">
-				<?php if(!$insertion) saisieFormReq("dest", $conn);?>
+								<?php saisieFormReq("dest", $conn);?>
                                 </div><br/>
                                 <input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
                                 <div id="resultsParticipant"></div>
@@ -313,7 +302,7 @@ if(!empty($_POST['submit']))
                         <tr>
                             <td>
                                 <label for="Eve_titreLong"><b>Titre long</b></label> <br>
-                                <input type="text" name="libelleLong" id="Eve_titreLong" value="<?php if(!$insertion) saisieFormString("libelleLong");?>" class="libelleLong" maxlength=32 />
+                                <input type="text" name="libelleLong" id="Eve_titreLong" value="<?php saisieFormString("libelleLong");?>" class="libelleLong" maxlength=32 />
                                 <?php echo "<b id=\"formErreur\"> $erreurLibelleLong </b>"; ?>
                             </td>
                         </tr>
@@ -321,14 +310,14 @@ if(!empty($_POST['submit']))
                         <tr>
                             <td>
                                 <label for="Eve_titreCourt"><b>Titre court</b></label> <br>
-                                <input type="text" name="libelleCourt" id="Eve_titreCourt" value="<?php if(!$insertion) saisieFormString("libelleCourt");?>" class="libelleCourt" maxlength=5 />
+                                <input type="text" name="libelleCourt" id="Eve_titreCourt" value="<?php saisieFormString("libelleCourt");?>" class="libelleCourt" maxlength=5 />
                                 <?php echo "<b id=\"formErreur\"> $erreurLibelleCourt </b>"; ?>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <label for="Eve_description"><b>Description</b></label> <br>
-                                <textarea name="description" rows="5" cols="30" id="Eve_description" class="area"><?php if(!$insertion) saisieFormString("description");?></textarea>
+                                <textarea name="description" rows="5" cols="30" id="Eve_description" class="area"><?php saisieFormString("description");?></textarea>
                                 <?php echo "<b id=\"formErreur\"> $erreurDescription </b>"; ?>
                             </td>
                         </tr>
@@ -338,11 +327,10 @@ if(!empty($_POST['submit']))
                                 <label for="Eve_dateDebut"><b>Date de début</b></label><br>
                                 <?php if (!empty($_GET['a']) and !empty($_GET['m']) and !empty($_GET['j'])) { ?>
                                     <input type="text" name="dateDebut" id="Eve_dateDebut" value="<?php echo $_GET['j'].'/'.$_GET['m'].'/'.$_GET['a']; ?>" class="dateDebut" maxlength=10 size=11/>
-                                    <input type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="00:00" class="heureDebut" maxlength=5 size=4/>
                                 <?php } else { ?>
-                                    <input type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YYYY" value="<?php if(!$insertion) saisieFormString("dateDebut");?>" class="dateDebut" maxlength=10 size=11/>
-                                    <input type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="<?php if(!$insertion) saisieFormString("heureDebut");?>" class="heureDebut" maxlength=5 size=4/>
+                                    <input type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateDebut");?>" class="dateDebut" maxlength=10 size=11/>
                                 <?php } ?>
+                                    <input type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="<?php saisieFormString("heureDebut");?>" class="heureDebut" maxlength=5 size=4/>
                                     <?php echo "<b id=\"formErreur\"> $erreurDateDebut $erreurHeureDebut </b>"; ?>
                             </td>
                             <td rowspan="4" id="tdgroupe">
@@ -353,9 +341,9 @@ if(!empty($_POST['submit']))
                                     $resultats = $conn -> query($req);
                                     while($row = $resultats->fetch()){
                                         echo '<img id="'.utf8_encode($row['idgroupe']).'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/>
-					<label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')"> '
-					.$row['libelle'].'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" 
-					id="'.utf8_encode($row['idgroupe']).'" '.checkAuto(utf8_encode($row['idgroupe'])).'/><br/>';
+										<label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')"> '
+										.$row['libelle'].'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" 
+										id="'.utf8_encode($row['idgroupe']).'" '.checkAuto(utf8_encode($row['idgroupe'])).'/><br/>';
                                         descGroupe($row['idgroupe'], $conn, 1);
                                     }
                                     ?>
@@ -366,8 +354,8 @@ if(!empty($_POST['submit']))
                         <tr>                    
                             <td>
                                 <label for="Eve_dateFin"><b>Date de fin</b></label><br>
-                                <input type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" value="<?php if(!$insertion) saisieFormString("dateFin");?>"class="dateFin" maxlength=10 size=11/>
-                                <input type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php if(!$insertion) saisieFormString("heureFin");?>" class="heureFin" maxlength=5 size=4/>
+                                <input type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateFin");?>"class="dateFin" maxlength=10 size=11/>
+                                <input type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php saisieFormString("heureFin");?>" class="heureFin" maxlength=5 size=4/>
                                 <?php echo "<b id=\"formErreur\"> $erreurDateFin $erreurHeureFin </b>"; ?>
                             </td>
                         </tr>
@@ -375,7 +363,7 @@ if(!empty($_POST['submit']))
                         <tr>
                             <td>
                                 <label for="Eve_lieu"><b>Lieu</b></label> <br>
-                                <input type="text" name="lieu" value="<?php if(!$insertion) saisieFormString("lieu");?>" id="Eve_lieu" autocomplete="off" />
+                                <input type="text" name="lieu" value="<?php saisieFormString("lieu");?>" id="Eve_lieu" autocomplete="off" />
                                 <div id="resultsLieu"></div>
                             </td>
                         </tr>
@@ -383,14 +371,23 @@ if(!empty($_POST['submit']))
                         <tr>
                             <td>
                                 <b>Type</b> <br>
-                                <input type="radio" name="public" id="public" value="1" onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
-                                <input type="radio" name="public" id="prive" value="0" checked="checked" onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
+                                <input type="radio" name="public" id="public" value="1" <?php if($public == 1) echo 'checked'; ?> onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
+                                <input type="radio" name="public" id="prive" value="0" <?php if($public == 0) echo 'checked'; ?> onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
                             </td>
                         </tr>
 
                         <tr>
                             <td cellspan="2">
                                 <input class="btn" type="submit" name="submit" value="Valider"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td cellspan="2">
+                                <?php
+                                if($insertion)
+                                    echo '<div class="alert alert-success"><b>Insertion réalisée avec succès.</b></div>';
+                                ?>
                             </td>
                         </tr>
                     </table>
@@ -622,29 +619,63 @@ if(!empty($_POST['submit']))
                 }			
         }
 	
-	function cacher(){
+/*	function cacher(){
 		var radio = document.getElementById("public");
-		var divdest = document.getElementById("dest");
-		var dest = document.getElementById("addParticipant");
-		var groupe = document.getElementsByTagName("input");
+		var dest = document.getElementById("tddest");
+		var groupe = document.getElementById("tdgroupe");
 		if(radio.checked==true){
-			dest.disabled=true;
-			for(var i = 0; i < groupe.length; i++){
-				if(groupe[i].name=="groupe[]"){
-					groupe[i].checked = false;
-					groupe[i].disabled=true;
-				}
-			}
-			divdest.innerHTML="";
+			dest.rowspan=1;
+			groupe.rowspan=1;
 		}else{
-			dest.disabled=false;	
-			for(var i = 0; i < groupe.length; i++){
-				if(groupe[i].name=="groupe[]"){
-					groupe[i].disabled=false;
-				}
-			}
+			dest.rowspan=4;
+			groupe.rowspan=4;
 		}
-	}
+	}*/
         </script>
     </body>
 </html>
+
+<?php
+function creationRappel($conn, $idEvenement, $priorite, $idUtilisateur, $idRappel, $rappelHaute, $rappelMoyenne, $rappelBasse, $date)
+{
+	if($priorite == 1)
+	{
+		$rappel = explode(' ', $rappelHaute);
+		
+		insertionRappel($conn, $idEvenement, $idUtilisateur, $idRappel, $date, $rappel[0], $rappel[1], $rappel[2], $rappel[3], $rappel[4]);
+	}
+	elseif($priorite == 2)
+	{
+		$rappel = explode(' ', $rappelMoyenne);
+		
+		insertionRappel($conn, $idEvenement, $idUtilisateur, $idRappel, $date, $rappel[0], $rappel[1], $rappel[2], $rappel[3], $rappel[4]);
+	}
+	elseif($priorite == 3 && $rappelBasse != '00 00 00 00 00')
+	{
+		$rappel = explode(' ', $rappelBasse);
+		
+		insertionRappel($conn, $idEvenement, $idUtilisateur, $idRappel, $date, $rappel[0], $rappel[1], $rappel[2], $rappel[3], $rappel[4]);
+	}
+}
+
+function insertionRappel($conn, $idEvenement, $idUtilisateur, $idRappel, $date, $jour, $mois, $annee, $heure, $minute)
+{
+	//Insertion du rappel dans la base
+	$sqlRappel = "INSERT INTO aci_rappel VALUES($idRappel, $idEvenement, $idUtilisateur, str_to_date('$date', '%d/%m/%Y %H:%i')";
+
+	if(!empty($jour))
+		$sqlRappel .= " - INTERVAL $jour DAY";
+	if(!empty($mois))
+		$sqlRappel .= " - INTERVAL $mois MONTH";
+	if(!empty($annee))
+		$sqlRappel .= " - INTERVAL $annee YEAR";
+	if(!empty($heure))
+		$sqlRappel .= " - INTERVAL $heure HOUR";
+	if(!empty($minute))
+		$sqlRappel .= " - INTERVAL $minute MINUTE";
+
+	$sqlRappel .= ")";
+	
+	$exec = $conn->query($sqlRappel);
+}
+?>
