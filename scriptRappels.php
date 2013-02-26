@@ -81,7 +81,7 @@ while($rappel = $rappels->fetch())
 	if(!empty($dateFin))
 		$dateFin = explode(' ',$evenement['DATEFIN']);
 	
-	$contenu = "<h1>".$evenement['LIBELLELONG']."</h1><br>";
+	$contenu = "<h1>".$evenement['LIBELLELONG']."</h1>";
 	$contenu = $contenu."Bonjour ".$util[0]." ".ucfirst(strtolower($util[1])).",";
 	$contenu = $contenu."<br>Nous vous rappelons que l'événement ".$evenement['LIBELLELONG'].", organisé par ".$auteur[0]." ".$auteur[1];
 	$contenu = $contenu." se déroulera ";

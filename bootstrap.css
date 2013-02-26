@@ -91,7 +91,7 @@
   *margin-left: 0;
 }
 .btn:hover {
-  color: #333333;
+  color: #72777b;
   text-decoration: none;
   background-position: 0 -15px;
   -webkit-transition: background-position 0.1s linear;
@@ -99,6 +99,7 @@
   -o-transition: background-position 0.1s linear;
   transition: background-position 0.1s linear;
 }
+
 .btn:focus {
   outline: thin dotted #333;
   outline: 5px auto -webkit-focus-ring-color;
@@ -183,6 +184,7 @@ input[type="button"].btn-block {
 .btn {
   border-color: #c5c5c5;
   border-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.25);
+  color: #72777b;
 }
 .btn-primary {
   color: #ffffff;

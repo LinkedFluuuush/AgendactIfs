@@ -220,6 +220,7 @@ ul.nav > li ul li.priorite label:hover {
 
 #corpsCal table:last-child {
     margin-left: 10%;
+    margin-bottom: 1%;
 }
 
 #corpsCal table:last-child th a {
