@@ -590,6 +590,10 @@ ul.nav > li ul li.priorite label:hover {
     margin-left: 1.5%;
 }
 
+#corpsCal.creer form label {
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8);
+}
+
 #corpsCal.creer td {
     cursor: default;
     border: none;
@@ -602,16 +606,15 @@ ul.nav > li ul li.priorite label:hover {
 
 /* FIN DE LA PARTIE CREER */
 
-#corpsCal.creer form label {
-    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8);
-}
+
+
 
 /* PARTIE PARAMETRES */
-
 #corpsCal.parametresCompte td {
     cursor: default;
     border: none;
     background-color: #ececec;
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8);
 }
 
 #corpsCal.parametresCompte table.titreCal {
