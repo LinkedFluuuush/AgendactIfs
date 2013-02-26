@@ -288,15 +288,15 @@ else {
 	$_POST["libelleCourt"] = $row["LIBELLECOURT"];
 	$_POST["description"] = $row["DESCRIPTION"];
 	
-	$dateD = explodeDate($row["DATEDEBUT"]);
+	$dateD = formattageDate(explodeDate($row["DATEDEBUT"]));
 	
-	$_POST["dateDebut"] = $dateD[2]."/".$dateD[1]."/".$dateD[0];
-	$_POST["heureDebut"] = $dateD[3];
+	$_POST["dateDebut"] = $dateD[1];
+	$_POST["heureDebut"] = $dateD[0];
 	
-	$dateF = explodeDate($row["DATEFIN"]);
+	$dateF = formattageDate(explodeDate($row["DATEFIN"]));
 	
-	$_POST["dateFin"] = $dateF[2]."/".$dateF[1]."/".$dateF[0];
-	$_POST["heureFin"] = $dateF[3];
+	$_POST["dateFin"] = $dateF[1];
+	$_POST["heureFin"] = $dateF[0];
 	
 	$reqLieu = "SELECT libelle from aci_lieu where idlieu =" .$row["IDLIEU"];
 	$resLieu = $conn->query($reqLieu);
@@ -306,6 +306,30 @@ else {
 
 	$_POST["public"] = $row["ESTPUBLIC"];
 	
+	$reqParticipant = "SELECT adresse_mail from aci_destutilisateur 
+	JOIN aci_utilisateur ON aci_destutilisateur.idutilisateur = aci_utilisateur.idutilisateur 
+	WHERE idevenement = ".$_GET["i"];
+	$resParticipant = $conn->query($reqParticipant);
+	
+	$i = 0;
+	while($rowParticipant = $resParticipant->fetch(PDO::FETCH_NUM)){
+		$rowParticipants[$i] = $rowParticipant[0];
+		$i++;
+	}
+	
+	$_POST["dest"] = $rowParticipants;
+	
+	$reqGroupe = "SELECT idgroupe from aci_destgroupe
+	WHERE idevenement = ".$_GET["i"];
+	$resGroupe = $conn->query($reqGroupe);
+	
+	$i = 0;
+	while($rowGroupe = $resGroupe->fetch(PDO::FETCH_NUM)){
+		$rowGroupes[$i] = $rowGroupe[0];
+		$i++;
+	}
+	
+	$_POST["groupe"] = $rowGroupes;
 }
 ?>
         <div id="global">
@@ -313,7 +337,7 @@ else {
             <div id="corpsCal" class="creer">
                 <table class="titreCal">
                     <tr class="titreCal">
-                        <th>Créer un évènement</th>
+                        <th>Modifier un évènement</th>
                     </tr>
                 </table>
                 
@@ -418,8 +442,13 @@ else {
                         <tr>
                             <td>
                                 <b>Type</b> <br>
-                                <input type="radio" name="public" id="public" value="1" checked="checked" onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
-                                <input type="radio" name="public" id="prive" value="0" onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
+								<?php if(isset($_POST["public"]) && $_POST["public"] == 0) {?>
+									<input type="radio" name="public" id="public" value="1" onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
+									<input type="radio" name="public" id="prive" value="0" checked="checked" onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
+								<?php } else { ?>
+									<input type="radio" name="public" id="public" value="1" checked="checked" onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
+									<input type="radio" name="public" id="prive" value="0" onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
+								<?php } ?>
                             </td>
                         </tr>
 
@@ -688,6 +717,14 @@ else {
 				}
 			}
 		}
+	}
+	
+	function changerType(estpublic){
+		if(estpublic == 0)
+			var publi = document.getElementById("public");
+			var prive = document.getElementById("prive");
+			publi.checked = false;
+			prive.checked = true;
 	}
         </script>
     </body>
