@@ -170,6 +170,11 @@ if(!empty($_POST['submit']))
 	
 		if($valide)
 		{	
+			//Récupération du prochain numéro d'événement attribuable
+			$reqIdEv = "select ifnull(max(idevenement),0)+1 from aci_evenement";
+			$temp = $conn->query($reqIdEv);
+			$idEv = $temp->fetch();
+		
 			//Récupération de l'idlieu du lieu à ajouter à l'événement
 			if(!empty($lieu))
 			{
@@ -208,11 +213,11 @@ if(!empty($_POST['submit']))
 			
 			//Création du rappel à l'auteur de l'événement
 			
-			$sqlInfosUtil = "SELECT rappelhaute, rappelmoyenne, rappelbasse FROM aci_utilisateur WHERE idutilisateur = ".$idUtil;
+			$sqlInfosUtil = "SELECT RAPPELHAUTE, RAPPELMOYENNE, RAPPELBASSE FROM aci_utilisateur WHERE idutilisateur = ".$idUtil;
 			$temp2 = $conn->query($sqlInfosUtil);
 			$rappelUtil = $temp2->fetch();
 
-			creationRappel($conn, $idEv[0], $priorite, $idUtil, $idRappel[0], $rappelUtil['rappelhaute'], $rappelUtil['rappelmoyenne'], $rappelUtil['rappelbasse'], $dateDebut.' '.$heureDebut);
+			creationRappel($conn, $idEv[0], $priorite, $idUtil, $idRappel[0], $rappelUtil['RAPPELHAUTE'], $rappelUtil['RAPPELMOYENNE'], $rappelUtil['RAPPELBASSE'], $dateDebut.' '.$heureDebut);
 			$idRappel[0]++;
 
 			if(!empty($_POST['dest']) && $public == 0)
@@ -237,7 +242,7 @@ if(!empty($_POST['submit']))
 						notifications($conn, $idDestUtil[0], $_SESSION['nom'], $_SESSION['prenom'], $dateDebut.' '.$heureDebut, $dateFin.' '.$heureFin, $libelleLong, 'creer');
 						
 						//Création de rappels						
-						creationRappel($conn, $idEv[0], $priorite, $idDestUtil[0], $idRappel[0], $idDestUtil['rappelhaute'], $idDestUtil['rappelmoyenne'], $idDestUtil['rappelbasse'], $dateDebut.' '.$heureDebut);
+						creationRappel($conn, $idEv[0], $priorite, $idDestUtil[0], $idRappel[0], $idDestUtil['RAPPELHAUTE'], $idDestUtil['RAPPELMOYENNE'], $idDestUtil['RAPPELBASSE'], $dateDebut.' '.$heureDebut);
 						$idRappel[0]++;
 					}
 				}
@@ -266,7 +271,7 @@ if(!empty($_POST['submit']))
 							notifications($conn, $mailGroupe[0], $_SESSION['nom'], $_SESSION['prenom'], $dateDebut.' '.$heureDebut, $dateFin.' '.$heureFin, $libelleLong, 'creer');
 							
 							//Création de rappels						
-							creationRappel($conn, $idEv[0], $priorite, $mailGroupe[0], $idRappel[0], $mailGroupe['rappelhaute'], $mailGroupe['rappelmoyenne'], $mailGroupe['rappelbasse'], $dateDebut.' '.$heureDebut);
+							creationRappel($conn, $idEv[0], $priorite, $mailGroupe[0], $idRappel[0], $mailGroupe['RAPPELHAUTE'], $mailGroupe['RAPPELMOYENNE'], $mailGroupe['RAPPELBASSE'], $dateDebut.' '.$heureDebut);
 							$idRappel[0]++;
 						}
 						
