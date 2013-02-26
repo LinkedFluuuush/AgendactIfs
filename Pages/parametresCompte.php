@@ -122,7 +122,7 @@ if(empty($_SESSION['id'])) {
                             <tr><td></td></tr>
                             
                             <tr>
-                                <td><b><h3>Temps avant le rappel des évènements</h3></b></td>
+                                <td><b>Temps avant le rappel des évènements</b></td>
                             </tr>
                             <tr>
                                 <td>
