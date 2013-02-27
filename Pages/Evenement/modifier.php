@@ -86,6 +86,7 @@ if(!empty($_POST['submit']))
 		$description = $_POST['description'];
 		$lieu = $_POST['lieu'];
 	
+		echo $lieu;
 		//Remise à zéro des variables pour tests par expressions régulières
 		$valide = true;
 		$erreurLibelleCourt = "";
@@ -207,17 +208,17 @@ if(!empty($_POST['submit']))
 
 			
 			//Préparation de la création des rappels - récupération du premier idrappel utilisable
-			$sqlIdRappel= "select max(idrappel)+1 from aci_rappel";
+			$sqlIdRappel= "SELECT ifnull(max(idrappel), 0)+1 FROM aci_rappel";
 			$temp2 = $conn->query($sqlIdRappel);
 			$idRappel = $temp2->fetch();
 			
 			//Création du rappel à l'auteur de l'événement
 			
-			$sqlInfosUtil = "SELECT RAPPELHAUTE, RAPPELMOYENNE, RAPPELBASSE FROM aci_utilisateur WHERE idutilisateur = ".$idUtil;
+			$sqlInfosUtil = "SELECT rappelhaute, rappelmoyenne, rappelbasse FROM aci_utilisateur WHERE idutilisateur = ".$idUtil;
 			$temp2 = $conn->query($sqlInfosUtil);
 			$rappelUtil = $temp2->fetch();
 
-			creationRappel($conn, $idEv[0], $priorite, $idUtil, $idRappel[0], $rappelUtil['RAPPELHAUTE'], $rappelUtil['RAPPELMOYENNE'], $rappelUtil['RAPPELBASSE'], $dateDebut.' '.$heureDebut);
+			creationRappel($conn, $idEv[0], $priorite, $idUtil, $idRappel[0], $rappelUtil['rappelhaute'], $rappelUtil['rappelmoyenne'], $rappelUtil['rappelbasse'], $dateDebut.' '.$heureDebut);
 			$idRappel[0]++;
 
 			if(!empty($_POST['dest']) && $public == 0)
@@ -227,7 +228,7 @@ if(!empty($_POST['submit']))
 				foreach($dest as $cle => $contenu){
 					foreach($contenu as $cle2 => $contenu2){
 					
-						$sqlId = "SELECT idutilisateur FROM aci_utilisateur WHERE adresse_mail='".$contenu2."'";
+						$sqlId = "SELECT idutilisateur, rappelhaute, rappelmoyenne, rappelbasse FROM aci_utilisateur WHERE adresse_mail='".$contenu2."'";
 						
 						$temp = $conn->query($sqlId);
 						$idDestUtil = $temp->fetch();
@@ -242,7 +243,7 @@ if(!empty($_POST['submit']))
 						notifications($conn, $idDestUtil[0], $_SESSION['nom'], $_SESSION['prenom'], $dateDebut.' '.$heureDebut, $dateFin.' '.$heureFin, $libelleLong, 'creer');
 						
 						//Création de rappels						
-						creationRappel($conn, $idEv[0], $priorite, $idDestUtil[0], $idRappel[0], $idDestUtil['RAPPELHAUTE'], $idDestUtil['RAPPELMOYENNE'], $idDestUtil['RAPPELBASSE'], $dateDebut.' '.$heureDebut);
+						creationRappel($conn, $idEv[0], $priorite, $idDestUtil[0], $idRappel[0], $idDestUtil['rappelhaute'], $idDestUtil['rappelmoyenne'], $idDestUtil['rappelbasse'], $dateDebut.' '.$heureDebut);
 						$idRappel[0]++;
 					}
 				}
@@ -261,7 +262,10 @@ if(!empty($_POST['submit']))
 
 						$insert = $conn->query($sql);
 						
-						$sqlMail = "SELECT idutilisateur FROM aci_composer JOIN aci_groupe USING ( idgroupe ) WHERE idgroupe LIKE '".$contenu2."%'";
+						$sqlMail = "SELECT idutilisateur, rappelhaute, rappelmoyenne, rappelbasse FROM aci_composer 
+						JOIN aci_groupe USING ( idgroupe ) 
+						JOIN aci_utilisateur USING (idutilisateur)
+						WHERE idgroupe LIKE '".$contenu2."%'";
 						
 						$temp = $conn->query($sqlMail);
 						
@@ -271,7 +275,7 @@ if(!empty($_POST['submit']))
 							notifications($conn, $mailGroupe[0], $_SESSION['nom'], $_SESSION['prenom'], $dateDebut.' '.$heureDebut, $dateFin.' '.$heureFin, $libelleLong, 'creer');
 							
 							//Création de rappels						
-							creationRappel($conn, $idEv[0], $priorite, $mailGroupe[0], $idRappel[0], $mailGroupe['RAPPELHAUTE'], $mailGroupe['RAPPELMOYENNE'], $mailGroupe['RAPPELBASSE'], $dateDebut.' '.$heureDebut);
+							creationRappel($conn, $idEv[0], $priorite, $mailGroupe[0], $idRappel[0], $mailGroupe['rappelhaute'], $mailGroupe['rappelmoyenne'], $mailGroupe['rappelbasse'], $dateDebut.' '.$heureDebut);
 							$idRappel[0]++;
 						}
 						
@@ -472,7 +476,7 @@ else {
                             <td cellspan="2">
                                 <?php
                                 if($insertion)
-                                    echo '<div class="alert alert-success"><b>Insertion réalisée avec succès.</b></div>';
+                                    echo '<div class="alert alert-success"><b>Modification prise en compte.</b></div>';
                                 ?>
                             </td>
                         </tr>
