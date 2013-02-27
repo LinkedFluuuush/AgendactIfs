@@ -51,7 +51,7 @@ $erreurHeureDebut = "";
 $erreurHeureFin = "";
 
 if(!empty($_POST['submit']))
-{
+{	
 	//Vérification de la saisie des champs nécessaires
 	if(empty($_POST['libelleCourt']))
 	{
@@ -85,8 +85,7 @@ if(!empty($_POST['submit']))
 		$libelleLong = $_POST['libelleLong'];
 		$description = $_POST['description'];
 		$lieu = $_POST['lieu'];
-	
-		echo $lieu;
+
 		//Remise à zéro des variables pour tests par expressions régulières
 		$valide = true;
 		$erreurLibelleCourt = "";
@@ -170,12 +169,7 @@ if(!empty($_POST['submit']))
 		}
 	
 		if($valide)
-		{	
-			//Récupération du prochain numéro d'événement attribuable
-			$reqIdEv = "select ifnull(max(idevenement),0)+1 from aci_evenement";
-			$temp = $conn->query($reqIdEv);
-			$idEv = $temp->fetch();
-		
+		{		
 			//Récupération de l'idlieu du lieu à ajouter à l'événement
 			if(!empty($lieu))
 			{
@@ -188,13 +182,9 @@ if(!empty($_POST['submit']))
 			else
 				$idLieu = null;
 			
-			//Insertion de l'événement
-			//echo "$idEv[0], $idUtil, $priorite, 1, $libelleLong, $libelleCourt, $description, $dateDebut $heureDebut, $dateFin $heureFin, $public";
-			//$sql = "INSERT INTO `aci_evenement` (`IDEVENEMENT`, `IDUTILISATEUR`, `IDPRIORITE`, `IDLIEU`, `LIBELLELONG`, `LIBELLECOURT`, `DESCRIPTION`, `DATEDEBUT`, `DATEFIN`, `ESTPUBLIC`, `DATEINSERT`) 
-			//VALUES ($idEv[0], $idUtil, $priorite, $idLieu, '$libelleLong', '$libelleCourt', '$description', str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), $public, curdate())";
-
-			$sql = "UPDATE aci_evenement SET IDPRIORITE = ".$priorite.", IDLIEU = ".$idLieu.", LIBELLELONG = ".$libelleLong.", LIBELLECOURT=".$libelleCourt.", DESCRIPTION = ".$description.", 
-			DATEDEBUT = str_to_date('".$dateDebut." ".$heureDebut."', '%d/%m/%Y %H:%i'), DATEFIN = str_to_date('".$dateFin." ".$heureFin."', '%d/%m/%Y %H:%i'), ESTPUBLIC = ".$public.", DATEINSERT = curdate() WHERE idEvenement = ".$_GET['i'];
+			//Modification de l'événement
+			$sql = "UPDATE aci_evenement SET IDPRIORITE = $priorite, IDLIEU = $idLieu, LIBELLELONG = '$libelleLong', LIBELLECOURT= '$libelleCourt', DESCRIPTION = '$description', 
+			DATEDEBUT = str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), DATEFIN = str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), ESTPUBLIC = $public, DATEINSERT = curdate() WHERE idEvenement = ".$_GET['i'];
 			
 			$resultats = $conn->query($sql);
 			
@@ -218,7 +208,7 @@ if(!empty($_POST['submit']))
 			$temp2 = $conn->query($sqlInfosUtil);
 			$rappelUtil = $temp2->fetch();
 
-			creationRappel($conn, $idEv[0], $priorite, $idUtil, $idRappel[0], $rappelUtil['rappelhaute'], $rappelUtil['rappelmoyenne'], $rappelUtil['rappelbasse'], $dateDebut.' '.$heureDebut);
+			creationRappel($conn, $_GET['i'], $priorite, $idUtil, $idRappel[0], $rappelUtil['rappelhaute'], $rappelUtil['rappelmoyenne'], $rappelUtil['rappelbasse'], $dateDebut.' '.$heureDebut);
 			$idRappel[0]++;
 
 			if(!empty($_POST['dest']) && $public == 0)
@@ -235,7 +225,7 @@ if(!empty($_POST['submit']))
 						
 						//Insertion des utilisateurs destinataires
 						$sql = "INSERT INTO aci_destutilisateur VALUES (".$idDestUtil[0];
-						$sql.=", ".$idEv[0].", curdate())";
+						$sql.=", ".$_GET['i'].", curdate())";
 
 						$insert = $conn->query($sql);
 
@@ -243,7 +233,7 @@ if(!empty($_POST['submit']))
 						notifications($conn, $idDestUtil[0], $_SESSION['nom'], $_SESSION['prenom'], $dateDebut.' '.$heureDebut, $dateFin.' '.$heureFin, $libelleLong, 'creer');
 						
 						//Création de rappels						
-						creationRappel($conn, $idEv[0], $priorite, $idDestUtil[0], $idRappel[0], $idDestUtil['rappelhaute'], $idDestUtil['rappelmoyenne'], $idDestUtil['rappelbasse'], $dateDebut.' '.$heureDebut);
+						creationRappel($conn, $_GET['i'], $priorite, $idDestUtil[0], $idRappel[0], $idDestUtil['rappelhaute'], $idDestUtil['rappelmoyenne'], $idDestUtil['rappelbasse'], $dateDebut.' '.$heureDebut);
 						$idRappel[0]++;
 					}
 				}
@@ -257,7 +247,7 @@ if(!empty($_POST['submit']))
 					foreach($contenu as $cle2 => $contenu2){
 					
 						//Insertion des utilisateurs destinataires
-						$sql = "INSERT INTO aci_destgroupe VALUES (".$idEv[0].", $contenu2";
+						$sql = "INSERT INTO aci_destgroupe VALUES (".$_GET['i'].", $contenu2";
 						$sql.=", curdate())";
 
 						$insert = $conn->query($sql);
@@ -275,7 +265,7 @@ if(!empty($_POST['submit']))
 							notifications($conn, $mailGroupe[0], $_SESSION['nom'], $_SESSION['prenom'], $dateDebut.' '.$heureDebut, $dateFin.' '.$heureFin, $libelleLong, 'creer');
 							
 							//Création de rappels						
-							creationRappel($conn, $idEv[0], $priorite, $mailGroupe[0], $idRappel[0], $mailGroupe['rappelhaute'], $mailGroupe['rappelmoyenne'], $mailGroupe['rappelbasse'], $dateDebut.' '.$heureDebut);
+							creationRappel($conn, $_GET['i'], $priorite, $mailGroupe[0], $idRappel[0], $mailGroupe['rappelhaute'], $mailGroupe['rappelmoyenne'], $mailGroupe['rappelbasse'], $dateDebut.' '.$heureDebut);
 							$idRappel[0]++;
 						}
 						
@@ -294,6 +284,8 @@ else {
 	$res = $conn->query($req);
 	$row = $res->fetch();
 
+	$_POST["priorite"] = $row["IDPRIORITE"];
+	
 	$_POST["libelleLong"] = $row["LIBELLELONG"];
 	$_POST["libelleCourt"] = $row["LIBELLECOURT"];
 	$_POST["description"] = $row["DESCRIPTION"];
@@ -355,6 +347,10 @@ else {
                     </tr>
                 </table>
                 
+                <?php
+                if($insertion)
+                    echo '<div class="alert alert-success"><b>Modification réalisée avec succès.</b></div>';
+                ?>
                 <form action="" name="FormCreaEvenement" method="post" enctype="multipart/form-data" id="formCreation">
                     <table>
                         <tr>
@@ -364,9 +360,19 @@ else {
                                         <td>
                                             <label for="priorite"><b>Priorité*</b></label><br>
                                             <select name="priorite" id="priorite">
-                                                <option value="1">Haute</option>';
+												<?php if(isset($_POST["priorite"]) && $_POST["priorite"] == 1) {?>
+												<option value="1" selected>Haute</option>';
+                                                <option value="2">Moyenne</option>';
+                                                <option value="3">Basse</option>';
+												<?php } else if(isset($_POST["priorite"]) && $_POST["priorite"] == 2) {?>
+												<option value="1">Haute</option>';
                                                 <option value="2" selected>Moyenne</option>';
                                                 <option value="3">Basse</option>';
+												<?php } else if(isset($_POST["priorite"]) && $_POST["priorite"] == 3) {?>
+												<option value="1">Haute</option>';
+                                                <option value="2">Moyenne</option>';
+                                                <option value="3" selected>Basse</option>';
+												<?php } ?>
                                             </select>
                                         </td>
                                     </tr>
