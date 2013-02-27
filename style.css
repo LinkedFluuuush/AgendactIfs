@@ -610,6 +610,15 @@ ul.nav > li ul li.priorite label:hover {
 
 
 /* PARTIE PARAMETRES */
+
+#corpsCal.parametresCompte table.titreCal {
+    width: 100%;
+}
+
+#corpsCal.parametresCompte table {
+    width: 50%;
+}
+
 #corpsCal.parametresCompte td {
     cursor: default;
     border: none;

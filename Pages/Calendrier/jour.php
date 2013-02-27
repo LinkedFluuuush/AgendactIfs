@@ -22,8 +22,6 @@
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
 	
-	
-        
         //on définit des valeurs par defaut aux variable année, mois et jour (par défaut : aujourd'hui)
         $annee = date('Y');
         $mois = date('m');
@@ -109,9 +107,9 @@
 
                         if ($_GET['u'] == 3) {
                             //echo '<a href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. $jour .'">Retour</a>';
-                            $ts = mktime(0,0,0,$mois,$jour,$annee);
+                            $ts = mktime(0, 0, 0, $_GET['m'], $_GET['j'], $_GET['a']);
                             $jourDebut = date('N', $ts);
-                            echo '<a class="btn" href="semaine.php?annee=' . $annee . '&mois=' . $mois . '&jour='. ($jour-$jourDebut+1) .'">Retour</a>';
+                            echo '<a class="btn" href="semaine.php?annee=' . $_GET['a'] . '&mois=' . $_GET['m'] . '&jour='. ($_GET['j'] - $jourDebut+1) .'">Retour</a>';
                         }
                     }
                     ?>

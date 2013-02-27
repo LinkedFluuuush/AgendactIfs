@@ -96,7 +96,7 @@ if(empty($_SESSION['id'])) {
             </tr>
         </table>
 		<form action="<?php echo $_SERVER['PHP_SELF'];?>" name="FormParametres" method="post" enctype="multipart/form-data" id="formParametres">
-			<table align="center" cellpadding="4">
+			<table align="center" cellpadding="5">
                             <tr>
                                 <td>
                                     <label><b>Notifications</b></label>
@@ -122,7 +122,7 @@ if(empty($_SESSION['id'])) {
                             <tr><td></td></tr>
                             
                             <tr>
-                                <td><b>Temps avant le rappel des évènements</b></td>
+                                <td colspan="2"><b>Temps avant le rappel des évènements</b></td>
                             </tr>
                             <tr>
                                 <td>
