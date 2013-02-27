@@ -585,7 +585,6 @@ ul.nav > li ul li.priorite label:hover {
 
 
 /* PARTIE CREER */
-
 #corpsCal.creer form table {
     margin-left: 1.5%;
 }
@@ -598,10 +597,55 @@ ul.nav > li ul li.priorite label:hover {
     cursor: default;
     border: none;
     background-color: #ececec;
+    padding-bottom: 10px;
 }
 
 #corpsCal.creer table.titreCal {
     margin-bottom: 0.8%;
+}
+
+#resultsLieu, #resultsParticipant {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #dcdcdc;
+    border-top: none;
+    padding: 3px 0 3px 3px;
+}
+
+#resultsLieu {
+    width: 148px;
+}
+
+#resultsParticipant {
+    width: 357px;
+}
+
+#dest {
+    overflow: auto;
+    height: 150px;
+    width: 350px;
+    border: 1px solid #abadb3;
+    padding: 5px;
+    background-color: white;
+}
+
+#groupe {
+    overflow:auto;
+    height:250px;
+    width:250px;
+    border:1px solid #abadb3;
+    padding:5px;
+    background-color:white;
+}
+
+input#Eve_lieu, input#addParticipant {
+    margin-left: 0;
+    margin-bottom: 0;
+}
+
+input#addParticipant {
+    width: 358px;
 }
 
 /* FIN DE LA PARTIE CREER */
