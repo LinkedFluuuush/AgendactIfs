@@ -165,7 +165,7 @@ function explodeDate($date)
 function formattageDate($dateI)
 {
 	$date[0] = $dateI[3];
-	$date[1] = $dateI[2].'-'.$dateI[1].'-'.$dateI[0];
+	$date[1] = $dateI[2].'/'.$dateI[1].'/'.$dateI[0];
 	
 	return $date;
 }
@@ -358,8 +358,8 @@ function notifications($conn, $idDest, $nomAuteur, $prenomAuteur, $dateDebut, $d
 		$contenu = "<h1>".$libelleLong."</h1>";
 		$contenu_txt = $libelleLong."\n";
 		
-		$contenu = $contenu."Bonjour ".$util[0]." ".$util[1]."<br>";
-		$contenu_txt = $contenu_txt."Bonjour ".$util[0]." ".$util[1]."\n";
+		$contenu = $contenu."Bonjour ".$util[0]." ".$util[1].",<br>";
+		$contenu_txt = $contenu_txt."Bonjour ".$util[0]." ".$util[1].",\n";
 		
 		//Si il s'agit d'une création d'événement
 		if($type == "creer")
@@ -431,8 +431,8 @@ function notifications($conn, $idDest, $nomAuteur, $prenomAuteur, $dateDebut, $d
 			$contenu_txt = $contenu_txt." a été modifié.";
 		}
 		
-		$contenu = $contenu.".<br><br>L'équipe d'AgendactIfs<br><br><small>Ce courriel est généré automatiquement, veuillez ne pas y répondre</small>";
-		$contenu_txt = $contenu_txt.".\n\nL'équipe d'AgendactIfs\n\nCe courriel est généré automatiquement, veuillez ne pas y répondre";
+		$contenu = $contenu."<br><br>L'équipe d'AgendactIfs.<br><br><small>Ce courriel est généré automatiquement, veuillez ne pas y répondre.</small>";
+		$contenu_txt = $contenu_txt."\n\nL'équipe d'AgendactIfs\n\nCe courriel est généré automatiquement, veuillez ne pas y répondre.";
 
 		//Envoi du message
 		envoyerMail($util[2], $libelleLong, $contenu, $contenu_txt);
