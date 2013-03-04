@@ -52,15 +52,14 @@ if($row = $resultats->fetch()){
 			    $info = ldap_get_entries($connLDAP, $result);
 			    /* 4ème étape : clôture de la session  */
 			    
-			    $req = "select max(idutilisateur)+1 from aci_utilisateur";
+			    $req = "SELECT idUtilisateur, nom, prenom, adresse_mail FROM aci_utilisateur WHERE identifiant_de_connexion='".$info[0]["uid"][0]."'";
 			    $resultats = $conn->query($req);
 			    $row = $resultats->fetch();
-			    $idUser = $row['max(idutilisateur)+1'];
 			  
-			    $_SESSION['id'] = $idUser;
-			    $_SESSION['nom'] = $info[0]["sn"][0];
-			    $_SESSION['prenom'] = $info[0]["givenname"][0];
-			    $_SESSION['mail'] = $info[0]["mail"][0];
+			    $_SESSION['id'] = $row['idutilisateur'];
+			    $_SESSION['nom'] = $row['nom'];
+			    $_SESSION['prenom'] = $row['prenom'];
+			    $_SESSION['mail'] = $row['adresse_mail'];
 			    
 			    //$req = "INSERT INTO aci_utilisateur VALUES (".$idUser.", '".$info[0]["sn"][0]."', '".$info[0]["givenname"][0]."', '".$info[0]["mail"][0]."', '".$login."', '".md5($mdp)."', 1, 1, curdate())";
 

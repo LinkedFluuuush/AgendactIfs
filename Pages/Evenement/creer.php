@@ -321,7 +321,7 @@ if(!empty($_POST['submit']))
                                             }
                                             else { ?>
                                                 <label for="Eve_titreCourt"><b>Titre court*</b></label> <br>
-                                                <input type="text" name="libelleCourt" id="Eve_titreCourt" value="<?php saisieFormString("libelleCourt");?>" class="libelleCourt" maxlength=5 />
+                                                <input type="text" name="libelleCourt" id="Eve_titreCourt" value="<?php saisieFormString("libelleCourt");?>" class="libelleCourt" maxlength=10 />
                                             <?php } ?>
                                         </td>
                                     </tr>
@@ -365,7 +365,11 @@ if(!empty($_POST['submit']))
                                     </tr>
                                     <tr>                    
                                         <td>
-                                            <?php
+					<?php if (!empty($_GET['a']) and !empty($_GET['m']) and !empty($_GET['j'])) { ?>
+                                                <label for="Eve_dateFin"><b>Date de fin</b></label><br>
+                                                    <input type="text" name="dateFin" id="Eve_dateFin" value="<?php echo $_GET['j'].'/'.$_GET['m'].'/'.$_GET['a']; ?>" class="dateDebut" maxlength=10 size=11/>
+                                                    <input type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php saisieFormString("heureFin");?>" class="heureFin" maxlength=5 size=4/>
+                                                <?php } else {
                                             if(!empty($erreurDateFin) or !empty($erreurHeureFin)) { ?>
                                                 <label style="color: #b94947;" for="Eve_dateFin"><b>Date de fin*</b></label><br>
                                                 <input style="border: 1px solid #b94947;" type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateFin");?>"class="dateFin" maxlength=10 size=11/>
@@ -376,7 +380,7 @@ if(!empty($_POST['submit']))
                                                 <label for="Eve_dateFin"><b>Date de fin</b></label><br>
                                                 <input type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateFin");?>"class="dateFin" maxlength=10 size=11/>
                                                 <input type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php saisieFormString("heureFin");?>" class="heureFin" maxlength=5 size=4/>
-                                            <?php } ?>
+                                            <?php }} ?>
                                         </td>
                                     </tr>
 
@@ -391,8 +395,8 @@ if(!empty($_POST['submit']))
                                     <tr>
                                         <td>
                                             <label><b>Type*</b></label><br>
-                                            <input type="radio" name="public" id="public" value="1" <?php if($public == 1) echo 'checked'; ?> onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
-                                            <input type="radio" name="public" id="prive" value="0" <?php if($public == 0) echo 'checked'; ?> onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
+                                            <input type="radio" name="public" id="public" value="1" onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
+                                            <input type="radio" name="public" id="prive" value="0" checked onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
                                         </td>
                                     </tr>
                                 </table>
@@ -401,11 +405,11 @@ if(!empty($_POST['submit']))
                                 <table cellpadding="4">
                                     <tr>
                                         <td id="tddest" valign="top">
-                                            <label for="addParticipant"><b>Ajouter un destinataire</b></label><br>
+                                            <label for="addParticipant"><b>Destinataires</b></label><br>
                                             <div id="dest">
                                                 <?php saisieFormReq("dest", $conn);?>
                                             </div>
-                                            <input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
+                                            <label for="addParticipant"><b>Rechercher un destinataire</b></label><input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
                                             <div id="resultsParticipant"></div>
                                         </td>
                                     </tr>
@@ -441,6 +445,7 @@ if(!empty($_POST['submit']))
         </div>
             
         <script type="text/javascript">
+		cacher();
             (function(){
 
             var searchElement = document.getElementById('Eve_lieu');
