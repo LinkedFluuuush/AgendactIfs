@@ -1,6 +1,6 @@
 <?php header( 'content-type: text/html; charset=utf-8' );
 
-function descGroupe($idGroupe, $conn, $i){
+function descGroupe($idGroupe, $conn, $i, $insertion){
 	$req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe IN (SELECT idgroupe_1 FROM aci_contenir WHERE idgroupe = ".$idGroupe.")";
 	$resultats = $conn->query($req);
 	while($row = $resultats->fetch()){		
@@ -10,10 +10,12 @@ function descGroupe($idGroupe, $conn, $i){
 		}
 		$option.='<img id="'.utf8_encode($row['idgroupe']).'" src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/>';
 		$option.='<label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')"> '.$row['libelle'].'</label>';
-		$option.='<input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'" '.checkAuto(utf8_encode($row['idgroupe'])).'/><br/>';
+		$option.='<input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'" ';
+		if(!$insertion){$option .= checkAuto(utf8_encode($row['idgroupe']));}
+		$option .= '/><br/>';
 
                 echo $option;
-		descGroupe($row['idgroupe'], $conn, $i+1);
+		descGroupe($row['idgroupe'], $conn, $i+1, $insertion);
 		echo "</div>";
 	}
 }
