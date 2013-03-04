@@ -396,12 +396,12 @@ else {
                                             <?php
                                             if (!empty($erreurLibelleCourt)) { ?>
                                                 <label style="color: #b94947;" for="Eve_titreCourt"><b>Titre court*</b></label> <br>
-                                                <input style="border: 1px solid #b94947;" type="text" name="libelleCourt" id="Eve_titreCourt" value="<?php saisieFormString("libelleCourt");?>" class="libelleCourt" maxlength=5 />
+                                                <input style="border: 1px solid #b94947;" type="text" name="libelleCourt" id="Eve_titreCourt" value="<?php saisieFormString("libelleCourt");?>" class="libelleCourt" maxlength=10 />
                                                 <?php echo "<b style=\"color: #b94947;\" id=\"formErreur\">$erreurLibelleCourt </b>";
                                             }
                                             else { ?>
                                                 <label for="Eve_titreCourt"><b>Titre court*</b></label> <br>
-                                                <input type="text" name="libelleCourt" id="Eve_titreCourt" value="<?php saisieFormString("libelleCourt");?>" class="libelleCourt" maxlength=5 />
+                                                <input type="text" name="libelleCourt" id="Eve_titreCourt" value="<?php saisieFormString("libelleCourt");?>" class="libelleCourt" maxlength=10 />
                                             <?php } ?>
                                         </td>
                                     </tr>
@@ -486,11 +486,11 @@ else {
                                 <table cellpadding="4">
                                     <tr>
                                         <td id="tddest" valign="top">
-                                            <label for="addParticipant"><b>Ajouter un destinataire</b></label><br>
+                                            <label for="addParticipant"><b>Destinataires</b></label><br>
                                             <div id="dest">
                                                 <?php saisieFormReq("dest", $conn);?>
                                             </div>
-                                            <input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
+                                            <label for="addParticipant"><b>Rechercher un destinataire</b></label><input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
                                             <div id="resultsParticipant"></div>
                                         </td>
                                     </tr>
@@ -506,7 +506,7 @@ else {
                                                                                             <label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')"> '
                                                                                             .$row['libelle'].'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" 
                                                                                             id="'.utf8_encode($row['idgroupe']).'" '.checkAuto(utf8_encode($row['idgroupe'])).'/><br/>';
-                                                    descGroupe($row['idgroupe'], $conn, 1);
+                                                    descGroupe($row['idgroupe'], $conn, 1, false);
                                                 }
                                                 ?>
                                             </div>
