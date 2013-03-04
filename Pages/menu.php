@@ -9,7 +9,16 @@ $nomPage = $temp[sizeof($temp)-1];
     <!-- sous-menus -->
     <ul class="nav">
         <li>
-            <div class="header">Connexion</div>
+            <div class="header">
+                <?php
+                if(empty($_SESSION['id'])){
+                    echo 'Connexion';
+                }
+                else {
+                    echo $_SESSION['prenom']." ".ucfirst(strtolower($_SESSION['nom']));
+                }
+                ?>
+            </div>
             <ul class="menu">
                 <?php if(empty($_SESSION['id'])){ ?>
                     <li class="connexion">
@@ -26,12 +35,18 @@ $nomPage = $temp[sizeof($temp)-1];
                 <?php }
                 else {
                     if($nomPage == "parametresCompte.php") {
-                        echo "<li onclick =\"document.location.href ='../Fonctions_Php/deconnexion.php'\"><a href=\"../Fonctions_Php/deconnexion.php\">".$_SESSION['prenom']." ".ucfirst(strtolower($_SESSION['nom']))." - Déconnexion</a></li>";
+                        echo "<li onclick =\"document.location.href ='../Fonctions_Php/deconnexion.php'\"><a href=\"../Fonctions_Php/deconnexion.php\">Déconnexion</a></li>";
                     }
                     else {
-                        echo "<li onclick =\"document.location.href ='../../Fonctions_Php/deconnexion.php'\"><a href=\"../../Fonctions_Php/deconnexion.php\">".$_SESSION['prenom']." ".ucfirst(strtolower($_SESSION['nom']))." - Déconnexion</a></li>";
+                        echo "<li onclick =\"document.location.href ='../../Fonctions_Php/deconnexion.php'\"><a href=\"../../Fonctions_Php/deconnexion.php\">Déconnexion</a></li>";
                     }
-                    
+
+                    if($nomPage == "parametresCompte.php") {
+                        echo '<li class="selected">Paramètres</li>';
+                    }
+                    else {
+                        echo '<li onclick ="document.location.href =\'../parametresCompte.php\'"><a href="../parametresCompte.php">Paramètres</a></li>';
+                    }
                 } ?>
             </ul>
         </li>
@@ -44,7 +59,7 @@ $nomPage = $temp[sizeof($temp)-1];
                         echo '<li class="selected">Créer</li>';
                     }
                     else if ($nomPage == "parametresCompte.php") {
-                        echo '<li onclick ="document.location.href =\'Evenement/creer.php\'"><a href="../Evenement/creer.php">Créer</a></li>';
+                        echo '<li onclick ="document.location.href =\'Evenement/creer.php\'"><a href="Evenement/creer.php">Créer</a></li>';
                     }
                     else {
                         echo '<li onclick ="document.location.href =\'../Evenement/creer.php\'"><a href="../Evenement/creer.php">Créer</a></li>';
@@ -52,6 +67,7 @@ $nomPage = $temp[sizeof($temp)-1];
                 }
                 if($nomPage == "semestre.php" or $nomPage == "mois.php" or $nomPage == "semaine.php" or $nomPage == "jour.php") {
                     echo '<li class="priorite">';
+                    echo '<div style="margin-bottom: 7px;">Visualiser selon la priorité :</div>';
                     include("priorite.php");
                     echo '</li>';
                 } ?>
@@ -65,7 +81,7 @@ $nomPage = $temp[sizeof($temp)-1];
                      echo '<li class="selected">Semestre</li>';
                  }
                  else if ($nomPage == "parametresCompte.php") {
-                     echo '<li onclick ="document.location.href =\'Calendrier/semestre.php\'"><a href="../Calendrier/semestre.php">Semestre</a></li>';
+                     echo '<li onclick ="document.location.href =\'Calendrier/semestre.php\'"><a href="Calendrier/semestre.php">Semestre</a></li>';
                  }
                  else {
                      echo '<li onclick ="document.location.href =\'../Calendrier/semestre.php\'"><a href="../Calendrier/semestre.php">Semestre</a></li>';
@@ -75,7 +91,7 @@ $nomPage = $temp[sizeof($temp)-1];
                      echo '<li class="selected">Mois</li>';
                  }
                  else if ($nomPage == "parametresCompte.php") {
-                     echo '<li onclick ="document.location.href =\'Calendrier/mois.php\'"><a href="../Calendrier/mois.php">Mois</a></li>';
+                     echo '<li onclick ="document.location.href =\'Calendrier/mois.php\'"><a href="Calendrier/mois.php">Mois</a></li>';
                  }
                  else {
                      echo '<li onclick ="document.location.href =\'../Calendrier/mois.php\'"><a href="../Calendrier/mois.php">Mois</a></li>';
@@ -85,7 +101,7 @@ $nomPage = $temp[sizeof($temp)-1];
                      echo '<li class="selected">Semaine</li>';
                  }
                  else if ($nomPage == "parametresCompte.php") {
-                     echo '<li onclick ="document.location.href =\'Calendrier/semaine.php\'"><a href="../Calendrier/semaine.php">Semaine</a></li>';
+                     echo '<li onclick ="document.location.href =\'Calendrier/semaine.php\'"><a href="Calendrier/semaine.php">Semaine</a></li>';
                  }
                  else {
                      echo '<li onclick ="document.location.href =\'../Calendrier/semaine.php\'"><a href="../Calendrier/semaine.php">Semaine</a></li>';
@@ -95,26 +111,13 @@ $nomPage = $temp[sizeof($temp)-1];
                      echo '<li class="selected">Jour</li>';
                  }
                  else if ($nomPage == "parametresCompte.php") {
-                     echo '<li onclick ="document.location.href =\'Calendrier/jour.php\'"><a href="../Calendrier/jour.php">Jour</a></li>';
+                     echo '<li onclick ="document.location.href =\'Calendrier/jour.php\'"><a href="Calendrier/jour.php">Jour</a></li>';
                  }
                  else {
                      echo '<li onclick ="document.location.href =\'../Calendrier/jour.php\'"><a href="../Calendrier/jour.php">Jour</a></li>';
                  }
                 ?>
             </ul>
-        </li>
-        <li>
-            <?php if(!empty($_SESSION['id'])) { ?>
-                <div class="header">Rappels/notifs</div>
-                <ul class="menu">
-                    <?php  if($nomPage == "parametresCompte.php") {
-                        echo '<li class="selected">Paramètres</li>';
-                     }
-                     else {
-                         echo '<li onclick ="document.location.href =\'../parametresCompte.php\'"><a href="../parametresCompte.php">Paramètres</a></li>';
-                     } ?>
-                </ul>
-           <?php } ?>
         </li>
     </ul>
     

@@ -409,7 +409,7 @@ if(!empty($_POST['submit']))
                                             <div id="dest">
                                                 <?php if(!$insertion){saisieFormReq("dest", $conn);}?>
                                             </div>
-                                            <label for="addParticipant"><b>Rechercher un destinataire</b></label><input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
+                                            <label for="addParticipant"><b>Rechercher un destinataire</b></label><br><input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
                                             <div id="resultsParticipant"></div>
                                         </td>
                                     </tr>

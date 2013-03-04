@@ -206,7 +206,7 @@
 			else if ($boucle > 1) {
                             if ($weekend == 6 or $weekend == 7) {
 				echo '<td class="info" id="weekend" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
-				echo $jour . /*'<img STYLE="vertical-align: -3px; margin-left: 5px; margin-right: 2px;" src="./Images/warning_exclamation.png" height="15" width="15">' . */' Evénements : ' . $boucle;
+				echo $jour . '<i> Evénements : ' . $boucle . '</i>';
 
 				echo '<span>';
 				for ($i=0 ; $i<$boucle ; $i++) {
@@ -219,7 +219,7 @@
                             }
                             else {
                                 echo '<td class="info" onclick="document.location.href = \'jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1\';"><a href="jour.php?a='.$annee.'&m='.$mois.'&j='.$jour.'&u=1">';
-				echo $jour . /*'<img STYLE="vertical-align: -3px; margin-left: 5px; margin-right: 2px;" src="./Images/warning_exclamation.png" height="15" width="15">' . */' Evénements : ' . $boucle;
+				echo $jour . '<i> Evénements : ' . $boucle . '</i>';
 
 				echo '<span>';
 				for ($i=0 ; $i<$boucle ; $i++) {

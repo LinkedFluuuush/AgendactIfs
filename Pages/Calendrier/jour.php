@@ -154,9 +154,10 @@
                             echo 'Post&eacute; par <b>' . $auteur . '</b> le <b>' . $dateInsert . '</b>';
                             
                             
-                            if(!empty($idUtil)) { 
-                                if($idUtil == $idAuteur) { ?>
+                            if(!empty($idUtil)) { ?>
+                                
                                     <div class="modifier_suppr">
+                                        <?php if($idUtil == $idAuteur) { ?>
                                         <form name="modifier" action="../Evenement/modifier.php?i=<?php echo $numeroEve;?>" method="POST">
                                             <input type="hidden" name="idEve" value="<?php echo $numeroEve; ?>" />
                                             <input class="btn" type="submit" name="modifier_eve" value="Modifier" />
@@ -166,9 +167,10 @@
                                                     document.location.href = '../Evenement/supprimer.php?i=<?php echo $numeroEve;?>';
                                             }"/>
                                         </form>
+                                        <?php } ?>
                                     </div>
-                            <?php }
-                            } ?>
+                            
+                            <?php } ?>
                         </p>
                         <?php $i++;
                     }
