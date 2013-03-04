@@ -67,6 +67,7 @@ $nomPage = $temp[sizeof($temp)-1];
                 }
                 if($nomPage == "semestre.php" or $nomPage == "mois.php" or $nomPage == "semaine.php" or $nomPage == "jour.php") {
                     echo '<li class="priorite">';
+                    echo '<div style="margin-bottom: 7px;">Visualiser selon la priorité :</div>';
                     include("priorite.php");
                     echo '</li>';
                 } ?>
