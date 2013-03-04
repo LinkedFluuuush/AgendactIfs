@@ -113,8 +113,8 @@ if(empty($_SESSION['id'])) {
                                     </label>
                                 </td>
                                 <td>
-                                    <input type="radio" name="rappel" id="rappelA" value="1" <?php checked(1, "RAPPEL", $infoUtil);?>> <label for="rappelA">Activé</label>
-                                    <input type="radio" name="rappel" id="rappelD" value="0" <?php checked(0, "RAPPEL", $infoUtil);?>> <label for="rappelD">Désactivé</label>
+                                    <input type="radio" name="rappel" id="rappelA" value="1" <?php checked(1, "RAPPEL", $infoUtil);?> onchange="cacher();"> <label for="rappelA">Activé</label>
+                                    <input type="radio" name="rappel" id="rappelD" value="0" <?php checked(0, "RAPPEL", $infoUtil);?> onchange="cacher();"> <label for="rappelD">Désactivé</label>
                                 </td>
                             </tr>
                             
@@ -129,8 +129,8 @@ if(empty($_SESSION['id'])) {
                                     <b>Priorité haute</b>
                                 </td>
                                 <td>
-                                    <input type="text" name="jHaute" size=1 maxlength=2 value="<?php echo $rappelHaute[0]; ?>"> jour(s) &nbsp;
-                                    <input type="text" name="hHaute" size=1 maxlength=2 value="<?php echo $rappelHaute[3]; ?>"> heure(s)
+                                    <input type="text" name="jHaute" id="jHaute" size=1 maxlength=2 value="<?php echo $rappelHaute[0]; ?>"> jour(s) &nbsp;
+                                    <input type="text" name="hHaute" id="hHaute" size=1 maxlength=2 value="<?php echo $rappelHaute[3]; ?>"> heure(s)
                                 </td>
                             </tr>
 				<tr>
@@ -138,8 +138,8 @@ if(empty($_SESSION['id'])) {
                                         <b>Priorité moyenne</b>
                                     </td>
                                     <td>
-                                        <input type="text" name="jMoyenne" size=1 maxlength=2 value="<?php echo $rappelMoyenne[0]; ?>"> jour(s) &nbsp;
-                                        <input type="text" name="hMoyenne" size=1 maxlength=2 value="<?php echo $rappelMoyenne[3]; ?>"> heure(s)
+                                        <input type="text" name="jMoyenne" id="jMoyenne" size=1 maxlength=2 value="<?php echo $rappelMoyenne[0]; ?>"> jour(s) &nbsp;
+                                        <input type="text" name="hMoyenne" id="hMoyenne" size=1 maxlength=2 value="<?php echo $rappelMoyenne[3]; ?>"> heure(s)
                                     </td>
 				</tr>
 				</tr>
@@ -148,8 +148,8 @@ if(empty($_SESSION['id'])) {
                                         <b>Priorité basse</b>
                                     </td>
                                     <td>
-                                        <input type="text" name="jBasse" size=1 maxlength=2 value="<?php echo $rappelBasse[0]; ?>"> jour(s) &nbsp;
-                                        <input type="text" name="hBasse" size=1 maxlength=2 value="<?php echo $rappelBasse[3]; ?>"> heure(s)
+                                        <input type="text" name="jBasse" id="jBasse" size=1 maxlength=2 value="<?php echo $rappelBasse[0]; ?>"> jour(s) &nbsp;
+                                        <input type="text" name="hBasse" id="hBasse" size=1 maxlength=2 value="<?php echo $rappelBasse[3]; ?>"> heure(s)
                                     </td>
 				</tr>
 			</table>
@@ -173,3 +173,26 @@ function checked($boolean, $type, $infoUtil)
 	}
 }
 ?>
+<script type="text/javascript">
+function cacher(){
+	var rappelD = document.getElementById("rappelD");
+	var txt = document.getElementsByTagName("input");
+	
+	if(rappelD.checked == true){
+		for(var i = 0; i < txt.length; i++){
+			if(txt[i].type=="text"){
+				txt[i].disabled = true;
+			}
+		}
+	}
+	if(rappelD.checked == false){
+		for(var i = 0; i < txt.length; i++){
+			if(txt[i].type=="text"){
+				txt[i].disabled = false;
+			}
+		}
+	}
+}
+</script>
+</body>
+</html>
