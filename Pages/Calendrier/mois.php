@@ -108,11 +108,11 @@
         <div id="corpsCal" class="mois">
             <table class="titreCal">
                 <tr class="titreCal">
-                    <th><a href="mois.php?annee=<?php echo $annee-1; ?>&amp;mois=<?php echo $mois; ?>">|&#9668; </a></th>
+                    <th><a href="mois.php?annee=<?php echo $annee-1; ?>&amp;mois=<?php echo $mois; ?>">&#9668;&#9668; </a></th>
                     <th><a href="mois.php?annee=<?php echo $anneePrec; ?>&amp;mois=<?php echo $moisPrec; ?>"> &#9668; </a></th>
                     <th width="500px"><?php echo $nomMois . ' ' . $annee; ?></th>
                     <th><a href="mois.php?annee=<?php echo $anneeSuiv; ?>&amp;mois=<?php echo $moisSuiv; ?>"> &#9658; </a></th>
-                    <th><a href="mois.php?annee=<?php echo $annee+1; ?>&amp;mois=<?php echo $mois; ?>"> &#9658;| </a></th>
+                    <th><a href="mois.php?annee=<?php echo $annee+1; ?>&amp;mois=<?php echo $mois; ?>"> &#9658;&#9658; </a></th>
                 </tr>
             </table>
             <!-- Affichage du nom du mois + année et des liens du mois précédent/suivant -->
