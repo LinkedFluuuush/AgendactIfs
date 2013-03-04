@@ -301,13 +301,13 @@ if(!empty($_POST['submit']))
                                             <?php
                                             if (!empty($erreurLibelleLong)) { ?>
                                                 <label style="color: #b94947;" for="Eve_titreLong"><b>Titre long*</b></label> <br>
-                                                <input style="border: 1px solid #b94947;" type="text" name="libelleLong" id="Eve_titreLong" value="<?php saisieFormString("libelleLong");?>" class="libelleLong" maxlength=32 />
+                                                <input style="border: 1px solid #b94947;" type="text" name="libelleLong" id="Eve_titreLong" value="<?php if(!$insertion){saisieFormString("libelleLong");}?>" class="libelleLong" maxlength=32 />
                                                 <?php
                                                 echo "<b style=\"color: #b94947;\" id=\"formErreur\">$erreurLibelleLong</b>";
                                             }
                                             else { ?>
                                                 <label for="Eve_titreLong"><b>Titre long*</b></label> <br>
-                                                <input type="text" name="libelleLong" id="Eve_titreLong" value="<?php saisieFormString("libelleLong");?>" class="libelleLong" maxlength=32 />
+                                                <input type="text" name="libelleLong" id="Eve_titreLong" value="<?php if(!$insertion){saisieFormString("libelleLong");}?>" class="libelleLong" maxlength=32 />
                                             <?php } ?>
                                         </td>
                                     </tr>
@@ -316,12 +316,12 @@ if(!empty($_POST['submit']))
                                             <?php
                                             if (!empty($erreurLibelleCourt)) { ?>
                                                 <label style="color: #b94947;" for="Eve_titreCourt"><b>Titre court*</b></label> <br>
-                                                <input style="border: 1px solid #b94947;" type="text" name="libelleCourt" id="Eve_titreCourt" value="<?php saisieFormString("libelleCourt");?>" class="libelleCourt" maxlength=5 />
+                                                <input style="border: 1px solid #b94947;" type="text" name="libelleCourt" id="Eve_titreCourt" value="<?php if(!$insertion){saisieFormString("libelleCourt");}?>" class="libelleCourt" maxlength=10 />
                                                 <?php echo "<b style=\"color: #b94947;\" id=\"formErreur\">$erreurLibelleCourt </b>";
                                             }
                                             else { ?>
                                                 <label for="Eve_titreCourt"><b>Titre court*</b></label> <br>
-                                                <input type="text" name="libelleCourt" id="Eve_titreCourt" value="<?php saisieFormString("libelleCourt");?>" class="libelleCourt" maxlength=5 />
+                                                <input type="text" name="libelleCourt" id="Eve_titreCourt" value="<?php if(!$insertion){saisieFormString("libelleCourt");}?>" class="libelleCourt" maxlength=10 />
                                             <?php } ?>
                                         </td>
                                     </tr>
@@ -330,12 +330,12 @@ if(!empty($_POST['submit']))
                                             <?php
                                             if ($erreurDescription) { ?>
                                                 <label style="color: #b94947;" for="Eve_description"><b>Description*</b></label> <br>
-                                                <textarea style="border: 1px solid #b94947;" name="description" rows="5" cols="30" id="Eve_description" class="area"><?php saisieFormString("description");?></textarea>
+                                                <textarea style="border: 1px solid #b94947;" name="description" rows="5" cols="30" id="Eve_description" class="area"><?php if(!$insertion){saisieFormString("description");}?></textarea>
                                                 <?php echo "<b style=\"color: #b94947;\" id=\"formErreur\">$erreurDescription </b>";
                                             }
                                             else { ?>
                                                 <label for="Eve_description"><b>Description*</b></label> <br>
-                                                <textarea name="description" rows="5" cols="30" id="Eve_description" class="area"><?php saisieFormString("description");?></textarea>
+                                                <textarea name="description" rows="5" cols="30" id="Eve_description" class="area"><?php if(!$insertion){saisieFormString("description");}?></textarea>
                                             <?php } ?>
                                         </td>
                                     </tr>
@@ -345,45 +345,49 @@ if(!empty($_POST['submit']))
                                             if(!empty($erreurDateDebut) or !empty($erreurHeureDebut)) { ?>
                                                 <label style="color: #b94947;" for="Eve_dateDebut"><b>Date de début*</b></label><br>
                                                 <?php if (!empty($_GET['a']) and !empty($_GET['m']) and !empty($_GET['j'])) { ?>
-                                                    <input style="border: 1px solid #b94947;" type="text" name="dateDebut" id="Eve_dateDebut" value="<?php echo $_GET['j'].'/'.$_GET['m'].'/'.$_GET['a']; ?>" class="dateDebut" maxlength=10 size=11/>
+                                                    <input style="border: 1px solid #b94947;" type="text" name="dateDebut" id="Eve_dateDebut" value="<?php if(!$insertion){echo $_GET['j'].'/'.$_GET['m'].'/'.$_GET['a']; }?>" class="dateDebut" maxlength=10 size=11/>
                                                 <?php } else { ?>
-                                                    <input style="border: 1px solid #b94947;" type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateDebut");?>" class="dateDebut" maxlength=10 size=11/>
+                                                    <input style="border: 1px solid #b94947;" type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YYYY" value="<?php if(!$insertion){saisieFormString("dateDebut");}?>" class="dateDebut" maxlength=10 size=11/>
                                                 <?php } ?>
-                                                    <input style="border: 1px solid #b94947;" type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="<?php saisieFormString("heureDebut");?>" class="heureDebut" maxlength=5 size=4/>
+                                                    <input style="border: 1px solid #b94947;" type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="<?php if(!$insertion){saisieFormString("heureDebut");}?>" class="heureDebut" maxlength=5 size=4/>
                                                 <?php echo "<b style=\"color: #b94947;\" id=\"formErreur\"><br>$erreurDateDebut<br>$erreurHeureDebut</b>";
                                             }
                                             else { ?>
                                                 <label for="Eve_dateDebut"><b>Date de début*</b></label><br>
                                                 <?php if (!empty($_GET['a']) and !empty($_GET['m']) and !empty($_GET['j'])) { ?>
-                                                    <input type="text" name="dateDebut" id="Eve_dateDebut" value="<?php echo $_GET['j'].'/'.$_GET['m'].'/'.$_GET['a']; ?>" class="dateDebut" maxlength=10 size=11/>
+                                                    <input type="text" name="dateDebut" id="Eve_dateDebut" value="<?php if(!$insertion){echo $_GET['j'].'/'.$_GET['m'].'/'.$_GET['a'];} ?>" class="dateDebut" maxlength=10 size=11/>
                                                 <?php } else { ?>
-                                                    <input type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateDebut");?>" class="dateDebut" maxlength=10 size=11/>
+                                                    <input type="text" name="dateDebut" id="Eve_dateDebut" placeholder="JJ/MM/YYYY" value="<?php if(!$insertion){saisieFormString("dateDebut");}?>" class="dateDebut" maxlength=10 size=11/>
                                                 <?php } ?>
-                                                    <input type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="<?php saisieFormString("heureDebut");?>" class="heureDebut" maxlength=5 size=4/>
+                                                    <input type="text" name="heureDebut" id="Eve_heureDebut" placeholder="hh:mm" value="<?php if(!$insertion){saisieFormString("heureDebut");}?>" class="heureDebut" maxlength=5 size=4/>
                                             <?php } ?>
                                         </td>
                                     </tr>
                                     <tr>                    
                                         <td>
-                                            <?php
+					<?php if (!empty($_GET['a']) and !empty($_GET['m']) and !empty($_GET['j'])) { ?>
+                                                <label for="Eve_dateFin"><b>Date de fin</b></label><br>
+                                                    <input type="text" name="dateFin" id="Eve_dateFin" value="<?php if(!$insertion){echo $_GET['j'].'/'.$_GET['m'].'/'.$_GET['a'];} ?>" class="dateDebut" maxlength=10 size=11/>
+                                                    <input type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php if(!$insertion){saisieFormString("heureFin");}?>" class="heureFin" maxlength=5 size=4/>
+                                                <?php } else {
                                             if(!empty($erreurDateFin) or !empty($erreurHeureFin)) { ?>
                                                 <label style="color: #b94947;" for="Eve_dateFin"><b>Date de fin*</b></label><br>
-                                                <input style="border: 1px solid #b94947;" type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateFin");?>"class="dateFin" maxlength=10 size=11/>
-                                                <input style="border: 1px solid #b94947;" type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php saisieFormString("heureFin");?>" class="heureFin" maxlength=5 size=4/>
+                                                <input style="border: 1px solid #b94947;" type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" value="<?php if(!$insertion){saisieFormString("dateFin");}?>"class="dateFin" maxlength=10 size=11/>
+                                                <input style="border: 1px solid #b94947;" type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php if(!$insertion){saisieFormString("heureFin");}?>" class="heureFin" maxlength=5 size=4/>
                                                 <?php echo "<b id=\"formErreur\" style=\"color: #b94947;\"><br>$erreurDateFin<br>$erreurHeureFin</b>";
                                             }
                                             else { ?>
                                                 <label for="Eve_dateFin"><b>Date de fin</b></label><br>
-                                                <input type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" value="<?php saisieFormString("dateFin");?>"class="dateFin" maxlength=10 size=11/>
-                                                <input type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php saisieFormString("heureFin");?>" class="heureFin" maxlength=5 size=4/>
-                                            <?php } ?>
+                                                <input type="text" name="dateFin" id="Eve_dateFin" placeholder="JJ/MM/YYYY" value="<?php if(!$insertion){saisieFormString("dateFin");}?>"class="dateFin" maxlength=10 size=11/>
+                                                <input type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php if(!$insertion){saisieFormString("heureFin");}?>" class="heureFin" maxlength=5 size=4/>
+                                            <?php }} ?>
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td>
                                             <label for="Eve_lieu"><b>Lieu</b></label> <br>
-                                            <input type="text" name="lieu" value="<?php saisieFormString("lieu");?>" id="Eve_lieu" autocomplete="off" />
+                                            <input type="text" name="lieu" value="<?php if(!$insertion){saisieFormString("lieu");}?>" id="Eve_lieu" autocomplete="off" />
                                             <div id="resultsLieu"></div>
                                         </td>
                                     </tr>
@@ -391,8 +395,8 @@ if(!empty($_POST['submit']))
                                     <tr>
                                         <td>
                                             <label><b>Type*</b></label><br>
-                                            <input type="radio" name="public" id="public" value="1" <?php if($public == 1) echo 'checked'; ?> onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
-                                            <input type="radio" name="public" id="prive" value="0" <?php if($public == 0) echo 'checked'; ?> onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
+                                            <input type="radio" name="public" id="public" value="1" onclick="cacher()"> <label for="public" onclick="cacher()">Public</label>
+                                            <input type="radio" name="public" id="prive" value="0" checked onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
                                         </td>
                                     </tr>
                                 </table>
@@ -401,11 +405,11 @@ if(!empty($_POST['submit']))
                                 <table cellpadding="4">
                                     <tr>
                                         <td id="tddest" valign="top">
-                                            <label for="addParticipant"><b>Ajouter un destinataire</b></label><br>
+                                            <label for="addParticipant"><b>Destinataires</b></label><br>
                                             <div id="dest">
-                                                <?php saisieFormReq("dest", $conn);?>
+                                                <?php if(!$insertion){saisieFormReq("dest", $conn);}?>
                                             </div>
-                                            <input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
+                                            <label for="addParticipant"><b>Rechercher un destinataire</b></label><input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
                                             <div id="resultsParticipant"></div>
                                         </td>
                                     </tr>
@@ -420,8 +424,10 @@ if(!empty($_POST['submit']))
                                                     echo '<img id="'.utf8_encode($row['idgroupe']).'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/>
                                                                                             <label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')"> '
                                                                                             .$row['libelle'].'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" 
-                                                                                            id="'.utf8_encode($row['idgroupe']).'" '.checkAuto(utf8_encode($row['idgroupe'])).'/><br/>';
-                                                    descGroupe($row['idgroupe'], $conn, 1);
+                                                                                            id="'.utf8_encode($row['idgroupe']).'" ';
+						    if(!$insertion){echo checkAuto(utf8_encode($row['idgroupe']));}
+							echo '/><br/>';
+                                                    descGroupe($row['idgroupe'], $conn, 1, $insertion);
                                                 }
                                                 ?>
                                             </div>
@@ -441,6 +447,7 @@ if(!empty($_POST['submit']))
         </div>
             
         <script type="text/javascript">
+		cacher();
             (function(){
 
             var searchElement = document.getElementById('Eve_lieu');
