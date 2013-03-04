@@ -199,7 +199,6 @@ if(!empty($_POST['submit']))
 				$sql = "UPDATE aci_evenement SET IDPRIORITE = $priorite, IDLIEU = null, LIBELLELONG = '$libelleLong', LIBELLECOURT= '$libelleCourt', DESCRIPTION = '$description', 
 				DATEDEBUT = str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), DATEFIN = null, ESTPUBLIC = $public, DATEINSERT = curdate() WHERE idEvenement = ".$_GET['i'];
 			}
-			echo $sql;
 			
 			$resultats = $conn->query($sql);
 			
