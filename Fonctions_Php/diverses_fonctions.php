@@ -163,7 +163,7 @@ function explodeDate($date)
 function formattageDate($dateI)
 {
 	$date[0] = $dateI[3];
-	$date[1] = $dateI[2].'/'.$dateI[1].'/'.$dateI[0];
+	$date[1] = $dateI[2].'-'.$dateI[1].'-'.$dateI[0];
 	
 	return $date;
 }
@@ -172,6 +172,7 @@ function comparaisonDate($date, $date2)
 {
 	$date = explode('/', $date);
 	$date2 = explode('/', $date2);
+
 	if($date[2] < $date2[2])
 		return false;
 	else if($date[2] == $date2[2])
@@ -375,6 +376,20 @@ function notifications($conn, $idDest, $nomAuteur, $prenomAuteur, $dateDebut, $d
 			$contenu_txt = $contenu_txt."L'événement ".$libelleLong." organisé par ".$prenomAuteur." ".$nomAuteur.", initialement prévu ";
 		}
 		
+		//Si il s'agit d'une modification d'événement
+		if($type == "modifier")
+		{
+			$contenu = $contenu."L'événement ".$libelleLong." organisé par ".$prenomAuteur." ".$nomAuteur.", prévu ";
+			$contenu_txt = $contenu_txt."L'événement ".$libelleLong." organisé par ".$prenomAuteur." ".$nomAuteur.", prévu ";
+		}
+		
+		//Si il s'agit d'un participant retiré de l'événement
+		if($type == "retirer")
+		{
+			$contenu = $contenu."Nous avons le regret de vous informer que suite à une modification vous n'êtes plus convié à l'événement ".$libelleLong." organisé par ".$prenomAuteur." ".$nomAuteur.", se déroulant ";
+			$contenu_txt = $contenu_txt."Nous avons le regret de vous informer que suite à une modification vous n'êtes plus convié à l'événement ".$libelleLong." organisé par ".$prenomAuteur." ".$nomAuteur.", se déroulant ";
+		}
+		
 		if(!empty($dateFin[0])){
 			$contenu = $contenu."du ";
 			$contenu_txt = $contenu_txt."du ";
@@ -404,14 +419,14 @@ function notifications($conn, $idDest, $nomAuteur, $prenomAuteur, $dateDebut, $d
 			
 		if($type == "supprimer")
 		{
-			$contenu = $contenu." a été annulé";
-			$contenu_txt = $contenu_txt." a été annulé";
+			$contenu = $contenu." a été annulé.";
+			$contenu_txt = $contenu_txt." a été annulé.";
 		}
-		else
+		
+		if($type == "modifier")
 		{
-			$dateEx = explode('/', $dateDebut[0]);
-			$contenu = $contenu.".<br/><br/>Vous pouvez visualiser cet évènement ici : <a href=http://spartacus.iutc3.unicaen.fr/~jeanbaptiste.louvet/AgendactIfs/Pages/Calendrier/jour.php?a=".$dateEx[2]."&m=".$dateEx[1]."&j=".$dateEx[0].">".$libelleLong."</a>";
-			$contenu_txt = $contenu_txt.".\n\nVous pouvez visualiser cet évènement ici : http://spartacus.iutc3.unicaen.fr/~jeanbaptiste.louvet/AgendactIfs/Pages/Calendrier/jour.php?a=".$dateEx[2]."&m=".$dateEx[1]."&j=".$dateEx[0];
+			$contenu = $contenu." a été modifié.";
+			$contenu_txt = $contenu_txt." a été modifié.";
 		}
 		
 		$contenu = $contenu.".<br><br>L'équipe d'AgendactIfs<br><br><small>Ce courriel est généré automatiquement, veuillez ne pas y répondre</small>";
