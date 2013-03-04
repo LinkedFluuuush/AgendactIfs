@@ -169,7 +169,7 @@ if(!empty($_POST['submit']))
 		}
 	
 		if($valide)
-		{		
+		{	
 			//Récupération de l'idlieu du lieu à ajouter à l'événement
 			if(!empty($lieu))
 			{
@@ -179,14 +179,30 @@ if(!empty($_POST['submit']))
 				$idLieu = $temp->fetch();
 				$idLieu =  $idLieu['idlieu'];
 			}
-			else
+			else 
 				$idLieu = null;
-			
+
 			//Modification de l'événement
-			$sql = "UPDATE aci_evenement SET IDPRIORITE = $priorite, IDLIEU = $idLieu, LIBELLELONG = '$libelleLong', LIBELLECOURT= '$libelleCourt', DESCRIPTION = '$description', 
-			DATEDEBUT = str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), DATEFIN = str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), ESTPUBLIC = $public, DATEINSERT = curdate() WHERE idEvenement = ".$_GET['i'];
+			if ($idLieu != null && $dateFin != null){
+				$sql = "UPDATE aci_evenement SET IDPRIORITE = $priorite, IDLIEU = $idLieu, LIBELLELONG = '$libelleLong', LIBELLECOURT= '$libelleCourt', DESCRIPTION = '$description', 
+				DATEDEBUT = str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), DATEFIN = str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), ESTPUBLIC = $public, DATEINSERT = curdate() WHERE idEvenement = ".$_GET['i'];
+			} 
+			else if ($idLieu == null && $dateFin != null){
+				$sql = "UPDATE aci_evenement SET IDPRIORITE = $priorite, IDLIEU = null, LIBELLELONG = '$libelleLong', LIBELLECOURT= '$libelleCourt', DESCRIPTION = '$description', 
+				DATEDEBUT = str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), DATEFIN = str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), ESTPUBLIC = $public, DATEINSERT = curdate() WHERE idEvenement = ".$_GET['i'];
+			}
+			else if ($idLieu != null && $dateFin == null){
+				$sql = "UPDATE aci_evenement SET IDPRIORITE = $priorite, IDLIEU = $idLieu, LIBELLELONG = '$libelleLong', LIBELLECOURT= '$libelleCourt', DESCRIPTION = '$description', 
+				DATEDEBUT = str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), DATEFIN = null, ESTPUBLIC = $public, DATEINSERT = curdate() WHERE idEvenement = ".$_GET['i'];
+			}
+			else {
+				$sql = "UPDATE aci_evenement SET IDPRIORITE = $priorite, IDLIEU = null, LIBELLELONG = '$libelleLong', LIBELLECOURT= '$libelleCourt', DESCRIPTION = '$description', 
+				DATEDEBUT = str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), DATEFIN = null, ESTPUBLIC = $public, DATEINSERT = curdate() WHERE idEvenement = ".$_GET['i'];
+			}
+			echo $sql;
 			
 			$resultats = $conn->query($sql);
+			
 			
 			$sqlDelRappel = "DELETE FROM aci_rappel WHERE idEvenement = ".$_GET['i'];
 			$sqlDelDest = "DELETE FROM aci_destutilisateur WHERE idEvenement = ".$_GET['i'];
@@ -295,17 +311,22 @@ else {
 	$_POST["dateDebut"] = $dateD[1];
 	$_POST["heureDebut"] = $dateD[0];
 	
-	$dateF = formattageDate(explodeDate($row["DATEFIN"]));
+	if ($row["DATEFIN"] != "" || !empty($row["DATEFIN"]) ){
+		$dateF = formattageDate(explodeDate($row["DATEFIN"]));
+		
+		$_POST["dateFin"] = $dateF[1];
+		$_POST["heureFin"] = $dateF[0];
+	}
 	
-	$_POST["dateFin"] = $dateF[1];
-	$_POST["heureFin"] = $dateF[0];
+	if ($row["IDLIEU"] != "" || !empty($row["IDLIEU"]) ){
+		$reqLieu = "SELECT libelle from aci_lieu where idlieu =" .$row["IDLIEU"];
+		$resLieu = $conn->query($reqLieu);
+		$rowLieu = $resLieu->fetch();
+		
+		$_POST["lieu"] = $rowLieu["libelle"];
+	}
 	
-	$reqLieu = "SELECT libelle from aci_lieu where idlieu =" .$row["IDLIEU"];
-	$resLieu = $conn->query($reqLieu);
-	$rowLieu = $resLieu->fetch();
 	
-	$_POST["lieu"] = $rowLieu["libelle"];
-
 	$_POST["public"] = $row["ESTPUBLIC"];
 	
 	$reqParticipant = "SELECT adresse_mail from aci_destutilisateur 
@@ -490,7 +511,7 @@ else {
                                             <div id="dest">
                                                 <?php saisieFormReq("dest", $conn);?>
                                             </div>
-                                            <label for="addParticipant"><b>Rechercher un destinataire</b></label><input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
+                                            <label for="addParticipant"><b>Rechercher un destinataire</b></label></br><input type="text" name="addParticipant" id="addParticipant" class="boutonForm"/>
                                             <div id="resultsParticipant"></div>
                                         </td>
                                     </tr>
