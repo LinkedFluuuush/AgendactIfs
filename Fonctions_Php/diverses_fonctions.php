@@ -172,22 +172,27 @@ function formattageDate($dateI)
 
 function comparaisonDate($date, $date2)
 {
-	$date = explode('/', $date);
-	$date2 = explode('/', $date2);
+        if(preg_match("#[0-9]{2}/[0-9]{2}/[0-9]{4}#", $date) && preg_match("#[0-9]{2}/[0-9]{2}/[0-9]{4}#", $date2))
+        {
+                $date = explode('/', $date);
+                $date2 = explode('/', $date2);
 
-	if($date[2] < $date2[2])
-		return false;
-	else if($date[2] == $date2[2])
-	{
-		if($date[1] < $date2[1])
-			return false;
-		else if($date[1] == $date2[1])
-		{
-			if($date[0] < $date2[0])
-				return false;
-		}
-	}
-	return true;
+                if($date[2] < $date2[2])
+                        return false;
+                else if($date[2] == $date2[2])
+                {
+                        if($date[1] < $date2[1])
+                                return false;
+                        else if($date[1] == $date2[1])
+                        {
+                                if($date[0] < $date2[0])
+                                        return false;
+                        }
+                }
+                return true;
+        }
+        else
+            return false;
 }
 
 /* cette fonction sert à verifier si une connection ldap est valide */
