@@ -178,7 +178,7 @@ if(!empty($_POST['submit']))
 
 			//Modification de l'événement
 			if ($lieu != null && $dateFin != null){
-				$sql = "UPDATE aci_evenement SET IDPRIORITE = $priorite, IDLIEU = $lieu, LIBELLELONG = '$libelleLong', LIBELLECOURT= '$libelleCourt', DESCRIPTION = '$description', 
+				$sql = "UPDATE aci_evenement SET IDPRIORITE = $priorite, IDLIEU = '$lieu', LIBELLELONG = '$libelleLong', LIBELLECOURT= '$libelleCourt', DESCRIPTION = '$description', 
 				DATEDEBUT = str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), DATEFIN = str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), ESTPUBLIC = $public, DATEINSERT = curdate() WHERE idEvenement = ".$_GET['i'];
 			} 
 			else if ($lieu == null && $dateFin != null){
@@ -186,7 +186,7 @@ if(!empty($_POST['submit']))
 				DATEDEBUT = str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), DATEFIN = str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), ESTPUBLIC = $public, DATEINSERT = curdate() WHERE idEvenement = ".$_GET['i'];
 			}
 			else if ($lieu != null && $dateFin == null){
-				$sql = "UPDATE aci_evenement SET IDPRIORITE = $priorite, IDLIEU = $lieu, LIBELLELONG = '$libelleLong', LIBELLECOURT= '$libelleCourt', DESCRIPTION = '$description', 
+				$sql = "UPDATE aci_evenement SET IDPRIORITE = $priorite, IDLIEU = '$lieu', LIBELLELONG = '$libelleLong', LIBELLECOURT= '$libelleCourt', DESCRIPTION = '$description', 
 				DATEDEBUT = str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), DATEFIN = null, ESTPUBLIC = $public, DATEINSERT = curdate() WHERE idEvenement = ".$_GET['i'];
 			}
 			else {
