@@ -171,28 +171,22 @@ if(!empty($_POST['submit']))
 		if($valide)
 		{	
 			//Récupération de l'idlieu du lieu à ajouter à l'événement
-			if(!empty($lieu))
+			if(empty($lieu))
 			{
-				$sqlRecupId = "SELECT idlieu FROM aci_lieu WHERE libelle = '$lieu'";
-
-				$temp = $conn->query($sqlRecupId);
-				$idLieu = $temp->fetch();
-				$idLieu =  $idLieu['idlieu'];
+				$lieu = null;
 			}
-			else 
-				$idLieu = null;
 
 			//Modification de l'événement
-			if ($idLieu != null && $dateFin != null){
-				$sql = "UPDATE aci_evenement SET IDPRIORITE = $priorite, IDLIEU = $idLieu, LIBELLELONG = '$libelleLong', LIBELLECOURT= '$libelleCourt', DESCRIPTION = '$description', 
+			if ($lieu != null && $dateFin != null){
+				$sql = "UPDATE aci_evenement SET IDPRIORITE = $priorite, IDLIEU = $lieu, LIBELLELONG = '$libelleLong', LIBELLECOURT= '$libelleCourt', DESCRIPTION = '$description', 
 				DATEDEBUT = str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), DATEFIN = str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), ESTPUBLIC = $public, DATEINSERT = curdate() WHERE idEvenement = ".$_GET['i'];
 			} 
-			else if ($idLieu == null && $dateFin != null){
+			else if ($lieu == null && $dateFin != null){
 				$sql = "UPDATE aci_evenement SET IDPRIORITE = $priorite, IDLIEU = null, LIBELLELONG = '$libelleLong', LIBELLECOURT= '$libelleCourt', DESCRIPTION = '$description', 
 				DATEDEBUT = str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), DATEFIN = str_to_date('$dateFin $heureFin', '%d/%m/%Y %H:%i'), ESTPUBLIC = $public, DATEINSERT = curdate() WHERE idEvenement = ".$_GET['i'];
 			}
-			else if ($idLieu != null && $dateFin == null){
-				$sql = "UPDATE aci_evenement SET IDPRIORITE = $priorite, IDLIEU = $idLieu, LIBELLELONG = '$libelleLong', LIBELLECOURT= '$libelleCourt', DESCRIPTION = '$description', 
+			else if ($lieu != null && $dateFin == null){
+				$sql = "UPDATE aci_evenement SET IDPRIORITE = $priorite, IDLIEU = $lieu, LIBELLELONG = '$libelleLong', LIBELLECOURT= '$libelleCourt', DESCRIPTION = '$description', 
 				DATEDEBUT = str_to_date('$dateDebut $heureDebut', '%d/%m/%Y %H:%i'), DATEFIN = null, ESTPUBLIC = $public, DATEINSERT = curdate() WHERE idEvenement = ".$_GET['i'];
 			}
 			else {
@@ -318,11 +312,7 @@ else {
 	}
 	
 	if ($row["IDLIEU"] != "" || !empty($row["IDLIEU"]) ){
-		$reqLieu = "SELECT libelle from aci_lieu where idlieu =" .$row["IDLIEU"];
-		$resLieu = $conn->query($reqLieu);
-		$rowLieu = $resLieu->fetch();
-		
-		$_POST["lieu"] = $rowLieu["libelle"];
+		$_POST["lieu"] = $row["IDLIEU"];
 	}
 	
 	
