@@ -8,9 +8,11 @@ header( 'content-type: text/html; charset=utf-8' ); ?>
         <link href="../../style.css" rel="stylesheet" type="text/css">
         <link href="../../style-minicalendrier.css" rel="stylesheet" type="text/css">
         <link href="../../bootstrap.css" rel="stylesheet" type="text/css">
+        <link href="../../jquery-ui-timepicker-addon.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+	<script src="../../Fonctions_Javascript/jquery-ui-timepicker-addon.js"></script>
 	<script>jQuery(function($){
 	   $.datepicker.regional['fr'] = {
 	      closeText: 'Fermer',
@@ -45,6 +47,16 @@ header( 'content-type: text/html; charset=utf-8' ); ?>
 	<script>
 	$(function() {
 	  $( "#Eve_dateFin" ).datepicker();
+	});
+	</script>
+	<script>
+	$(function() {
+	  $('#Eve_heureDebut').timepicker();
+	});
+	</script>
+		<script>
+	$(function() {
+	  $('#Eve_heureFin').timepicker();
 	});
 	</script>
     </head>
