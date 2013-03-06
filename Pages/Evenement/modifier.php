@@ -10,6 +10,7 @@ header( 'content-type: text/html; charset=utf-8' ); ?>
         <link href="../../bootstrap.css" rel="stylesheet" type="text/css">
         <link href="../../jquery-ui-timepicker-addon.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="../../jquery-ui.css" />
+	<link href="../../favicon.ico" rel="icon" type="image/x-icon" />
 	<script src="../../Fonctions_Javascript/jquery-1.9.1.js"></script>
 	<script src="../../Fonctions_Javascript/jquery-ui.js"></script>
 	<script src="../../Fonctions_Javascript/jquery-ui-timepicker-addon.js"></script>

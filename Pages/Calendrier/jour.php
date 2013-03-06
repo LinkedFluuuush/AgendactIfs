@@ -16,6 +16,7 @@
         <link href="../../style.css" rel="stylesheet" type="text/css">
         <link href="../../style-minicalendrier.css" rel="stylesheet" type="text/css">
         <link href="../../bootstrap.css" rel="stylesheet" type="text/css">
+	<link href="../../favicon.ico" rel="icon" type="image/x-icon" />
     </head>
     <body>
         <?php
