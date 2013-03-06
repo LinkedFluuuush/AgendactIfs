@@ -14,6 +14,7 @@ header( 'content-type: text/html; charset=utf-8' ); ?>
 	<script src="../../Fonctions_Javascript/jquery-1.9.1.js"></script>
 	<script src="../../Fonctions_Javascript/jquery-ui.js"></script>
 	<script src="../../Fonctions_Javascript/jquery-ui-timepicker-addon.js"></script>
+	<script src="../../Fonctions_Javascript/getElementsByClassName.js"></script>
 	<script>jQuery(function($){
 	   $.datepicker.regional['fr'] = {
 	      closeText: 'Fermer',
@@ -792,7 +793,7 @@ else {
         })();
 
         function developper(idGroupe){
-                var spans = document.getElementsByClassName(idGroupe);
+                var spans = getElementsByClassName(idGroupe);
                 var i;
                 var img = document.getElementById(idGroupe);
                 var src = img.src.split('/');

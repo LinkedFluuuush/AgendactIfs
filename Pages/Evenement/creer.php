@@ -14,6 +14,7 @@ header( 'content-type: text/html; charset=utf-8' ); ?>
 	<script src="../../Fonctions_Javascript/jquery-1.9.1.js"></script>
 	<script src="../../Fonctions_Javascript/jquery-ui.js"></script>
 	<script src="../../Fonctions_Javascript/jquery-ui-timepicker-addon.js"></script>
+	<script src="../../Fonctions_Javascript/getElementsByClassName.js"></script>
 	<script>jQuery(function($){
 	   $.datepicker.regional['fr'] = {
 	      closeText: 'Fermer',
@@ -468,7 +469,7 @@ if(!empty($_POST['submit']))
                                                 $resultats = $conn -> query($req);
                                                 while($row = $resultats->fetch()){
                                                     echo '<img id="'.utf8_encode($row['idgroupe']).'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/>
-                                                                                            <label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')"> '
+                                                                                            <label onclick="developper('.utf8_encode($row['idgroupe']).')"> '
                                                                                             .$row['libelle'].'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" 
                                                                                             id="'.utf8_encode($row['idgroupe']).'" ';
 						    if(!$insertion){echo checkAuto(utf8_encode($row['idgroupe']));}
@@ -696,9 +697,9 @@ if(!empty($_POST['submit']))
                 }
             }
         })();
-
+		
         function developper(idGroupe){
-                var spans = document.getElementsByClassName(idGroupe);
+                var spans = getElementsByClassName(idGroupe);
                 var i;
                 var img = document.getElementById(idGroupe);
                 var src = img.src.split('/');
