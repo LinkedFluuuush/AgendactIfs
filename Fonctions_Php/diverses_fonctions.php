@@ -9,7 +9,7 @@ function descGroupe($idGroupe, $conn, $i, $insertion){
 			$option.="&nbsp &nbsp &nbsp";
 		}
 		$option.='<img id="'.utf8_encode($row['idgroupe']).'" src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/>';
-		$option.='<label for="'.utf8_encode($row['idgroupe']).'" onclick="developper('.utf8_encode($row['idgroupe']).')"> '.$row['libelle'].'</label>';
+		$option.='<label onclick="developper('.utf8_encode($row['idgroupe']).')"> '.$row['libelle'].'</label>';
 		$option.='<input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" id="'.utf8_encode($row['idgroupe']).'" ';
 		if(!$insertion){$option .= checkAuto(utf8_encode($row['idgroupe']));}
 		$option .= '/><br/>';

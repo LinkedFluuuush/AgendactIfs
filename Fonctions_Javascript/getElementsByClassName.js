@@ -2,8 +2,6 @@
 	Developed by Robert Nyman, http://www.robertnyman.com
 	Code/licensing: http://code.google.com/p/getelementsbyclassname/
 */	
-
-alert('Hello');
 var getElementsByClassName = function (className, tag, elm){
 	if (document.getElementsByClassName) {
 		getElementsByClassName = function (className, tag, elm) {
@@ -51,12 +49,13 @@ var getElementsByClassName = function (className, tag, elm){
 		getElementsByClassName = function (className, tag, elm) {
 			tag = tag || "*";
 			elm = elm || document;
-			var classes = className,
+			var classes = [],
 				classesToCheck = [],
 				elements = (tag === "*" && elm.all)? elm.all : elm.getElementsByTagName(tag),
 				current,
 				returnElements = [],
 				match;
+			classes[0] = className;
 			for(var k=0, kl=classes.length; k<kl; k+=1){
 				classesToCheck.push(new RegExp("(^|\\s)" + classes[k] + "(\\s|$)"));
 			}

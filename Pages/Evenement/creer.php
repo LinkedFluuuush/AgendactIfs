@@ -703,8 +703,8 @@ if(!empty($_POST['submit']))
                 var i;
                 var img = document.getElementById(idGroupe);
                 var src = img.src.split('/');
-
-                if(src[src.length-1] == "arborescencePlus.png"){
+				
+				if(src[src.length-1] == "arborescencePlus.png"){
                         img.src="../../Images/arborescenceMoins.png";
                         for(i=0; i < spans.length; i++){
                                 spans[i].style.display="block";
