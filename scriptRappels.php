@@ -61,37 +61,34 @@ $rappels = $conn->query($sql);
 while($rappel = $rappels->fetch())
 {
 	//Récupération de l'évènement correspondant au rappel
-	$sql = "SELECT DATE_FORMAT(dateDebut, '%e/%m/%Y %H:%i') as DATEDEBUT, DATE_FORMAT(dateFin, '%e/%m/%Y %H:%i') as DATEFIN, libelleLong, idUtilisateur FROM aci_evenement WHERE idevenement = ".$rappel['idevenement'];
+	$sql = "SELECT DATE_FORMAT(dateDebut, '%e/%m/%Y %H:%i') as DATEDEBUT, DATE_FORMAT(dateFin, '%e/%m/%Y %H:%i') as DATEFIN, libelleLong, idUtilisateur FROM aci_evenement WHERE idevenement = ".$rappel[1];
 	
 	$evenements = $conn->query($sql);
 	
-	try{
-		$evenement = $evenements->fetch();
-	}catch(Exception $e){
-		echo $e;
-	}
+	$evenement = $evenements->fetch();
+	
 	//Récupération du nom, du prénom et de l'adresse e-mail du rappelé
-	$sql2 = "SELECT prenom, nom, adresse_mail FROM aci_utilisateur WHERE idutilisateur = ".$rappel['idutilisateur'];
+	$sql2 = "SELECT prenom, nom, adresse_mail FROM aci_utilisateur WHERE idutilisateur = ".$rappel[2];
 	
 	$util = $conn->query($sql2)->fetch();
 	
 	//Récupération du nom et du prénom de l'auteur
-	$sql3 = "SELECT prenom, nom FROM aci_utilisateur WHERE idutilisateur = ".$evenement[4];
+	$sql3 = "SELECT prenom, nom FROM aci_utilisateur WHERE idutilisateur = ".$evenement[3];
 	
 	$auteur = $conn->query($sql3)->fetch();
 	
-	$dateDebut = explode(' ',$evenement[1]);
+	$dateDebut = explode(' ',$evenement[0]);
 	if(!empty($dateFin))
-		$dateFin = explode(' ',$evenement[2]);
+		$dateFin = explode(' ',$evenement[1]);
 	
-	$contenu = "<h1>".$evenement['LIBELLELONG']."</h1>";
+	$contenu = "<h1>".$evenement[2]."</h1>";
 	$contenu = $contenu."Bonjour ".$util[0]." ".ucfirst(strtolower($util[1])).",";
-	$contenu = $contenu."<br>Nous vous rappelons que l'événement ".$evenement[3].", organisé par ".$auteur[0]." ".$auteur[1];
+	$contenu = $contenu."<br>Nous vous rappelons que l'événement ".$evenement[2].", organisé par ".$auteur[0]." ".ucfirst(strtolower($auteur[1]));
 	$contenu = $contenu." se déroulera ";
 	
 	$contenu_txt = $evenement[3]."\n";
 	$contenu_txt = $contenu_txt."Bonjour ".$util[0]." ".$util[1];
-	$contenu_txt = $contenu_txt."\nNous vous rappelons que l'événement ".$evenement[3].", organisé par ".$auteur[0]." ".ucfirst(strtolower($auteur[1]));
+	$contenu_txt = $contenu_txt."\nNous vous rappelons que l'événement ".$evenement[2].", organisé par ".$auteur[0]." ".ucfirst(strtolower($auteur[1]));
 	$contenu_txt = $contenu_txt." se déroulera ";
 	
 	if(!empty($dateFin[0])){
@@ -153,13 +150,13 @@ while($rappel = $rappels->fetch())
 	//==========
 
 	//=====Envoi de l'e-mail.
-	if(mail($util[2],utf8_decode("[Agendact'Ifs]".$evenement['LIBELLELONG']),$message,$header))
+	if(mail($util[2],utf8_decode("[Agendact'Ifs]".$evenement[2]),$message,$header))
 		echo stripcslashes('\n\nMessage envoyé avec succès\n\n');
 	else
 		echo stripcslashes('\n\nMessage non envoyé\n\n');
 	//==========
 	//Suppression du rappel envoyé de la base de données
-	$suppressionRappel = "DELETE FROM aci_rappel WHERE idrappel = ".$rappel['idrappel'];
+	$suppressionRappel = "DELETE FROM aci_rappel WHERE idrappel = ".$rappel[0];
 	
 	$delete = $conn->query($suppressionRappel);
 }

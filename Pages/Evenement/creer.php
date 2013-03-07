@@ -326,7 +326,7 @@ if(!empty($_POST['submit']))
                 
                 <?php
                 if($insertion)
-                    echo '<div class="alert alert-success"><b>Insertion réalisée avec succès.</b></div>';
+                    echo '<div class="alert alert-success"><b>Evénement ajouté avec succès.</b></div>';
                 ?>
                 <form action="" name="FormCreaEvenement" method="post" enctype="multipart/form-data" id="formCreation">
                     <table>
@@ -446,6 +446,11 @@ if(!empty($_POST['submit']))
                                             <input type="radio" name="public" id="prive" value="0" checked onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
                                         </td>
                                     </tr>
+				    <tr>
+					<td>
+                                            <p>*Information obligatoire</p>
+                                        </td>
+				    </tr>
                                 </table>
                             </td>
                             <td valign="top">
