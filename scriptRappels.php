@@ -65,30 +65,33 @@ while($rappel = $rappels->fetch())
 	
 	$evenements = $conn->query($sql);
 	
-	$evenement = $evenements->fetch();
-	
+	try{
+		$evenement = $evenements->fetch();
+	}catch(Exception $e){
+		echo $e;
+	}
 	//Récupération du nom, du prénom et de l'adresse e-mail du rappelé
 	$sql2 = "SELECT prenom, nom, adresse_mail FROM aci_utilisateur WHERE idutilisateur = ".$rappel['idutilisateur'];
 	
 	$util = $conn->query($sql2)->fetch();
 	
 	//Récupération du nom et du prénom de l'auteur
-	$sql3 = "SELECT prenom, nom FROM aci_utilisateur WHERE idutilisateur = ".$evenement['IDUTILISATEUR'];
+	$sql3 = "SELECT prenom, nom FROM aci_utilisateur WHERE idutilisateur = ".$evenement[4];
 	
 	$auteur = $conn->query($sql3)->fetch();
 	
-	$dateDebut = explode(' ',$evenement['DATEDEBUT']);
+	$dateDebut = explode(' ',$evenement[1]);
 	if(!empty($dateFin))
-		$dateFin = explode(' ',$evenement['DATEFIN']);
+		$dateFin = explode(' ',$evenement[2]);
 	
 	$contenu = "<h1>".$evenement['LIBELLELONG']."</h1>";
 	$contenu = $contenu."Bonjour ".$util[0]." ".ucfirst(strtolower($util[1])).",";
-	$contenu = $contenu."<br>Nous vous rappelons que l'événement ".$evenement['LIBELLELONG'].", organisé par ".$auteur[0]." ".$auteur[1];
+	$contenu = $contenu."<br>Nous vous rappelons que l'événement ".$evenement[3].", organisé par ".$auteur[0]." ".$auteur[1];
 	$contenu = $contenu." se déroulera ";
 	
-	$contenu_txt = $evenement['LIBELLELONG']."\n";
+	$contenu_txt = $evenement[3]."\n";
 	$contenu_txt = $contenu_txt."Bonjour ".$util[0]." ".$util[1];
-	$contenu_txt = $contenu_txt."\nNous vous rappelons que l'événement ".$evenement['LIBELLELONG'].", organisé par ".$auteur[0]." ".ucfirst(strtolower($auteur[1]));
+	$contenu_txt = $contenu_txt."\nNous vous rappelons que l'événement ".$evenement[3].", organisé par ".$auteur[0]." ".ucfirst(strtolower($auteur[1]));
 	$contenu_txt = $contenu_txt." se déroulera ";
 	
 	if(!empty($dateFin[0])){
