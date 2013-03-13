@@ -1,4 +1,5 @@
 /* PARTIE GENERALE */
+
 html, body {
     /* on retire toutes les marges */
     margin: 0;
@@ -17,9 +18,10 @@ body {
     /* taille police */
     font-size: .8em;
     
+    /* Pour que le contenu ne soit pas collé au haut de la page */
     margin-top: 4px;
-    /*margin-left: 25px;*/
     
+    /* Pour que le contenu prenne toute la largeur de la page */
     width: 100%;
 }
 
@@ -28,22 +30,24 @@ body {
     /*margin-left: 220px;*/
 }
 
-/* contient le calendrier et le titre */
-#corpsCal {
+#corpsCal { /* contient le calendrier et le titre */
     /* hauteur et largeur */
     width: 84%;
     height: 98.5%;
-    position: absolute;
+    
+    /* Placement à côté du menu dans la page */
     margin-left: 15%;
-    float: left;
+    /*float: left;*/
+    
+    /* permet d'avoir la barre de défilement dans la cadre contenant le calendrier */
+    position: absolute;
+    overflow: auto;
        
     /* couleur de fond */
-    background-color: #ececec;
-    
-    overflow: auto;
+    background-color: #ececec; 
 }
 
-/* supprimer le contour jaune de Chrome */
+/* supprimer le contour jaune de Google Chrome */
 input, textarea, select {
     outline : none;
 }
@@ -53,7 +57,7 @@ input, textarea, select {
    height: 21px;
    width: 100%;
    
-   background: #4d7fb8; /* Old browsers */
+   background: #4d7fb8; /* Vieux navigateurs */
    background: -moz-linear-gradient(top, #4d7fb8 0%, #4572a5 100%); /* FF3.6+ */
    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4d7fb8), color-stop(100%,#4572a5)); /* Chrome,Safari4+ */
    background: -webkit-linear-gradient(top, #4d7fb8 0%,#4572a5 100%); /* Chrome10+,Safari5.1+ */
@@ -63,7 +67,6 @@ input, textarea, select {
    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d7fb8', endColorstr='#4572a5',GradientType=0 ); /* IE6-9 */
 
    color: white;
-   /*text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);*/
    text-transform: uppercase;
 }
 
@@ -72,22 +75,29 @@ input, textarea, select {
 
 
 
-/* PARTIE SOUS-MENU */
+/* PARTIE MENU */
 
+/* zones de saisie pour la connexion de taille non fixe */
 li.connexion input.zoneDeSaisie {
     width: 90%;
 }
 
 #nav {
-    float: left;
+    /*float: left;*/
+    
+    /* taille */
     width: 13%;
-    position: absolute;
     height: 98.5%;
+    
+    /* permet d'avoir la barre de défilement dans le menu */
+    position: absolute;
     overflow: auto;
     
+    /* marge avec le côté gauche de la page */
     margin-left: 1%;
 }
 
+/* Caractéristiques des sous-menus Connexion, Evènement et Vue*/
 ul.nav {
     margin: 0;
     padding: 0;
@@ -101,19 +111,12 @@ ul.nav * {
     /*width: 180px;*/
 }
 
+/* Espacement entre les sous-menus */
 ul.nav > li {
     margin-bottom: 20px;
 }
 
-ul.nav > li > div.header {
-    font-weight: bold;
-    text-transform: uppercase;
-    padding: 8px 0 8px 12px;
-    border-bottom: 1px #396e9f solid;
-    /*width: 180px;*/
-    /*min-width: 100px;*/
-}
-
+/* Caractéristiques de chaque entrée dans les sous-menus (en gris) */
 ul.nav > li ul li {
     background-color: #ececec;
     padding: 8px 0 8px 12px; 
@@ -156,10 +159,16 @@ ul.nav > li ul li:last-child {
     border-bottom: none;
 }
 
+/* Caractéristiques de chaque titre des sous-menus (en bleu) */
+ul.nav > li > div.header {
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 8px 0 8px 12px;
+    border-bottom: 1px #396e9f solid;
+}
+
 ul.nav div.header {
     color: white;
-    /*color: #e1e1e1;*/
-    /*text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);*/
     
     background: #4d7fb8; /* Old browsers */
     background: -moz-linear-gradient(top, #4d7fb8 0%, #4572a5 100%); /* FF3.6+ */
@@ -172,7 +181,7 @@ ul.nav div.header {
 }
 
 ul.nav > li ul li:hover {
-    background: #e7e7e7; /* Old browsers */
+    background: #e7e7e7;
     cursor: pointer;
 }
 
@@ -209,7 +218,6 @@ ul.nav > li ul li.priorite label:hover {
 /* liens à l'intérieur du titre */
 #corpsCal table.titreCal a {
     color: #ffffff;
-    /*text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2);*/
     text-decoration: none;
 }
 
@@ -224,11 +232,13 @@ ul.nav > li ul li.priorite label:hover {
 
 /* PARTIE CORPS DU CALENDRIER */
 
+/* Placement du calendrier dans le cadre */
 #corpsCal table:last-child {
     margin-left: 10%;
     margin-bottom: 1%;
 }
 
+/* Caractéristiques des liens dans l'entête du calendrier */
 #corpsCal table:last-child th a {
     text-decoration: none;
     color: #393a3a;
@@ -466,7 +476,6 @@ ul.nav > li ul li.priorite label:hover {
 
 #corpsCal.semaine td.evenement {
     position: relative;
-   
 }
 
 #corpsCal.semaine ul {
