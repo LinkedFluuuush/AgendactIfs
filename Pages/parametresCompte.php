@@ -1,5 +1,5 @@
 <?php session_start();
-header( 'content-type: text/html; charset=utf-8' ); ?>
+header('content-type: text/html; charset=utf-8'); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,6 +17,7 @@ header( 'content-type: text/html; charset=utf-8' ); ?>
 include("../Fonctions_Php/connexion.php");
 include_once("../Fonctions_Php/diverses_fonctions.php");
 
+// Redirection quand un utlisateur non connecté essaie d'accéder aux paramètres
 if(empty($_SESSION['id'])) {
     header('Location: Calendrier/mois.php');
 }
@@ -175,6 +176,7 @@ function checked($boolean, $type, $infoUtil)
 }
 ?>
 <script type="text/javascript">
+    // Sert à griser les cases des priorités quand les rappels sont désactivés
 function cacher(){
 	var rappelD = document.getElementById("rappelD");
 	var txt = document.getElementsByTagName("input");

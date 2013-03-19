@@ -7,6 +7,10 @@
  *
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
+ 
+ /* Feuille css correspondant aux boutons et aux messages d'avertissement */
+ /* Toutes les informations de son utilisation se trouve ici : http://twitter.github.com/bootstrap/ */
+ 
 .clearfix {
   *zoom: 1;
 }

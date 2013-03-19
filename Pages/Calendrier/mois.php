@@ -1,4 +1,5 @@
 <?php session_start();
+// Gestion des priorités
  if (!empty($_POST['priorite']))
      $_SESSION['priorite'] = $_POST['priorite'];
  
@@ -22,12 +23,12 @@
         include("../../Fonctions_Php/connexion.php");
         include("../../Fonctions_Php/diverses_fonctions.php");
 
-        //on définit des valeurs par defaut aux variable année, mois et jour (par défaut : aujourd'hui)
+        //on définit des valeurs par defaut aux variables année, mois et jour (par défaut : aujourd'hui)
         $annee = date('Y');
         $mois = date('m');
         $jour = 1;
 
-        //si les variables $_POST existent, on les utilises et au passage, on les stockent dans les variable de session
+        //si les variables $_POST existent, on les utilise et au passage, on les stocke dans les variables de session
         if((!empty($_GET['annee'])) && (!empty($_GET['mois']))) {
             $annee = $_GET['annee'];
             $mois = $_GET['mois'];
@@ -57,16 +58,18 @@
         $dateTimestampDebut = mktime(00, 00, 00, $mois, 01, $annee);
         $dateTimestampFin = mktime(23, 59, 59, $mois, $days, $annee);
 
-        //$dateTimestampDebut = "$annee-$mois-01 00:00:00";
-        //$dateTimestampFin = "$annee-$mois-$days 23:59:59";
-
         //On définit le premier et le dernier jour du mois, ainsi que le nombre de semaines
         $firstDay = date('w',$dateTimestampDebut - 86400);
         $lastDay = date('w',$dateTimestampFin - 86400);
-
+		
         // Nombre de semaines dans le mois en cours
         $nbWeek = intval(($days + $firstDay + (6-$lastDay))/7);
 
+        // Gestion de l'erreur inexplicable due au mois d'avril 2013
+        if($mois == 4 && $annee == 2013) {
+            $firstDay = 0;
+            $lastDay = 1;
+        }
         // Liste des mois
         $tabMois = array('Janvier', 'F&eacute;vrier', 'Mars', 'Avril', 'Mai', 'Juin',
         'Juillet', 'Ao&ucirc;t', 'Septembre', 'Octobre', 'Novembre', 'D&eacute;cembre');
@@ -76,14 +79,11 @@
         //----------
 
         if(!empty($_SESSION['id']))
-                $idUtil = $_SESSION['id'];
+            $idUtil = $_SESSION['id'];
         else
-                $idUtil = 0;
-			
-        $idSession = 1; //$_SESSION['login'];
-        $nomSession = 'Test';
+            $idUtil = 0;
 
-        //Le lien : précédent
+        //Le lien : mois précédent
         if($mois == 1) {
             $moisPrec = 12;
             $anneePrec = $annee - 1;
@@ -93,7 +93,7 @@
             $anneePrec = $annee;
         }
 
-        //Le lien : suivant
+        //Le lien : mois suivant
         if($mois == 12) {
             $moisSuiv = 1;
             $anneeSuiv = $annee + 1;
@@ -109,13 +109,19 @@
         <div id="corpsCal" class="mois">
             <table class="titreCal">
                 <tr class="titreCal">
+                    <!-- Lien amenant au mois à l'année précédente -->
                     <th><a href="mois.php?annee=<?php echo $annee-1; ?>&amp;mois=<?php echo $mois; ?>">&#9668;&#9668; </a></th>
+                    <!-- Lien du mois précédent -->
                     <th><a href="mois.php?annee=<?php echo $anneePrec; ?>&amp;mois=<?php echo $moisPrec; ?>"> &#9668; </a></th>
+                    <!-- Nom du mois -->
                     <th width="500px"><?php echo $nomMois . ' ' . $annee; ?></th>
+                    <!-- Lien du mois suivant -->
                     <th><a href="mois.php?annee=<?php echo $anneeSuiv; ?>&amp;mois=<?php echo $moisSuiv; ?>"> &#9658; </a></th>
+                    <!-- Lien amenant au mois à l'année suivante -->
                     <th><a href="mois.php?annee=<?php echo $annee+1; ?>&amp;mois=<?php echo $mois; ?>"> &#9658;&#9658; </a></th>
                 </tr>
             </table>
+            
             <!-- Affichage du nom du mois + année et des liens du mois précédent/suivant -->
             <table>
                 <tr>
@@ -146,7 +152,7 @@
                 if ($resultats != null) {
                     $cons = 0;
                     while ($row = $resultats->fetch()) {
-                        //on recupère un tableau contenant les date et les titre long)
+                        //on recupère un tableau contenant les date et les libellés de tous les évènements du mois
                         $donnees[$cons]["dateDebut"] = $row["DATEDEBUT"];
                         $donnees[$cons]["dateFin"] = $row["DATEFIN"];
                         $donnees[$cons]["titreCourt"] = stripslashes($row["LIBELLECOURT"]);
@@ -187,14 +193,13 @@
                                 $temp = explode('-',$dateDebut[0]);
                                 $dateDebut = mktime(00,00,00, $temp[1],$temp[2],$temp[0]);
 
-								if(!empty($donnees[$k]["dateFin"]))
-								{
-									$dateFin = explode(' ',$donnees[$k]["dateFin"]);
-									$temp = explode('-',$dateFin[0]);
-									$dateFin = mktime(00,00,00, $temp[1],$temp[2],$temp[0]);
-								}
-								else
-									$dateFin = null;
+                                if(!empty($donnees[$k]["dateFin"])) {
+                                    $dateFin = explode(' ',$donnees[$k]["dateFin"]);
+                                    $temp = explode('-',$dateFin[0]);
+                                    $dateFin = mktime(00,00,00, $temp[1],$temp[2],$temp[0]);
+                                }
+                                else
+                                    $dateFin = null;
 
                                 //On affiche les évènements qui se déroulent dans la journée (gestion des événements sans date de fin)
                                 if(($dateCourante >= $dateDebut && $dateCourante <= $dateFin) or ($dateCourante == $dateDebut && empty($dateFin))) {
@@ -209,7 +214,7 @@
                         if((($i == 1) && ($j < $firstDay + 1)) || (($i == $nbWeek) && ($j > $lastDay + 1))) {
                             echo '<td class="caseAutreMois"></td>';
                         }
-                        else {
+                        else { // on affiche la case du jour avec évènements ou non
                             echo '<td class="caseDuMois" onclick="document.location.href = \'jour.php?a='.$annee.'&amp;m='.$mois.'&amp;j='.$num.'&amp;u=2\';"><a href="jour.php?a='.$annee.'&amp;m='.$mois.'&amp;j='.$num.'&amp;u=2">';
                             echo $num;
 
