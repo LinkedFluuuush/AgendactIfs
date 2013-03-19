@@ -1,6 +1,8 @@
 ﻿<?php session_start(); 
 header( 'content-type: text/html; charset=utf-8' ); ?>
 <!DOCTYPE html>
+
+<!--Les fonctions de ce fichier sont en grande partie les mêmes que celles du fichier créer-->
 <html>
     <head>
 	<title>Modifier un évènement</title>
@@ -15,6 +17,7 @@ header( 'content-type: text/html; charset=utf-8' ); ?>
 	<script src="../../Fonctions_Javascript/jquery-ui.js"></script>
 	<script src="../../Fonctions_Javascript/jquery-ui-timepicker-addon.js"></script>
 	<script src="../../Fonctions_Javascript/getElementsByClassName.js"></script>
+	<!--Affichage du date picker-->
 	<script>jQuery(function($){
 	   $.datepicker.regional['fr'] = {
 	      closeText: 'Fermer',
@@ -249,7 +252,7 @@ if(!empty($_POST['submit']))
 			
 			$resultats = $conn->query($sql);
 			
-			
+			//Suppression des anciennes valeurs de l'événement
 			$sqlDelRappel = "DELETE FROM aci_rappel WHERE idEvenement = ".$_GET['i'];
 			$sqlDelDest = "DELETE FROM aci_destutilisateur WHERE idEvenement = ".$_GET['i'];
 			$sqlDelGroupe = "DELETE FROM aci_destgroupe WHERE idEvenement = ".$_GET['i'];
@@ -367,7 +370,6 @@ else {
 	if ($row["IDLIEU"] != "" || !empty($row["IDLIEU"]) ){
 		$_POST["lieu"] = $row["IDLIEU"];
 	}
-	
 	
 	$_POST["public"] = $row["ESTPUBLIC"];
 	
@@ -589,6 +591,7 @@ else {
         </div>
             
         <script type="text/javascript">
+		//Fonction de chargement dynamique des lieux lors de la saisie
             (function(){
 
             var searchElement = document.getElementById('Eve_lieu');
@@ -676,6 +679,7 @@ else {
             }
         })();
 
+	//Fonction de chargement dynamique des participants lors de la saisie
         (function(){
 
             var searchElement = document.getElementById('addParticipant');
@@ -722,38 +726,38 @@ else {
             }
 
             function chooseResult(result){
-                var div = document.createElement('div');
+		var div = document.createElement('div');
 		var hidden = document.createElement('input');
 		var img = document.createElement('img');
-                var other;
+		var other;
 		
 		img.src='../../Images/boutonMoinsReduit2.png';
 		img.style.cursor='pointer';
 		
 		hidden.type='hidden';
 		hidden.name='dest[]';
-                hidden.value=result.innerHTML.split(" ")[2];
-		
-                div.appendChild(document.createTextNode(result.innerHTML));
+		hidden.value=result.innerHTML.split(" ")[2];
+
+		div.appendChild(document.createTextNode(result.innerHTML));
 		div.appendChild(document.createTextNode("  "));
 		div.appendChild(img);
 		div.appendChild(hidden);
-                div.onclick = function(){
-			removeChildSafe(div);	
+			div.onclick = function(){
+				removeChildSafe(div);	
+			}
+			selected.appendChild(div);
+			searchElement.value = '';
+			results.style.display = 'none';
+			result.className = '';
+			searchElement.focus();
 		}
-                selected.appendChild(div);
-                searchElement.value = '';
-                results.style.display = 'none';
-                result.className = '';
-                searchElement.focus();
-            }
 
-            function removeChildSafe(el) {
-            //before deleting el, recursively delete all of its children.
-            while(el.childNodes.length > 0) {
-                removeChildSafe(el.childNodes[el.childNodes.length-1]);
-            }
-            el.parentNode.removeChild(el);
+		function removeChildSafe(el) {
+			//before deleting el, recursively delete all of its children.
+			while(el.childNodes.length > 0) {
+				removeChildSafe(el.childNodes[el.childNodes.length-1]);
+			}
+			el.parentNode.removeChild(el);
         }
 
             searchElement.onkeyup = function(e){
@@ -792,6 +796,7 @@ else {
             }
         })();
 
+		//Masquer/Afficher les éléments de la liste hiérarchique
         function developper(idGroupe){
                 var spans = getElementsByClassName(idGroupe);
                 var i;
@@ -848,6 +853,7 @@ else {
 </html>
 
 <?php
+//Création du rappel d'un événement en fonction de le temps avant arappel en fonction de la priorité défini par l'utilisateur
 function creationRappel($conn, $idEvenement, $priorite, $idUtilisateur, $idRappel, $rappelHaute, $rappelMoyenne, $rappelBasse, $date)
 {
 	if($priorite == 1)

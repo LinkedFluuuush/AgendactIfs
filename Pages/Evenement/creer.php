@@ -15,6 +15,7 @@ header( 'content-type: text/html; charset=utf-8' ); ?>
 	<script src="../../Fonctions_Javascript/jquery-ui.js"></script>
 	<script src="../../Fonctions_Javascript/jquery-ui-timepicker-addon.js"></script>
 	<script src="../../Fonctions_Javascript/getElementsByClassName.js"></script>
+	<!--Fonction d'affichage du date picker (calendrier) facilitant la saisie des dates-->
 	<script>jQuery(function($){
 	   $.datepicker.regional['fr'] = {
 	      closeText: 'Fermer',
@@ -88,7 +89,6 @@ $erreurLibelleLong = "";
 $erreurDescription = "";
 $erreurDateDebut = "";
 $erreurDateFin = "";
-$erreurDate ="";
 $erreurHeureDebut = "";
 $erreurHeureFin = "";
 
@@ -135,7 +135,6 @@ if(!empty($_POST['submit']))
 		$erreurDescription = "";
 		$erreurDateDebut = "";
 		$erreurDateFin = "";
-		$erreurDate = "";
 		$erreurHeureDebut = "";
 		$erreurHeureFin = "";
 		
@@ -155,7 +154,7 @@ if(!empty($_POST['submit']))
 		$description = htmlspecialchars($description);
 
 		//Date
-		if(regexDate($_POST['dateDebut']) && comparaisonDate($_POST['dateDebut'], date("d/m/Y")))
+		if(regexDate($_POST['dateDebut']))
 			$dateDebut = $_POST['dateDebut'];
 		else
 		{
@@ -166,19 +165,15 @@ if(!empty($_POST['submit']))
 		//Vérifications nécessaires seulement si une date de fin est définie
 		if(!empty($_POST['dateFin']))
 		{
-			if(regexDate($_POST['dateFin']) && comparaisonDate($_POST['dateFin'], date("d/m/Y")))
-				$dateFin = $_POST['dateFin'];
-			else
+			if(regexDate($_POST['dateFin']))
 			{
-				$valide = false;
-				$erreurDateFin = "La date saisie est invalide.";
-			}
-			
-			if(comparaisonDate($_POST['dateFin'], $_POST['dateDebut'])){}
-			else
-			{
-				$valide = false;
-				$erreurDate = "Un évènement ne peut pas se terminer avant de commencer.";
+				if(!comparaisonDate($_POST['dateFin'], $_POST['dateDebut']))
+				{
+					$valide = false;
+					$erreurDateFin = "Un évènement ne peut pas se terminer avant de commencer.";
+				}
+				else
+					$dateFin = $_POST['dateFin'];
 			}
 		}
 		else
@@ -325,9 +320,11 @@ if(!empty($_POST['submit']))
                 </table>
                 
                 <?php
+				//S'affiche si l'insertion dans la base a été réalisée
                 if($insertion)
                     echo '<div class="alert alert-success"><b>Evénement ajouté avec succès.</b></div>';
                 ?>
+				<!--Formulaire de création d'événement-->
                 <form action="" name="FormCreaEvenement" method="post" enctype="multipart/form-data" id="formCreation">
                     <table>
                         <tr>
@@ -350,6 +347,7 @@ if(!empty($_POST['submit']))
                                                 <label style="color: #b94947;" for="Eve_titreLong"><b>Titre long*</b></label> <br>
                                                 <input style="border: 1px solid #b94947;" type="text" name="libelleLong" id="Eve_titreLong" value="<?php if(!$insertion){saisieFormString("libelleLong");}?>" class="libelleLong" maxlength=32 />
                                                 <?php
+												//Gestion des erreurs de saisie
                                                 echo "<b style=\"color: #b94947;\" id=\"formErreur\">$erreurLibelleLong</b>";
                                             }
                                             else { ?>
@@ -412,7 +410,7 @@ if(!empty($_POST['submit']))
                                     </tr>
                                     <tr>                    
                                         <td>
-					<?php if (!empty($_GET['a']) and !empty($_GET['m']) and !empty($_GET['j'])) { ?>
+											<?php if (!empty($_GET['a']) and !empty($_GET['m']) and !empty($_GET['j'])) { ?>
                                                 <label for="Eve_dateFin"><b>Date de fin</b></label><br>
                                                     <input type="text" name="dateFin" id="Eve_dateFin" value="<?php if(!$insertion){echo $_GET['j'].'/'.$_GET['m'].'/'.$_GET['a'];} ?>" class="dateDebut" maxlength=10 size=11/>
                                                     <input type="text" name="heureFin" id="Eve_heureFin" placeholder="hh:mm" value="<?php if(!$insertion){saisieFormString("heureFin");}?>" class="heureFin" maxlength=5 size=4/>
@@ -446,11 +444,11 @@ if(!empty($_POST['submit']))
                                             <input type="radio" name="public" id="prive" value="0" checked onclick="cacher()"> <label for="prive" onclick="cacher()">Privé</label>
                                         </td>
                                     </tr>
-				    <tr>
-					<td>
+									<tr>
+										<td>
                                             <p>*Information obligatoire</p>
                                         </td>
-				    </tr>
+									</tr>
                                 </table>
                             </td>
                             <td valign="top">
@@ -472,13 +470,18 @@ if(!empty($_POST['submit']))
                                                 <?php
                                                 $req = "SELECT idgroupe, libelle FROM aci_groupe WHERE idgroupe NOT IN (SELECT idgroupe_1 FROM aci_contenir)";
                                                 $resultats = $conn -> query($req);
+												
+												//Création de l'arborescence des groupes
                                                 while($row = $resultats->fetch()){
                                                     echo '<img id="'.utf8_encode($row['idgroupe']).'"src="../../Images/arborescencePlus.png" onclick="developper('.utf8_encode($row['idgroupe']).')"/>
-                                                                                            <label onclick="developper('.utf8_encode($row['idgroupe']).')"> '
-                                                                                            .$row['libelle'].'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" 
-                                                                                            id="'.utf8_encode($row['idgroupe']).'" ';
-						    if(!$insertion){echo checkAuto(utf8_encode($row['idgroupe']));}
-							echo '/><br/>';
+														<label onclick="developper('.utf8_encode($row['idgroupe']).')"> '
+														.$row['libelle'].'</label><input type="checkbox" name="groupe[]" value="'.utf8_encode($row['idgroupe']).'" 
+														id="'.utf8_encode($row['idgroupe']).'" ';
+													if(!$insertion)
+													{
+														echo checkAuto(utf8_encode($row['idgroupe']));
+													}
+													echo '/><br/>';
                                                     descGroupe($row['idgroupe'], $conn, 1, $insertion);
                                                 }
                                                 ?>
@@ -500,6 +503,7 @@ if(!empty($_POST['submit']))
             
         <script type="text/javascript">
 		cacher();
+		//Affichage dynamique lors de la saisie d'un lieu
             (function(){
 
             var searchElement = document.getElementById('Eve_lieu');
@@ -587,6 +591,7 @@ if(!empty($_POST['submit']))
             }
         })();
 
+	//Affichage dynamique lors de la saisie d'un invité
         (function(){
 
             var searchElement = document.getElementById('addParticipant');
@@ -632,39 +637,40 @@ if(!empty($_POST['submit']))
                 }
             }
 
-            function chooseResult(result){
-                var div = document.createElement('div');
-		var hidden = document.createElement('input');
-		var img = document.createElement('img');
-                var other;
-		
-		img.src='../../Images/boutonMoinsReduit2.png';
-		img.style.cursor='pointer';
-		
-		hidden.type='hidden';
-		hidden.name='dest[]';
-                hidden.value=result.innerHTML.split(" ")[2];
-		
-                div.appendChild(document.createTextNode(result.innerHTML));
-		div.appendChild(document.createTextNode("  "));
-		div.appendChild(img);
-		div.appendChild(hidden);
-                div.onclick = function(){
-			removeChildSafe(div);	
+        function chooseResult(result)
+		{
+			var div = document.createElement('div');
+			var hidden = document.createElement('input');
+			var img = document.createElement('img');
+			var other;
+			
+			img.src='../../Images/boutonMoinsReduit2.png';
+			img.style.cursor='pointer';
+			
+			hidden.type='hidden';
+			hidden.name='dest[]';
+			hidden.value=result.innerHTML.split(" ")[2];
+			
+			div.appendChild(document.createTextNode(result.innerHTML));
+			div.appendChild(document.createTextNode("  "));
+			div.appendChild(img);
+			div.appendChild(hidden);
+				div.onclick = function(){
+				removeChildSafe(div);	
+				}
+			selected.appendChild(div);
+			searchElement.value = '';
+			results.style.display = 'none';
+			result.className = '';
+			searchElement.focus();
 		}
-                selected.appendChild(div);
-                searchElement.value = '';
-                results.style.display = 'none';
-                result.className = '';
-                searchElement.focus();
-            }
 
-            function removeChildSafe(el) {
-            //before deleting el, recursively delete all of its children.
-            while(el.childNodes.length > 0) {
-                removeChildSafe(el.childNodes[el.childNodes.length-1]);
-            }
-            el.parentNode.removeChild(el);
+		function removeChildSafe(el) {
+			//before deleting el, recursively delete all of its children.
+			while(el.childNodes.length > 0) {
+				removeChildSafe(el.childNodes[el.childNodes.length-1]);
+			}
+			el.parentNode.removeChild(el);
         }
 
             searchElement.onkeyup = function(e){
@@ -703,26 +709,28 @@ if(!empty($_POST['submit']))
             }
         })();
 		
+		//Permet d'afficher les sous groupes d'un groupe dans la liste hiérarchqie
         function developper(idGroupe){
-                var spans = getElementsByClassName(idGroupe);
-                var i;
-                var img = document.getElementById(idGroupe);
-                var src = img.src.split('/');
-				
-				if(src[src.length-1] == "arborescencePlus.png"){
-                        img.src="../../Images/arborescenceMoins.png";
-                        for(i=0; i < spans.length; i++){
-                                spans[i].style.display="block";
-                        }
-                }
-                else{
-                        img.src="../../Images/arborescencePlus.png";
-                        for(i=0; i < spans.length; i++){
-                                spans[i].style.display="none";
-                        }
-                }			
+			var spans = getElementsByClassName(idGroupe);
+			var i;
+			var img = document.getElementById(idGroupe);
+			var src = img.src.split('/');
+			
+			if(src[src.length-1] == "arborescencePlus.png"){
+					img.src="../../Images/arborescenceMoins.png";
+					for(i=0; i < spans.length; i++){
+							spans[i].style.display="block";
+					}
+			}
+			else{
+					img.src="../../Images/arborescencePlus.png";
+					for(i=0; i < spans.length; i++){
+							spans[i].style.display="none";
+					}
+			}			
         }
 	
+		//Permet de cacher les sous groupes dans la liste hiérarchique
 		function cacher(){
 			var radio = document.getElementById("public");
 			var divdest = document.getElementById("dest");
@@ -737,7 +745,9 @@ if(!empty($_POST['submit']))
 					}
 				}
 				divdest.innerHTML="";
-			}else{
+			}
+			else
+			{
 				dest.disabled=false;	
 				for(var i = 0; i < groupe.length; i++){
 					if(groupe[i].name=="groupe[]"){
@@ -751,6 +761,7 @@ if(!empty($_POST['submit']))
 </html>
 
 <?php
+//Création d'un rappel pour un événement, en fonction de sa priorité et des temps de rappel avant événement définis par l'utilisateur
 function creationRappel($conn, $idEvenement, $priorite, $idUtilisateur, $idRappel, $rappelHaute, $rappelMoyenne, $rappelBasse, $date)
 {
 	if($priorite == 1)

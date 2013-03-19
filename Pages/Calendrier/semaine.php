@@ -180,14 +180,18 @@
         <div id="corpsCal" class="semaine">
             <table class="titreCal">                
                 <tr class="titreCal">
+                    <!-- Semaine précédente -->
                     <th><?php echo '<a href=\'semaine.php?annee='.$anneePrec.'&mois='.$moisPrec.'&jour='.$jourPrec.'\'> &#9668; </a>'; ?></th>
+                    <!-- Nom de la semaine -->
                     <th width="500px"><?php echo "$jourDebut $nomMois1 $annee1 au $jourFin $nomMois2 $annee2"; ?></th>
+                    <!-- Semaine suivante -->
                     <th><?php echo '<a href=\'semaine.php?annee='.$anneeSuiv.'&mois='.$moisSuiv.'&jour='.$jourSuiv.'\'> &#9658; </a>'; ?></th>
                 </tr>
             </table>
                         
             <table>
                 <tr>
+                    <!-- Nom des jours + lien vers le jour demandé -->
                     <th></th>
                     <th><?php echo '<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.$jourDebut.'&u=3\'>Lundi</a> '; ?></th>
                     <th><?php echo '<a href=\'./jour.php?a='.$annee.'&m='.$mois.'&j='.($jourDebut+1).'&u=3\'>Mardi</a>'; ?></th>
@@ -207,18 +211,17 @@
                         AND dateDebut <=  '$annee2-$mois2-$jourFin 23:59:59'
                         and idpriorite <= $priorite
                        	and ((estPublic = 1)
-							or ($idUtil = aci_evenement.idUtilisateur)
-							or $idUtil in (SELECT idutilisateur FROM aci_destutilisateur WHERE aci_destutilisateur.idevenement = aci_evenement.idevenement)
-							or $idUtil in (SELECT idutilisateur FROM aci_composer JOIN aci_destgroupe USING (idgroupe) WHERE aci_destgroupe.idevenement = aci_evenement.idevenement))";
+                            or ($idUtil = aci_evenement.idUtilisateur)
+                            or $idUtil in (SELECT idutilisateur FROM aci_destutilisateur WHERE aci_destutilisateur.idevenement = aci_evenement.idevenement)
+                            or $idUtil in (SELECT idutilisateur FROM aci_composer JOIN aci_destgroupe USING (idgroupe) WHERE aci_destgroupe.idevenement = aci_evenement.idevenement))";
 
                 $resultats = $conn->query($sql);
                 $resultats->setFetchMode(PDO::FETCH_ASSOC);
-                
 		
                 if (!empty($resultats)) {
                     $i=0;
                     while ($row = $resultats->fetch()) {
-                        //on recupère un tableau contenant les dates et les titres longs)
+                        //on recupère un tableau contenant les dates et les différents libellés de tous les évènements de la semaine
                         $donnees[$i]["dateDebut"] = $row["DATEDEBUT"];
                         $donnees[$i]["dateFin"] = $row["DATEFIN"];
                         $donnees[$i]["libelleCourt"] = stripslashes($row["LIBELLECOURT"]);
@@ -227,15 +230,16 @@
                     }
                 }               
                 
-                for ($i = 0 ; $i <= 23 ; $i++) { //heures de 0 à 23
+                for ($i = 0 ; $i <= 23 ; $i++) { // on parcourt les heures de 0 à 23
                     echo '<tr>';
                     echo '<td class="nomHeure">'.$i.':00</td>';
-                    
                     $heure = $i.':00';
                     $time = explode(":", $heure);
-                    for ($j = 1 ; $j < 8 ; $j++) { //jours de 1 à 7
+                    
+                    for ($j = 1 ; $j < 8 ; $j++) { // on parcourt les jours de 1 à 7
                         $boucle = 0;
                         
+                        // on teste si la date de début de chaque évènement est égale à la date testée ($heureTestee)
                         if (!empty($donnees)) {
                             for ($k = 0 ; $k < count($donnees) ; $k++) {
                                 for ($min = 0 ; $min < 60 ; $min++){
@@ -249,7 +253,7 @@
                                 }
                             }
                         }
-                        
+                        // S'il y a plusieurs évènements, on les met dans une liste et on l'affiche dans une case du tableau
                         if ($boucle >= 1) {
                             echo '<td class="evenement" onclick="document.location.href =\'jour.php?a='.$annee.'&m='.$mois.'&j='.($jour + $j-1).'&u=3\';">';
                             echo '<ul>';
@@ -262,7 +266,7 @@
                             echo '</ul>';
                             echo '</td>';
                         }
-                        else {
+                        else { // sinon on affiche une case vide
                             echo '<td onclick="document.location.href =\'jour.php?a='.$annee.'&m='.$mois.'&j='.($jour + $j-1).'&u=3\';"></td>';
                         }
                         echo'</td>';                            

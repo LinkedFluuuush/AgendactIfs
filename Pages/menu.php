@@ -9,6 +9,7 @@ $nomPage = $temp[sizeof($temp)-1];
     <!-- sous-menus -->
     <ul class="nav">
         <li>
+            <!-- Menu connexion avec déconnexion et paramètres compte -->
             <div class="header">
                 <?php
                 if(empty($_SESSION['id'])){
@@ -51,6 +52,7 @@ $nomPage = $temp[sizeof($temp)-1];
             </ul>
         </li>
         <li>
+            <!-- Menu Evènement contenant l'entrée creer et l'entrée permettant de changer la visualisation des évènements selon les priorités -->
             <div class="header">Evénement</div>
             <ul class="menu">
                 <?php
@@ -74,6 +76,7 @@ $nomPage = $temp[sizeof($temp)-1];
             </ul>
         </li>
         <li>
+            <!-- Menu vue permettant de changer la vue du calendrier affichée -->
             <div class="header">Vue</div>
             <ul class="menu">
                 <?php
@@ -122,6 +125,7 @@ $nomPage = $temp[sizeof($temp)-1];
     </ul>
     
     <?php
+    // Affichage du mini calendrier sur les vues mois, semaine et jour
     if ($nomPage == "mois.php" or $nomPage == "semaine.php" or $nomPage == "jour.php") { ?>
         <!-- mini-calendrier -->
         <div id="miniCalendrier">
