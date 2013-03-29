@@ -6,9 +6,7 @@ function miniCalendrier(a, m){
         
 	var mainDiv = document.getElementById('miniCalendrier');
 	
-		//Le calendrier est un tableau
-		//Création du bandeau de tête
-        var calendrier = document.createElement('table');
+                var calendrier = document.createElement('table');
 		var bandeauLigne = document.createElement('tr');
 		var cg = document.createElement('th');
 		var cm = document.createElement('th');
@@ -54,9 +52,10 @@ function miniCalendrier(a, m){
 		bandeauLigne.appendChild(cd);
 		
                 calendrier.appendChild(bandeauLigne);
-		//Création du bandeau de jours	
+			
 		var corpsLigneTete = document.createElement('tr');
                 corpsLigneTete.id = "nomJourSemaine";
+		//var cVide = document.createElement('th');
 		var cLundi = document.createElement('td');
 		var cMardi = document.createElement('td');
 		var cMercredi = document.createElement('td');
@@ -73,6 +72,7 @@ function miniCalendrier(a, m){
 		cSamedi.appendChild(document.createTextNode("S"));
 		cDimanche.appendChild(document.createTextNode("D"));
 		
+	//	corpsLigneTete.appendChild(cVide);
 		corpsLigneTete.appendChild(cLundi);
 		corpsLigneTete.appendChild(cMardi);
 		corpsLigneTete.appendChild(cMercredi);
@@ -82,7 +82,7 @@ function miniCalendrier(a, m){
 		corpsLigneTete.appendChild(cDimanche);
 		
                 calendrier.appendChild(corpsLigneTete);
-		//Création du calendrier
+		
 		var cSemaine, c, cLigne, lienJour;
 		var nJour = 1, nDebutMois, nSemaine = 0;
 		var txtLien;
@@ -91,17 +91,17 @@ function miniCalendrier(a, m){
                 cLigne.id = "jourMois";
 		c = document.createElement('td');
 		c.appendChild(document.createTextNode(""));
-		//Détermination du jour de début du mois
+		
 		nDebutMois = date.getDay()-1;
 		if(nDebutMois == -1){
 			nDebutMois = 6;
 		}
-		//Mise en place de cases blanches pour les jours avant le début du mois
+		
 		for(var i = 0; i < nDebutMois; i++){
 			cLigne.appendChild(document.createElement('td'));
 			nSemaine++;
 		}
-		//Affichage de chaque jour
+		
 		for(var i = 0; i < retourneJourMois(date.getMonth(), date.getFullYear()); i++){
 			c = document.createElement('td'); 
 			lienJour = document.createElement('a');
@@ -124,7 +124,7 @@ function miniCalendrier(a, m){
 	
         mainDiv.appendChild(calendrier);
 }
-//Permet de retourner le nom du mois sélectionné
+
 function retourneMois(mois){
 	switch(mois){
 		case 0 : return "Janvier";
@@ -143,7 +143,6 @@ function retourneMois(mois){
 	}
 }
 
-//Permet de retourner le nombre de jour dans un mois de l'année
 function retourneJourMois(mois, annee){
 	switch(mois){
 		case 0 : return 31;
@@ -162,7 +161,6 @@ function retourneJourMois(mois, annee){
 	}
 }
 
-//Permet déterminer si une année est bissextile
 function estBissextile(annee){
 	if ((annee%4 == 0) && (annee%100 != 0)){
 		return 29;
