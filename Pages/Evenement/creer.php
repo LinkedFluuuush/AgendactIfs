@@ -512,7 +512,7 @@ if(!empty($_POST['submit']))
             var selectedResult = -1;
             var previousRequest;
             var previousValue = searchElement.value;
-
+			//AJAX pour l'affichage des préselections
             function getLieu(value){
                 var xhr = new XMLHttpRequest();
 
